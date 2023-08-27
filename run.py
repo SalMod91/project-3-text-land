@@ -38,9 +38,26 @@ def rules():
           "\n2. 📜 Bring me back to the Menu.")
     choice = get_choice(2)
     if choice == 1:
-        print("Enter your name")
+        player_name()
     else:
         intro()
+
+
+def player_name():
+    """
+    Player name
+    """
+    while True:
+        # strip() ensures there are no accidental or intentional whitespaces
+        name = input("What is the name of this hero's story?\n").strip()
+        # Checks if name is empty and assigns "Hero"
+        if not name:
+            return "Hero"
+        # Checks if name length is between 1 and 10 charachters
+        elif 1 <= len(name) <= 10:
+            return name
+        else:
+            print("Please enter a name between 1 and 10 characters.")
 
 
 def intro():
@@ -68,7 +85,7 @@ def intro():
 
     choice = get_choice(3)
     if choice == 1:
-        print("Input your name")
+        player_name()
 
     elif choice == 2:
         rules()
@@ -77,4 +94,11 @@ def intro():
         print("Not everyone is suited to be a Hero \U0001F44E Goodbye!")
 
 
-intro()
+def main():
+    """
+    Starts the game
+    """
+    intro()
+
+
+main()
