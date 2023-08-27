@@ -45,7 +45,17 @@ def rules():
 
 def player_name():
     """
-    Player name
+    Prompts the player to input their character's name.
+
+    The function will continue to prompt the player until they provide a
+    valid name, adhering to the following conditions:
+    - The name must be between 1 and 10 characters in length.
+    - The name should not consist solely of whitespace.
+
+    If the player enters only whitespace, the name will default to 'Hero'.
+
+    Returns:
+    - The name of the player's character.
     """
     while True:
         # strip() ensures there are no accidental or intentional whitespaces
@@ -62,7 +72,10 @@ def player_name():
 
 def intro():
     """
-    Prints out the intro
+    Provides the initial game introduction to the player.
+
+    Prompts the player with the choice of starting the game,
+    reading the rules or exiting the game.
     """
     print("📜 Welcome to Text-Land!"
           "\n\nIn a realm where words wield power and choices shape destinies,"
