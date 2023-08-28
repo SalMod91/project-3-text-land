@@ -175,7 +175,8 @@ def combat(enemy):
     global player
     print(f"========COMBAT VS {enemy['Name']}========")
     while player["HP"] > 0 and enemy["HP"] > 0:
-        print("1. Attack"
+        print(f"\n Player HP: {player['HP']} | Enemy HP: {enemy['HP']}"
+              "\n1. Attack"
               "\n2. Item"
               "\n3. Info"
               "\n4. Run")
@@ -200,13 +201,13 @@ def combat(enemy):
                 else:
                     print(f"The {enemy['Name']} did no damage. Your defense is"
                           "too high!")
-        
+
         elif choice == 2:
             print("Choice 2")
-        
+
         elif choice == 3:
             print("Choice 3")
-        
+
         else:
             print("RUN")
 
