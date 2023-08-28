@@ -2,6 +2,8 @@
 This module contains the main game
 """
 
+import random
+
 
 def get_choice(max_choice):
     """
@@ -38,12 +40,12 @@ def rules():
           "\n2. 📜 Bring me back to the Menu.")
     choice = get_choice(2)
     if choice == 1:
-        player_name()
+        player_name_choice()
     else:
         intro()
 
 
-def player_name():
+def player_name_choice():
     """
     Prompts the player to input their character's name.
 
@@ -59,15 +61,26 @@ def player_name():
     """
     while True:
         # strip() ensures there are no accidental or intentional whitespaces
-        name = input("What is the name of this hero's story?\n").strip()
+        player_name = input("What is the name of this hero's story?\n").strip()
         # Checks if name is empty and assigns "Hero"
-        if not name:
-            return "Hero"
+        if not player_name:
+            player["Name"] = "Hero"
+            break
         # Checks if name length is between 1 and 10 charachters
-        elif 1 <= len(name) <= 10:
-            return name
+        elif 1 <= len(player_name) <= 10:
+            player["Name"] = player_name
+            break
         else:
             print("Please enter a name between 1 and 10 characters.")
+
+
+def print_player_info():
+    """
+    This is used to avoid repeating the same code
+    """
+    print("\n")
+    for key, value in player.items():
+        print(f"{key} : {value}")
 
 
 def intro():
@@ -92,19 +105,110 @@ def intro():
           "\nDo you have what it takes to conquer the challenges, decipher the"
           " mysteries, and emerge as the hero of Text-Land?"
           "\n\nOr will you be its Doom?"
-          "\n\n1. 🛡️   Enter your name and begin your adventure."
+          "\n\n1. 🛡️  Enter your name and begin your adventure."
           "\n2. 📘 Read about the rules of Text-Land."
           "\n3. 🚪 Exit to the real world.")
 
     choice = get_choice(3)
     if choice == 1:
-        player_name()
+        player_name_choice()
 
     elif choice == 2:
         rules()
 
     else:
         print("Not everyone is suited to be a Hero \U0001F44E Goodbye!")
+        exit()
+
+
+def first_scene():
+    """
+    This is going to be the first scene
+    """
+    print("\nThis is the first scene")
+    while True:
+        print("\n1. Go towards the screams\n"
+              "2. Player Info")
+
+        choice = get_choice(2)
+        if choice == 1:
+            print("Done")
+            break
+        else:
+            print_player_info()
+
+
+enemy = {
+    "Goblin": {
+        "Name": "Goblin",
+        "HP": 50,
+        "Atk": 20,
+        "Def": 10,
+        "Crit": 3,  # 3% chance
+    }
+}
+
+player = {
+    "Name": {None},
+    "HP": 100,
+    "Atk": 25,
+    "Def": 15,
+    "Crit": 5,  # 5% chance
+}
+
+
+def dmg_roll():
+    """
+    Rolls a random multiplier between 0.8 and 1.2
+
+    Returns:
+    - A random float between 0.8 and 1.2.
+    """
+    multiplier = ((random.randint(0, 40) - 20) + 100) / 100
+    return multiplier
+
+
+def combat(enemy):
+    """
+    Handles Combat
+    """
+    global player
+    print(f"========COMBAT VS {enemy['Name']}========")
+    while player["HP"] > 0 and enemy["HP"] > 0:
+        print("1. Attack"
+              "\n2. Item"
+              "\n3. Info"
+              "\n4. Run")
+        choice = get_choice(4)
+        if choice == 1:
+            dmg_to_enemy = round((player["Atk"] - enemy["Def"]) * dmg_roll())
+            if dmg_to_enemy > 0:
+                enemy["HP"] -= dmg_to_enemy
+                print(f"You dealt {dmg_to_enemy} damage to the"
+                      f" {enemy['Name']}!")
+            else:
+                print("You did no damage. The enemy's defense is too high!")
+
+            if enemy["HP"] > 0:
+                dmg_to_player = round(
+                    (enemy["Atk"] - player["Def"]) * dmg_roll()
+                    )
+                if dmg_to_player > 0:
+                    player["HP"] -= dmg_to_player
+                    print(f"The {enemy['Name']} dealt {dmg_to_player}",
+                          "damage to you!")
+                else:
+                    print(f"The {enemy['Name']} did no damage. Your defense is"
+                          "too high!")
+        
+        elif choice == 2:
+            print("Choice 2")
+        
+        elif choice == 3:
+            print("Choice 3")
+        
+        else:
+            print("RUN")
 
 
 def main():
@@ -112,6 +216,8 @@ def main():
     Starts the game
     """
     intro()
+    first_scene()
+    combat(enemy["Goblin"])
 
 
 main()
