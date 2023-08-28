@@ -64,7 +64,7 @@ def player_name_choice():
         player_name = input("What is the name of this hero's story?\n").strip()
         # Checks if name is empty and assigns "Hero"
         if not player_name:
-            player["Name"] = "Hero"
+            player["Stats"]["Name"] = "Hero"
             break
         # Checks if name length is between 1 and 10 charachters
         elif 1 <= len(player_name) <= 10:
@@ -74,13 +74,17 @@ def player_name_choice():
             print("Please enter a name between 1 and 10 characters.")
 
 
-def print_player_info():
+def print_player_info(player):
     """
     This is used to avoid repeating the same code
     """
     print("\n")
-    for key, value in player.items():
-        print(f"{key} : {value}")
+
+    for main_key, main_value in player.items():
+        print(main_key + ":")
+        for key, value in main_value.items():
+            print(f"{key} : {value}")
+        print()  # Prints an empty line for separation
 
 
 def intro():
@@ -135,7 +139,7 @@ def first_scene():
             print("Done")
             break
         else:
-            print_player_info()
+            print_player_info(player)
 
 
 enemy = {
@@ -149,11 +153,18 @@ enemy = {
 }
 
 player = {
-    "Name": {None},
-    "HP": 100,
-    "Atk": 25,
-    "Def": 15,
-    "Crit": 5,  # 5% chance
+    "Stats": {
+        "Name": {None},
+        "HP": 100,
+        "Atk": 25,
+        "Def": 15,
+        "Crit": 5,  # 5% chance
+    },
+    "Potions": {
+        "Potion": 0,
+        "Mega Potion": 0,
+        "Ultra Potion": 0,
+    }
 }
 
 
@@ -164,7 +175,7 @@ def dmg_roll():
     Returns:
     - A random float between 0.8 and 1.2.
     """
-    multiplier = ((random.randint(0, 40) - 20) + 100) / 100
+    multiplier = ((random .randint(0, 40) - 20) + 100) / 100
     return multiplier
 
 
@@ -203,7 +214,7 @@ def combat(enemy):
                           "too high!")
 
         elif choice == 2:
-            print("Choice 2")
+            print("Item")
 
         elif choice == 3:
             print("Choice 3")
