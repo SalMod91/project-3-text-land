@@ -77,24 +77,6 @@ def player_name_choice():
             print("Please enter a name between 1 and 10 characters.")
 
 
-def print_player_info(player):
-    """
-    This is used to avoid repeating the same code
-    """
-    print()  # Prints an empty line for separation
-    print("\n=== ENEMY INFO ===\n")
-    for main_key, main_value in player.items():
-        print(main_key + ":")
-        for key, value in main_value.items():
-            if isinstance(value, dict):  # If the value is another dictionary
-                print(f"{key}:")
-                for sub_key, sub_value in value.items():
-                    print(f"{sub_key} : {sub_value}")
-            else:
-                print(f"{key} : {value}")
-        print()  # Prints an empty line for separation
-
-
 def print_player_potions():
     """
     Prints the player's available potions in the combat menu
@@ -200,7 +182,7 @@ def first_scene():
             print("Done")
             break
         else:
-            print_player_info(player)
+            print_player_info_menu(player)
 
 
 enemy = {
@@ -241,21 +223,21 @@ def dmg_roll():
     return multiplier
 
 
-def choose_info(current_enemy):
-    """
-    Prints out the info options
-    """
-    while True:
-        choice = get_choice(3)
-        print()  # Prints an empty line for separation
-        print("Info about who?")
-        print("\n1. Player")
-        print("2. Enemy")
-        print("3. Go back to the Combat Menu.")
+# def choose_info(current_enemy):
+#     """
+#     Prints out the info options
+#     """
+#     while True:
+#         choice = get_choice(3)
+#         print()  # Prints an empty line for separation
+#         print("Info about who?")
+#         print("\n1. Player")
+#         print("2. Enemy")
+#         print("3. Go back to the Combat Menu.")
 
-        if choice == 1:
-            print_player_info(player)
-            return False
+#         if choice == 1:
+#             print_player_info_menu(player)
+#             return False
 
 
 def print_enemy_info(enemy):
@@ -268,61 +250,195 @@ def print_enemy_info(enemy):
     print()  # Prints an empty line for separation
 
 
-def combat(enemy):
+# def combat(enemy):
+#     """
+#     Handles Combat
+#     """
+#     global player
+#     print(f"========COMBAT VS {enemy['Name']}========")
+#     while player['Stats']['Current HP'] > 0 and enemy['HP'] > 0:
+#         print(f"\n{player['Stats']['Name']} HP:"
+#               f" {player['Stats']['Current HP']}"
+#               f"/{player['Stats']['Max HP']} |"
+#               f" {enemy['Name']} HP: {enemy['HP']}"
+#               "\n1. Attack"
+#               "\n2. Item"
+#               "\n3. Info"
+#               "\n4. Run")
+#         choice = get_choice(4)
+#         if choice == 1:
+#             dmg_to_enemy = round((player['Stats']["Atk"] - enemy["Def"])
+#                                  * dmg_roll())
+#             if dmg_to_enemy > 0:
+#                 enemy["HP"] -= dmg_to_enemy
+#                 print(f"You dealt {dmg_to_enemy} damage to the"
+#                       f" {enemy['Name']}!")
+#             else:
+#                 print("You did no damage. The enemy's defense is too high!")
+
+#             if enemy["HP"] > 0:
+#                 dmg_to_player = round(
+#                     (enemy["Atk"] - player["Stats"]["Def"]) * dmg_roll()
+#                     )
+#                 if dmg_to_player > 0:
+#                     player["Stats"]["Current HP"] -= dmg_to_player
+#                     print(f"The {enemy['Name']} dealt {dmg_to_player}",
+#                           "damage to you!")
+#                 else:
+#                     print(f"The {enemy['Name']} did no damage. Your defense"
+#                           " is too high!")
+
+#         elif choice == 2:
+#             if use_potion():
+#                 dmg_to_player = round((enemy["Atk"] - player["Stats"]["Def"])
+#                                       * dmg_roll())
+#                 if dmg_to_player > 0:
+#                     player["Stats"]["Current HP"] -= dmg_to_player
+#                     print(f"The {enemy['Name']} dealt {dmg_to_player}"
+#                           " damage to you!")
+#                 else:
+#                     print(f"The {enemy['Name']} did no damage."
+#                           " Your defense is too high!")
+
+#         elif choice == 3:
+#             print("wait")
+
+#         else:
+#             print("RUN")
+
+
+class Combat:
     """
-    Handles Combat
+    Handles the Combat
     """
-    global player
-    print(f"========COMBAT VS {enemy['Name']}========")
-    while player['Stats']['Current HP'] > 0 and enemy['HP'] > 0:
-        print(f"\n{player['Stats']['Name']} HP:"
-              f" {player['Stats']['Current HP']}"
-              f"/{player['Stats']['Max HP']} |"
-              f" {enemy['Name']} HP: {enemy['HP']}"
-              "\n1. Attack"
-              "\n2. Item"
-              "\n3. Info"
-              "\n4. Run")
-        choice = get_choice(4)
-        if choice == 1:
-            dmg_to_enemy = round((player['Stats']["Atk"] - enemy["Def"])
-                                 * dmg_roll())
-            if dmg_to_enemy > 0:
-                enemy["HP"] -= dmg_to_enemy
-                print(f"You dealt {dmg_to_enemy} damage to the"
-                      f" {enemy['Name']}!")
+    def __init__(self, player, enemy):
+        """
+        Something
+        """
+        self.player = player
+        self.enemy = enemy
+
+    def choose_info(self):
+        """
+        Prints out the info options.
+        """
+        print("Info about who?")
+        print("\n1. Player")
+        print("2. Enemy")
+        print("3. Go back to the Combat Menu.")
+
+        while True:
+            choice = get_choice(3)
+
+            if choice == 1:
+                self.print_player_info()
+
+            elif choice == 2:
+                self.print_enemy_info()
+
+            elif choice == 3:
+                return
+
+    def print_player_info(self):
+        """
+        Print player information
+        """
+        print()  # Prints an empty line for separation
+        print("=== PLAYER INFO ===")
+        print()  # Prints an empty line for separation
+        for main_key, main_value in self.player.items():
+            print(main_key + ":")
+            for key, value in main_value.items():
+                print(f"{key} : {value}")
+        print()  # Prints an empty line for separation
+
+    def print_enemy_info(self):
+        """
+        Print enemy information
+        """
+        print()  # Prints an empty line for separation
+        print("=== ENEMY INFO ===")
+        print()  # Prints an empty line for separation
+        for main_key, main_value in self.enemy.items():
+            print(main_key + ":")
+            for key, value in main_value.items():
+                print(f"{key} : {value}")
+        print()  # Prints an empty line for separation
+
+    def combat_loop(self):
+        """
+        Handles combat
+        """
+        print(f"========COMBAT VS {self.enemy['Name']}========")
+        while self.player['Stats']['Current HP'] > 0 and self.enemy['HP'] > 0:
+            print(f"\n{self.player['Stats']['Name']} HP:"
+                  f" {self.player['Stats']['Current HP']}"
+                  f"/{self.player['Stats']['Max HP']} |"
+                  f" {self.enemy['Name']} HP: {self.enemy['HP']}"
+                  "\n1. Attack"
+                  "\n2. Item"
+                  "\n3. Info"
+                  "\n4. Run")
+            choice = get_choice(4)
+            if choice == 1:
+                dmg_to_enemy = round((self.player['Stats']["Atk"] -
+                                      self.enemy["Def"]) * dmg_roll())
+                if dmg_to_enemy > 0:
+                    self.enemy["HP"] -= dmg_to_enemy
+                    print(f"You dealt {dmg_to_enemy} damage to the"
+                          f" {self.enemy['Name']}!")
+                else:
+                    print("You did no damage."
+                          " The enemy's defense is too high!")
+
+                if self.enemy["HP"] > 0:
+                    dmg_to_player = round(
+                        (self.enemy["Atk"] - self.player
+                         ["Stats"]["Def"]) * dmg_roll()
+                        )
+                    if dmg_to_player > 0:
+                        self.player["Stats"]["Current HP"] -= dmg_to_player
+                        print(f"The {self.enemy['Name']} dealt {dmg_to_player}"
+                              " damage to you!")
+                    else:
+                        print(f"The {self.enemy['Name']} did no damage."
+                              " Your defense is too high!")
+
+            elif choice == 2:
+                if use_potion():
+                    dmg_to_player = round((self.enemy["Atk"] - self.player
+                                          ["Stats"]["Def"]) * dmg_roll())
+                    if dmg_to_player > 0:
+                        self.player["Stats"]["Current HP"] -= dmg_to_player
+                        print(f"The {self.enemy['Name']} dealt {dmg_to_player}"
+                              " damage to you!")
+                    else:
+                        print(f"The {self.enemy['Name']} did no damage."
+                              " Your defense is too high!")
+
+            elif choice == 3:
+                print("wait")
+
             else:
-                print("You did no damage. The enemy's defense is too high!")
+                print("RUN")
 
-            if enemy["HP"] > 0:
-                dmg_to_player = round(
-                    (enemy["Atk"] - player["Stats"]["Def"]) * dmg_roll()
-                    )
-                if dmg_to_player > 0:
-                    player["Stats"]["Current HP"] -= dmg_to_player
-                    print(f"The {enemy['Name']} dealt {dmg_to_player}",
-                          "damage to you!")
-                else:
-                    print(f"The {enemy['Name']} did no damage. Your defense is"
-                          "too high!")
 
-        elif choice == 2:
-            if use_potion():
-                dmg_to_player = round((enemy["Atk"] - player["Stats"]["Def"])
-                                      * dmg_roll())
-                if dmg_to_player > 0:
-                    player["Stats"]["Current HP"] -= dmg_to_player
-                    print(f"The {enemy['Name']} dealt {dmg_to_player}"
-                          " damage to you!")
-                else:
-                    print(f"The {enemy['Name']} did no damage."
-                          " Your defense is too high!")
+def print_player_info_menu(player):
+    """
+    This is used to avoid repeating the same code
+    """
+    print("\n")
 
-        elif choice == 3:
-            print("wait")
-
-        else:
-            print("RUN")
+    for main_key, main_value in player.items():
+        print(main_key + ":\n")
+        for key, value in main_value.items():
+            if isinstance(value, dict):  # If the value is another dictionary
+                print(f"{key}:")
+                for sub_key, sub_value in value.items():
+                    print(f"{sub_key} : {sub_value}")
+            else:
+                print(f"{key} : {value}")
+        print()  # Prints an empty line for separation
 
 
 def main():
@@ -331,7 +447,8 @@ def main():
     """
     intro()
     first_scene()
-    combat(enemy["Goblin"])
+    battle = Combat(player, enemy["Goblin"])
+    battle.combat_loop()
 
 
 main()
