@@ -83,8 +83,24 @@ def print_player_info(player):
     for main_key, main_value in player.items():
         print(main_key + ":")
         for key, value in main_value.items():
-            print(f"{key} : {value}")
+            if isinstance(value, dict):  # If the value is another dictionary
+                print(f"{key}:")
+                for sub_key, sub_value in value.items():
+                    print(f"  {sub_key} : {sub_value}")
+            else:
+                print(f"{key} : {value}")
         print()  # Prints an empty line for separation
+
+
+def print_player_potions():
+    """
+    Prints the player's available potions in the combat menu
+    """
+    for idx, (potion, details) in enumerate(player["Potions"].items(), 1):
+        quantity = details["Quantity"]
+        heal_amount = details["Heal Amount"]
+        print(f"{idx}. {potion}: {quantity} Heal Amount: {heal_amount}HP")
+    print("4. Back to the Combat Menu!")
 
 
 def intro():
@@ -161,9 +177,9 @@ player = {
         "Crit": 5,  # 5% chance
     },
     "Potions": {
-        "Potion": 0,
-        "Mega Potion": 0,
-        "Ultra Potion": 0,
+        "Potion": {"Quantity": 0, "Heal Amount": 20},
+        "Mega Potion": {"Quantity": 0, "Heal Amount": 50},
+        "Ultra Potion": {"Quantity": 0, "Heal Amount": 100},
     }
 }
 
@@ -185,15 +201,17 @@ def combat(enemy):
     """
     global player
     print(f"========COMBAT VS {enemy['Name']}========")
-    while player["HP"] > 0 and enemy["HP"] > 0:
-        print(f"\n Player HP: {player['HP']} | Enemy HP: {enemy['HP']}"
+    while player['Stats']['HP'] > 0 and enemy['HP'] > 0:
+        print(f"\n Player HP: {player['Stats']['HP']} |"
+              f" Enemy HP: {enemy['HP']}"
               "\n1. Attack"
               "\n2. Item"
               "\n3. Info"
               "\n4. Run")
         choice = get_choice(4)
         if choice == 1:
-            dmg_to_enemy = round((player["Atk"] - enemy["Def"]) * dmg_roll())
+            dmg_to_enemy = round((player['Stats']["Atk"] - enemy["Def"])
+                                 * dmg_roll())
             if dmg_to_enemy > 0:
                 enemy["HP"] -= dmg_to_enemy
                 print(f"You dealt {dmg_to_enemy} damage to the"
@@ -203,7 +221,7 @@ def combat(enemy):
 
             if enemy["HP"] > 0:
                 dmg_to_player = round(
-                    (enemy["Atk"] - player["Def"]) * dmg_roll()
+                    (enemy["Atk"] - player["Stats"]["Def"]) * dmg_roll()
                     )
                 if dmg_to_player > 0:
                     player["HP"] -= dmg_to_player
@@ -214,7 +232,7 @@ def combat(enemy):
                           "too high!")
 
         elif choice == 2:
-            print("Item")
+            print(print_player_potions())
 
         elif choice == 3:
             print("Choice 3")
