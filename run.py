@@ -25,8 +25,10 @@ def get_choice(max_choice):
             if 1 <= choice <= max_choice:
                 return choice
             else:
+                print()  # Prints an empty line for separation
                 print(f"Please enter a number between 1 and {max_choice}.")
         except ValueError:
+            print()  # Prints an empty line for separation
             print("Invalid input! Please enter a number.")
 
 
@@ -59,6 +61,7 @@ def player_name_choice():
     Returns:
     - The name of the player's character.
     """
+    print()  # Prints an empty line for separation
     while True:
         # strip() ensures there are no accidental or intentional whitespaces
         player_name = input("What is the name of this hero's story?\n").strip()
@@ -68,7 +71,7 @@ def player_name_choice():
             break
         # Checks if name length is between 1 and 10 charachters
         elif 1 <= len(player_name) <= 10:
-            player["Name"] = player_name
+            player["Stats"]["Name"] = player_name
             break
         else:
             print("Please enter a name between 1 and 10 characters.")
@@ -78,15 +81,15 @@ def print_player_info(player):
     """
     This is used to avoid repeating the same code
     """
-    print("\n")
-
+    print()  # Prints an empty line for separation
+    print("\n=== ENEMY INFO ===\n")
     for main_key, main_value in player.items():
         print(main_key + ":")
         for key, value in main_value.items():
             if isinstance(value, dict):  # If the value is another dictionary
                 print(f"{key}:")
                 for sub_key, sub_value in value.items():
-                    print(f"  {sub_key} : {sub_value}")
+                    print(f"{sub_key} : {sub_value}")
             else:
                 print(f"{key} : {value}")
         print()  # Prints an empty line for separation
@@ -96,11 +99,53 @@ def print_player_potions():
     """
     Prints the player's available potions in the combat menu
     """
+    print()  # Prints an empty line for separation
     for idx, (potion, details) in enumerate(player["Potions"].items(), 1):
         quantity = details["Quantity"]
         heal_amount = details["Heal Amount"]
-        print(f"{idx}. {potion}: {quantity} Heal Amount: {heal_amount}HP")
+        print(f"{idx}. {potion} ({quantity}): Heals {heal_amount}HP")
     print("4. Back to the Combat Menu!")
+
+
+def handle_overheal():
+    """
+    If player heals over the Max HP, sets the current HP to the Max HP value
+    """
+    if player["Stats"]["Current HP"] > player["Stats"]["Max HP"]:
+        player["Stats"]["Current HP"] = player["Stats"]["Max HP"]
+
+
+def use_potion():
+    """
+    Allows the player to use a potion during combat.
+
+    Returns:
+    - True if a potion is used.
+    - False if no potion is used.
+    """
+    while True:
+        print_player_potions()
+        choice = get_choice(4)
+
+        if choice == 4:  # If player chooses to go back to the combat menu
+            return False  # No potion was used
+
+        potion_names = list(player["Potions"].keys())
+        selected_potion = potion_names[choice - 1]
+
+        if player["Potions"][selected_potion]["Quantity"] > 0:
+            heal_amount = player["Potions"][selected_potion]["Heal Amount"]
+            player["Stats"]["Current HP"] += heal_amount
+            player["Potions"][selected_potion]["Quantity"] -= 1
+            print()  # Prints an empty line for separation
+            print(f"You used a {selected_potion} and"
+                  f" healed for {heal_amount}HP!")
+            handle_overheal()
+            return True  # Potion was used
+
+        else:
+            print()  # Prints an empty line for separation
+            print(f"You don't have any {selected_potion} left!")
 
 
 def intro():
@@ -163,21 +208,22 @@ enemy = {
         "Name": "Goblin",
         "HP": 50,
         "Atk": 20,
-        "Def": 10,
-        "Crit": 3,  # 3% chance
+        "Def": 8,
+        "Crit": 3,
     }
 }
 
 player = {
     "Stats": {
-        "Name": {None},
-        "HP": 100,
-        "Atk": 25,
+        "Name": "Unknown",
+        "Max HP": 100,
+        "Current HP": 100,
+        "Atk": 15,
         "Def": 15,
-        "Crit": 5,  # 5% chance
+        "Crit": 5,
     },
     "Potions": {
-        "Potion": {"Quantity": 0, "Heal Amount": 20},
+        "Potion": {"Quantity": 1, "Heal Amount": 20},
         "Mega Potion": {"Quantity": 0, "Heal Amount": 50},
         "Ultra Potion": {"Quantity": 0, "Heal Amount": 100},
     }
@@ -195,15 +241,44 @@ def dmg_roll():
     return multiplier
 
 
+def choose_info(current_enemy):
+    """
+    Prints out the info options
+    """
+    while True:
+        choice = get_choice(3)
+        print()  # Prints an empty line for separation
+        print("Info about who?")
+        print("\n1. Player")
+        print("2. Enemy")
+        print("3. Go back to the Combat Menu.")
+
+        if choice == 1:
+            print_player_info(player)
+            return False
+
+
+def print_enemy_info(enemy):
+    """
+    Prints the stats of the enemy.
+    """
+    print("\n=== ENEMY INFO ===\n")
+    for key, value in enemy.items():
+        print(f"{key} : {value}")
+    print()  # Prints an empty line for separation
+
+
 def combat(enemy):
     """
     Handles Combat
     """
     global player
     print(f"========COMBAT VS {enemy['Name']}========")
-    while player['Stats']['HP'] > 0 and enemy['HP'] > 0:
-        print(f"\n Player HP: {player['Stats']['HP']} |"
-              f" Enemy HP: {enemy['HP']}"
+    while player['Stats']['Current HP'] > 0 and enemy['HP'] > 0:
+        print(f"\n{player['Stats']['Name']} HP:"
+              f" {player['Stats']['Current HP']}"
+              f"/{player['Stats']['Max HP']} |"
+              f" {enemy['Name']} HP: {enemy['HP']}"
               "\n1. Attack"
               "\n2. Item"
               "\n3. Info"
@@ -224,7 +299,7 @@ def combat(enemy):
                     (enemy["Atk"] - player["Stats"]["Def"]) * dmg_roll()
                     )
                 if dmg_to_player > 0:
-                    player["HP"] -= dmg_to_player
+                    player["Stats"]["Current HP"] -= dmg_to_player
                     print(f"The {enemy['Name']} dealt {dmg_to_player}",
                           "damage to you!")
                 else:
@@ -232,10 +307,19 @@ def combat(enemy):
                           "too high!")
 
         elif choice == 2:
-            print(print_player_potions())
+            if use_potion():
+                dmg_to_player = round((enemy["Atk"] - player["Stats"]["Def"])
+                                      * dmg_roll())
+                if dmg_to_player > 0:
+                    player["Stats"]["Current HP"] -= dmg_to_player
+                    print(f"The {enemy['Name']} dealt {dmg_to_player}"
+                          " damage to you!")
+                else:
+                    print(f"The {enemy['Name']} did no damage."
+                          " Your defense is too high!")
 
         elif choice == 3:
-            print("Choice 3")
+            print("wait")
 
         else:
             print("RUN")
