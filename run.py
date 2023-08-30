@@ -240,14 +240,14 @@ def dmg_roll():
 #             return False
 
 
-def print_enemy_info(enemy):
-    """
-    Prints the stats of the enemy.
-    """
-    print("\n=== ENEMY INFO ===\n")
-    for key, value in enemy.items():
-        print(f"{key} : {value}")
-    print()  # Prints an empty line for separation
+# def print_enemy_info(enemy):
+#     """
+#     Prints the stats of the enemy.
+#     """
+#     print("\n=== ENEMY INFO ===\n")
+#     for key, value in enemy.items():
+#         print(f"{key} : {value}")
+#     print()  # Prints an empty line for separation
 
 
 # def combat(enemy):
@@ -322,12 +322,11 @@ class Combat:
         """
         Prints out the info options.
         """
-        print("Info about who?")
-        print("\n1. Player")
-        print("2. Enemy")
-        print("3. Go back to the Combat Menu.")
-
         while True:
+            print("Info about who?")
+            print("\n1. Player")
+            print("2. Enemy")
+            print("3. Go back to the Combat Menu.")
             choice = get_choice(3)
 
             if choice == 1:
@@ -345,24 +344,27 @@ class Combat:
         """
         print()  # Prints an empty line for separation
         print("=== PLAYER INFO ===")
-        print()  # Prints an empty line for separation
+        print_horizontal_line()
         for main_key, main_value in self.player.items():
-            print(main_key + ":")
+            print(main_key + ":\n")
             for key, value in main_value.items():
-                print(f"{key} : {value}")
-        print()  # Prints an empty line for separation
+                if isinstance(value, dict):
+                    print(f"{key}:")
+                    for sub_key, sub_value in value.items():
+                        print(f"{sub_key} : {sub_value}")
+                    print()  # Prints an empty line for separation
+                else:
+                    print(f"{key} : {value}")
+            print_horizontal_line()
 
     def print_enemy_info(self):
         """
         Print enemy information
         """
+        print("\n=== ENEMY INFO ===\n")
         print()  # Prints an empty line for separation
-        print("=== ENEMY INFO ===")
-        print()  # Prints an empty line for separation
-        for main_key, main_value in self.enemy.items():
-            print(main_key + ":")
-            for key, value in main_value.items():
-                print(f"{key} : {value}")
+        for key, value in enemy.items():
+            print(f"{key} : {value}")
         print()  # Prints an empty line for separation
 
     def combat_loop(self):
@@ -417,18 +419,36 @@ class Combat:
                               " Your defense is too high!")
 
             elif choice == 3:
-                print("wait")
+                self.choose_info()
 
             else:
                 print("RUN")
+
+
+def start_battle(player, enemy_name):
+    """
+    Checks if the enemy name exists in the enemies dictionary
+    """
+    if enemy_name in enemy:
+        battle = Combat(player, enemy[enemy_name])
+        battle.combat_loop()
+    else:
+        print("There was an error starting the battle,"
+              " you got lucky this time!")
+
+
+def print_horizontal_line():
+    """
+    Prints 40 dashes on the screen
+    """
+    print("-" * 40)
 
 
 def print_player_info_menu(player):
     """
     This is used to avoid repeating the same code
     """
-    print("\n")
-
+    print_horizontal_line()
     for main_key, main_value in player.items():
         print(main_key + ":\n")
         for key, value in main_value.items():
@@ -436,9 +456,10 @@ def print_player_info_menu(player):
                 print(f"{key}:")
                 for sub_key, sub_value in value.items():
                     print(f"{sub_key} : {sub_value}")
+                print()  # Prints an empty line for separation
             else:
                 print(f"{key} : {value}")
-        print()  # Prints an empty line for separation
+        print_horizontal_line()
 
 
 def main():
