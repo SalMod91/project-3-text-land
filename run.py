@@ -23,6 +23,7 @@ def get_choice(max_choice):
             choice = int(input("\nEnter your choice: "))
 
             if 1 <= choice <= max_choice:
+                print()  # Prints an empty line for separation
                 return choice
             else:
                 print()  # Prints an empty line for separation
@@ -75,6 +76,8 @@ def player_name_choice():
             break
         else:
             print("Please enter a name between 1 and 10 characters.")
+
+    first_scene()
 
 
 def print_player_potions():
@@ -137,6 +140,7 @@ def intro():
     Prompts the player with the choice of starting the game,
     reading the rules or exiting the game.
     """
+    reset_game(player, enemy)
     print("📜 Welcome to Text-Land!"
           "\n\nIn a realm where words wield power and choices shape destinies,"
           " you find yourself at the crossroads of fate."
@@ -179,7 +183,8 @@ def first_scene():
 
         choice = get_choice(2)
         if choice == 1:
-            print("Done")
+            battle = Combat(player, enemy["Goblin"])
+            battle.combat_loop()
             break
         else:
             print_player_info_menu(player)
@@ -188,10 +193,12 @@ def first_scene():
 enemy = {
     "Goblin": {
         "Name": "Goblin",
-        "HP": 50,
+        "Max HP": 50,
+        "Current HP": 50,
         "Atk": 20,
         "Def": 8,
         "Crit": 3,
+        "Run": 0,
     }
 }
 
@@ -212,6 +219,59 @@ player = {
 }
 
 
+def reset_game(player, enemy):
+    """
+    Resets the player dictionary and enemy dictionary
+    """
+    starting_player = {
+        "Stats": {
+            "Name": "Unknown",
+            "Max HP": 100,
+            "Current HP": 100,
+            "Atk": 15,
+            "Def": 15,
+            "Crit": 5,
+        },
+        "Potions": {
+            "Potion": {"Quantity": 1, "Heal Amount": 20},
+            "Mega Potion": {"Quantity": 0, "Heal Amount": 50},
+            "Ultra Potion": {"Quantity": 0, "Heal Amount": 100},
+        }
+    }
+
+    starting_enemy = {
+        "Goblin": {
+            "Name": "Goblin",
+            "Max HP": 50,
+            "Current HP": 50,
+            "Atk": 20,
+            "Def": 8,
+            "Crit": 3,
+            "Run": 0,
+        }
+    }
+
+    player.clear()
+    player.update(starting_player)
+
+    enemy.clear()
+    enemy.update(starting_enemy)
+
+
+def player_run_away(enemy_run_stat):
+    """
+    Random Roll between 1 and 100 to determine if the player can run away
+
+    Returns:
+    - A boolean with True or False value
+    """
+    rand_int = random.randint(1, 100)
+    if rand_int <= enemy_run_stat:
+        return True
+    else:
+        return False
+
+
 def dmg_roll():
     """
     Rolls a random multiplier between 0.8 and 1.2
@@ -221,90 +281,6 @@ def dmg_roll():
     """
     multiplier = ((random .randint(0, 40) - 20) + 100) / 100
     return multiplier
-
-
-# def choose_info(current_enemy):
-#     """
-#     Prints out the info options
-#     """
-#     while True:
-#         choice = get_choice(3)
-#         print()  # Prints an empty line for separation
-#         print("Info about who?")
-#         print("\n1. Player")
-#         print("2. Enemy")
-#         print("3. Go back to the Combat Menu.")
-
-#         if choice == 1:
-#             print_player_info_menu(player)
-#             return False
-
-
-# def print_enemy_info(enemy):
-#     """
-#     Prints the stats of the enemy.
-#     """
-#     print("\n=== ENEMY INFO ===\n")
-#     for key, value in enemy.items():
-#         print(f"{key} : {value}")
-#     print()  # Prints an empty line for separation
-
-
-# def combat(enemy):
-#     """
-#     Handles Combat
-#     """
-#     global player
-#     print(f"========COMBAT VS {enemy['Name']}========")
-#     while player['Stats']['Current HP'] > 0 and enemy['HP'] > 0:
-#         print(f"\n{player['Stats']['Name']} HP:"
-#               f" {player['Stats']['Current HP']}"
-#               f"/{player['Stats']['Max HP']} |"
-#               f" {enemy['Name']} HP: {enemy['HP']}"
-#               "\n1. Attack"
-#               "\n2. Item"
-#               "\n3. Info"
-#               "\n4. Run")
-#         choice = get_choice(4)
-#         if choice == 1:
-#             dmg_to_enemy = round((player['Stats']["Atk"] - enemy["Def"])
-#                                  * dmg_roll())
-#             if dmg_to_enemy > 0:
-#                 enemy["HP"] -= dmg_to_enemy
-#                 print(f"You dealt {dmg_to_enemy} damage to the"
-#                       f" {enemy['Name']}!")
-#             else:
-#                 print("You did no damage. The enemy's defense is too high!")
-
-#             if enemy["HP"] > 0:
-#                 dmg_to_player = round(
-#                     (enemy["Atk"] - player["Stats"]["Def"]) * dmg_roll()
-#                     )
-#                 if dmg_to_player > 0:
-#                     player["Stats"]["Current HP"] -= dmg_to_player
-#                     print(f"The {enemy['Name']} dealt {dmg_to_player}",
-#                           "damage to you!")
-#                 else:
-#                     print(f"The {enemy['Name']} did no damage. Your defense"
-#                           " is too high!")
-
-#         elif choice == 2:
-#             if use_potion():
-#                 dmg_to_player = round((enemy["Atk"] - player["Stats"]["Def"])
-#                                       * dmg_roll())
-#                 if dmg_to_player > 0:
-#                     player["Stats"]["Current HP"] -= dmg_to_player
-#                     print(f"The {enemy['Name']} dealt {dmg_to_player}"
-#                           " damage to you!")
-#                 else:
-#                     print(f"The {enemy['Name']} did no damage."
-#                           " Your defense is too high!")
-
-#         elif choice == 3:
-#             print("wait")
-
-#         else:
-#             print("RUN")
 
 
 class Combat:
@@ -318,66 +294,94 @@ class Combat:
         self.player = player
         self.enemy = enemy
 
-    def choose_info(self):
+    def display_combat_info(self):
         """
-        Prints out the info options.
+        Compares stats of player and enemy
         """
-        while True:
-            print("Info about who?")
-            print("\n1. Player")
-            print("2. Enemy")
-            print("3. Go back to the Combat Menu.")
-            choice = get_choice(3)
-
-            if choice == 1:
-                self.print_player_info()
-
-            elif choice == 2:
-                self.print_enemy_info()
-
-            elif choice == 3:
-                return
-
-    def print_player_info(self):
-        """
-        Print player information
-        """
-        print()  # Prints an empty line for separation
-        print("=== PLAYER INFO ===")
+        print("PLAYER\t\tENEMY")
         print_horizontal_line()
-        for main_key, main_value in self.player.items():
-            print(main_key + ":\n")
-            for key, value in main_value.items():
-                if isinstance(value, dict):
-                    print(f"{key}:")
-                    for sub_key, sub_value in value.items():
-                        print(f"{sub_key} : {sub_value}")
-                    print()  # Prints an empty line for separation
-                else:
-                    print(f"{key} : {value}")
-            print_horizontal_line()
+        print(f"Name: {self.player['Stats']['Name']}\tName: "
+              f"{self.enemy['Name']}")
+        print(f"HP: {self.player['Stats']['Max HP']}\t\tHP: "
+              f"{self.enemy['Max HP']}")
+        print(f"Attack: {self.player['Stats']['Atk']}\tAttack: "
+              f"{self.enemy['Atk']}")
+        print(f"Defence: {self.player['Stats']['Def']}\tDefence: "
+              f"{self.enemy['Def']}")
+        print(f"Crit: {self.player['Stats']['Crit']}\t\tCrit: "
+              f"{self.enemy['Crit']}")
 
-    def print_enemy_info(self):
+    # def choose_info(self):
+    #     """
+    #     Prints out the info options.
+    #     """
+    #     while True:
+    #         print("Info about who?")
+    #         print("\n1. Player")
+    #         print("2. Enemy")
+    #         print("3. Go back to the Combat Menu.")
+    #         choice = get_choice(3)
+
+    #         if choice == 1:
+    #             self.print_player_info()
+
+    #         elif choice == 2:
+    #             self.print_enemy_info()
+
+    #         elif choice == 3:
+    #             return
+
+    # def print_player_info(self):
+    #     """
+    #     Print player information
+    #     """
+    #     print()  # Prints an empty line for separation
+    #     print("=== PLAYER INFO ===")
+    #     print_horizontal_line()
+    #     for main_key, main_value in self.player.items():
+    #         print(main_key + ":\n")
+    #         for key, value in main_value.items():
+    #             if isinstance(value, dict):
+    #                 print(f"{key}:")
+    #                 for sub_key, sub_value in value.items():
+    #                     print(f"{sub_key} : {sub_value}")
+    #                 print()  # Prints an empty line for separation
+    #             else:
+    #                 print(f"{key} : {value}")
+    #         print_horizontal_line()
+
+    # def print_enemy_info(self):
+    #     """
+    #     Print enemy information
+    #     """
+    #     print("\n=== ENEMY INFO ===\n")
+    #     print()  # Prints an empty line for separation
+    #     for key, value in enemy.items():
+    #         print(f"{key} : {value}")
+    #     print()  # Prints an empty line for separation
+
+    def player_combat_defeat(self):
         """
-        Print enemy information
+        Actions to take when the player is defeated in combat
         """
-        print("\n=== ENEMY INFO ===\n")
-        print()  # Prints an empty line for separation
-        for key, value in enemy.items():
-            print(f"{key} : {value}")
-        print()  # Prints an empty line for separation
+        print(f"The {self.enemy['Name']} hit you with a killing blow!")
+        player_defeat()
 
     def combat_loop(self):
         """
         Handles combat
         """
-        print(f"========COMBAT VS {self.enemy['Name']}========")
-        while self.player['Stats']['Current HP'] > 0 and self.enemy['HP'] > 0:
+        print(f"======== COMBAT VS {self.enemy['Name'].upper()} ========")
+        while (self.player['Stats']['Current HP'] > 0 and
+               self.enemy['Current HP'] > 0):
+            print("\nENEMY IMAGE")
             print(f"\n{self.player['Stats']['Name']} HP:"
                   f" {self.player['Stats']['Current HP']}"
                   f"/{self.player['Stats']['Max HP']} |"
-                  f" {self.enemy['Name']} HP: {self.enemy['HP']}"
-                  "\n1. Attack"
+                  f" {self.enemy['Name']} HP:"
+                  f" {self.enemy['Current HP']}"
+                  f"/{self.enemy['Max HP']}")
+            print("\n1. Attack"
                   "\n2. Item"
                   "\n3. Info"
                   "\n4. Run")
@@ -386,14 +390,14 @@ class Combat:
                 dmg_to_enemy = round((self.player['Stats']["Atk"] -
                                       self.enemy["Def"]) * dmg_roll())
                 if dmg_to_enemy > 0:
-                    self.enemy["HP"] -= dmg_to_enemy
+                    self.enemy['Current HP'] -= dmg_to_enemy
                     print(f"You dealt {dmg_to_enemy} damage to the"
                           f" {self.enemy['Name']}!")
                 else:
                     print("You did no damage."
                           " The enemy's defense is too high!")
 
-                if self.enemy["HP"] > 0:
+                if self.enemy['Current HP'] > 0:
                     dmg_to_player = round(
                         (self.enemy["Atk"] - self.player
                          ["Stats"]["Def"]) * dmg_roll()
@@ -405,6 +409,9 @@ class Combat:
                     else:
                         print(f"The {self.enemy['Name']} did no damage."
                               " Your defense is too high!")
+
+                    if self.player['Stats']['Current HP'] <= 0:
+                        self.player_combat_defeat()
 
             elif choice == 2:
                 if use_potion():
@@ -418,11 +425,48 @@ class Combat:
                         print(f"The {self.enemy['Name']} did no damage."
                               " Your defense is too high!")
 
+                    if self.player['Stats']['Current HP'] <= 0:
+                        self.player_combat_defeat()
+
             elif choice == 3:
-                self.choose_info()
+                self.display_combat_info()
 
             else:
-                print("RUN")
+                if player_run_away(self.enemy['Run']):
+                    print("You successfully ran away!")
+                    return  # Exits the combat loop
+
+                else:
+                    print(f"The {self.enemy['Name']} blocked your way."
+                          " You couldn't escape.")
+                    dmg_to_player = round((self.enemy["Atk"] - self.player
+                                          ["Stats"]["Def"]) * dmg_roll())
+                    if dmg_to_player > 0:
+                        self.player["Stats"]["Current HP"] -= dmg_to_player
+                        print(f"The {self.enemy['Name']} dealt {dmg_to_player}"
+                              " damage to you!")
+                    else:
+                        print(f"The {self.enemy['Name']} did no damage."
+                              " Your defense is too high!")
+
+                    if self.player['Stats']['Current HP'] <= 0:
+                        self.player_combat_defeat()
+
+
+def player_defeat():
+    """
+    Displays the dead message and asks the player if they'd like to retry
+    """
+    print("\nYOU DIED")
+    print("\nContinue?"
+          "\n1. Yes!"
+          "\n2. No..I give up..")
+    choice = get_choice(2)
+    if choice == 1:
+        intro()
+    elif choice == 2:
+        print("Not everyone is suited to be a Hero \U0001F44E Goodbye!")
+        exit()
 
 
 def start_battle(player, enemy_name):
@@ -439,7 +483,8 @@ def start_battle(player, enemy_name):
 
 def print_horizontal_line():
     """
-    Prints 40 dashes on the screen
+    Prints 40 dashes on the screen effectively creating a visual line that
+    separates content
     """
     print("-" * 40)
 
@@ -467,9 +512,6 @@ def main():
     Starts the game
     """
     intro()
-    first_scene()
-    battle = Combat(player, enemy["Goblin"])
-    battle.combat_loop()
 
 
 main()
