@@ -23,7 +23,7 @@ def get_choice(max_choice):
             choice = int(input("\nEnter your choice: "))
 
             if 1 <= choice <= max_choice:
-                print()  # Prints an empty line for separation
+                print_horizontal_line()
                 return choice
             else:
                 print()  # Prints an empty line for separation
@@ -71,7 +71,7 @@ def player_name_choice():
             player["Stats"]["Name"] = "Hero"
             break
         # Checks if name length is between 1 and 10 charachters
-        elif 1 <= len(player_name) <= 10:
+        elif 1 <= len(player_name) <= 15:
             player["Stats"]["Name"] = player_name
             break
         else:
@@ -219,6 +219,29 @@ player = {
 }
 
 
+loot_table = {
+    "Goblin": {
+        "Weapon": ["Goblin Dagger"]
+    }
+}
+
+
+equipment_stats = {
+    "Goblin Dagger": {
+        "Atk": 5
+    }
+}
+
+player_equipment = {
+    "Weapon": None,
+    "Head": None,
+    "Body": None,
+    "Legs": None,
+    "Boots": None,
+    "Hands": None
+}
+
+
 def reset_game(player, enemy):
     """
     Resets the player dictionary and enemy dictionary
@@ -239,6 +262,15 @@ def reset_game(player, enemy):
         }
     }
 
+    starting_equipment = {
+        "Weapon": None,
+        "Head": None,
+        "Body": None,
+        "Legs": None,
+        "Boots": None,
+        "Hands": None
+    }
+
     starting_enemy = {
         "Goblin": {
             "Name": "Goblin",
@@ -253,6 +285,9 @@ def reset_game(player, enemy):
 
     player.clear()
     player.update(starting_player)
+
+    player_equipment.clear()
+    player_equipment.update(starting_equipment)
 
     enemy.clear()
     enemy.update(starting_enemy)
@@ -310,55 +345,7 @@ class Combat:
               f"{self.enemy['Def']}")
         print(f"Crit: {self.player['Stats']['Crit']}\t\tCrit: "
               f"{self.enemy['Crit']}")
-
-    # def choose_info(self):
-    #     """
-    #     Prints out the info options.
-    #     """
-    #     while True:
-    #         print("Info about who?")
-    #         print("\n1. Player")
-    #         print("2. Enemy")
-    #         print("3. Go back to the Combat Menu.")
-    #         choice = get_choice(3)
-
-    #         if choice == 1:
-    #             self.print_player_info()
-
-    #         elif choice == 2:
-    #             self.print_enemy_info()
-
-    #         elif choice == 3:
-    #             return
-
-    # def print_player_info(self):
-    #     """
-    #     Print player information
-    #     """
-    #     print()  # Prints an empty line for separation
-    #     print("=== PLAYER INFO ===")
-    #     print_horizontal_line()
-    #     for main_key, main_value in self.player.items():
-    #         print(main_key + ":\n")
-    #         for key, value in main_value.items():
-    #             if isinstance(value, dict):
-    #                 print(f"{key}:")
-    #                 for sub_key, sub_value in value.items():
-    #                     print(f"{sub_key} : {sub_value}")
-    #                 print()  # Prints an empty line for separation
-    #             else:
-    #                 print(f"{key} : {value}")
-    #         print_horizontal_line()
-
-    # def print_enemy_info(self):
-    #     """
-    #     Print enemy information
-    #     """
-    #     print("\n=== ENEMY INFO ===\n")
-    #     print()  # Prints an empty line for separation
-    #     for key, value in enemy.items():
-    #         print(f"{key} : {value}")
-    #     print()  # Prints an empty line for separation
+        print(f"\t\tRun: {self.enemy['Run']}")
 
     def player_combat_defeat(self):
         """
