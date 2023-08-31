@@ -199,6 +199,10 @@ enemy = {
         "Def": 8,
         "Crit": 3,
         "Run": 0,
+
+        "Loot": {
+            "Gold": 5,
+        }
     }
 }
 
@@ -210,6 +214,7 @@ player = {
         "Atk": 15,
         "Def": 15,
         "Crit": 5,
+        "Gold": 0
     },
     "Potions": {
         "Potion": {"Quantity": 1, "Heal Amount": 20},
@@ -221,7 +226,8 @@ player = {
 
 loot_table = {
     "Goblin": {
-        "Weapon": ["Goblin Dagger"]
+        "Weapon": ["Goblin Dagger"],
+        "Gold": 5
     }
 }
 
@@ -254,6 +260,7 @@ def reset_game(player, enemy):
             "Atk": 15,
             "Def": 15,
             "Crit": 5,
+            "Gold": 0
         },
         "Potions": {
             "Potion": {"Quantity": 1, "Heal Amount": 20},
@@ -280,6 +287,10 @@ def reset_game(player, enemy):
             "Def": 8,
             "Crit": 3,
             "Run": 0,
+
+            "Loot": {
+                "Gold": 5,
+            }
         }
     }
 
@@ -328,6 +339,20 @@ class Combat:
         """
         self.player = player
         self.enemy = enemy
+
+    def player_combat_victory(self):
+        """
+        Actions to take when the player defeats the enemy in combat
+        """
+        print(f"You have defeated the {self.enemy['Name']}!")
+        self.handle_loot()
+
+    def handle_loot(self):
+        """
+        Handles loot
+        """
+        self.player["Stats"]["Gold"] += self.enemy["Loot"]["Gold"]
+        print("You got 5 gold")
 
     def display_combat_info(self):
         """
@@ -380,6 +405,8 @@ class Combat:
                     self.enemy['Current HP'] -= dmg_to_enemy
                     print(f"You dealt {dmg_to_enemy} damage to the"
                           f" {self.enemy['Name']}!")
+                    if self.enemy['Current HP'] <= 0:
+                        self.player_combat_victory()
                 else:
                     print("You did no damage."
                           " The enemy's defense is too high!")
