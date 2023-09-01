@@ -349,6 +349,7 @@ class Combat:
         for loot_name in self.enemy["Loot"]["Items"]:
             item_detail = item_database.get(loot_name)
             if item_detail:
+                print("Handling Loot")
                 self.equip_item(item_detail)
 
     def equip_item(self, item_detail):
@@ -365,6 +366,7 @@ class Combat:
             and the old equipped one if any is equipped
             """
             change = {}
+            print("Calculating...")
             for stat, value in new_item.items():
                 if stat != "Type":
                     if old_item:
@@ -382,6 +384,15 @@ class Combat:
                 self.player["Equipment"][item_type] = item_detail
                 for stat, change in stat_change.items():
                     self.player["Stats"][stat] += change
+                print(f"Equipped {item_detail}")
+            else:
+                print(f"Found {item_detail}, but current equipment is better!")
+        else:
+            self.player["Equipment"][item_type] = item_detail
+            for stat, value in item_detail.items():
+                if stat != "Type":
+                    self.player["Stats"][stat] += value
+            print(f"Equipped {item_detail['Type']}!")
 
     def display_combat_info(self):
         """
@@ -595,7 +606,7 @@ def second_scene():
         if choice == 1:
             print("You chose 1")
         elif choice == 2:
-            print("You chose 2")
+            print_player_info_menu(player)
 
 
 def main():
