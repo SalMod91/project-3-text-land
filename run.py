@@ -215,19 +215,10 @@ player = {
 
 item_database = {
     "Goblin Dagger": {
+        "Name": "Goblin Dagger",
         "Type": "Weapon",
         "Atk": 5
     }
-}
-
-
-player_equipment = {
-    "Weapon": None,
-    "Head": None,
-    "Body": None,
-    "Legs": None,
-    "Boots": None,
-    "Hands": None
 }
 
 
@@ -260,15 +251,6 @@ def reset_game(player, enemy):
         }
     }
 
-    starting_equipment = {
-        "Weapon": None,
-        "Head": None,
-        "Body": None,
-        "Legs": None,
-        "Boots": None,
-        "Hands": None
-    }
-
     starting_enemy = {
         "Goblin": {
             "Name": "Goblin",
@@ -288,9 +270,6 @@ def reset_game(player, enemy):
 
     player.clear()
     player.update(starting_player)
-
-    player_equipment.clear()
-    player_equipment.update(starting_equipment)
 
     enemy.clear()
     enemy.update(starting_enemy)
@@ -568,12 +547,79 @@ def print_player_info_menu(player):
           f" {player['Potions']['Ultra Potion']['Heal Amount']}")
     print_horizontal_line()
     print("===== EQUIPMENT =====")
-    print(f"Weapon: {player['Equipment']['Weapon']}")
-    print(f"Head: {player['Equipment']['Head']}")
-    print(f"Body: {player['Equipment']['Body']}")
-    print(f"Legs: {player['Equipment']['Legs']}")
-    print(f"Boots: {player['Equipment']['Boots']}")
-    print(f"Hands: {player['Equipment']['Hands']}")
+
+    weapon_name = (
+        player['Equipment']['Weapon']['Name']
+        if player['Equipment']['Weapon']
+        else 'None'
+    )
+    weapon_stat = (
+        player['Equipment']['Weapon']['Atk']
+        if player['Equipment']['Weapon']
+        else '0'
+    )
+
+    helmet_name = (
+        player['Equipment']['Head']['Name']
+        if player['Equipment']['Head']
+        else 'None'
+    )
+    helmet_stat = (
+        player['Equipment']['Head']['Def']
+        if player['Equipment']['Head']
+        else '0'
+    )
+
+    body_name = (
+        player['Equipment']['Body']['Name']
+        if player['Equipment']['Body']
+        else 'None'
+    )
+    body_stat = (
+        player['Equipment']['Body']['Def']
+        if player['Equipment']['Body']
+        else '0'
+    )
+
+    legs_name = (
+        player['Equipment']['Legs']['Name']
+        if player['Equipment']['Legs']
+        else 'None'
+    )
+    legs_stat = (
+        player['Equipment']['Legs']['Def']
+        if player['Equipment']['Legs']
+        else '0'
+    )
+
+    boots_name = (
+        player['Equipment']['Boots']['Name']
+        if player['Equipment']['Boots']
+        else 'None'
+    )
+    boots_stat = (
+        player['Equipment']['Boots']['Def']
+        if player['Equipment']['Boots']
+        else '0'
+    )
+
+    hands_name = (
+        player['Equipment']['Hands']['Name']
+        if player['Equipment']['Hands']
+        else 'None'
+    )
+    hands_stat = (
+        player['Equipment']['Hands']['Def']
+        if player['Equipment']['Hands']
+        else '0'
+    )
+
+    print(f"Weapon: {weapon_name}\t Attack: +{weapon_stat}")
+    print(f"Head: {helmet_name}\t Defence: +{helmet_stat}")
+    print(f"Body: {body_name}\t Defence: +{body_stat}")
+    print(f"Legs: {legs_name}\t Defence: +{legs_stat}")
+    print(f"Boots: {boots_name}\t Defence: +{boots_stat}")
+    print(f"Hands: {hands_name}\t Defence: +{hands_stat}")
 
 
 def first_scene():
