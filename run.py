@@ -77,8 +77,6 @@ def player_name_choice():
         else:
             print("Please enter a name between 1 and 10 characters.")
 
-    first_scene()
-
 
 def print_player_potions():
     """
@@ -172,24 +170,6 @@ def intro():
         exit()
 
 
-def first_scene():
-    """
-    This is going to be the first scene
-    """
-    print("\nThis is the first scene")
-    while True:
-        print("\n1. Go towards the screams\n"
-              "2. Player Info")
-
-        choice = get_choice(2)
-        if choice == 1:
-            battle = Combat(player, enemy["Goblin"])
-            battle.combat_loop()
-            break
-        else:
-            print_player_info_menu(player)
-
-
 enemy = {
     "Goblin": {
         "Name": "Goblin",
@@ -241,12 +221,6 @@ item_database = {
 }
 
 
-equipment_stats = {
-    "Goblin Dagger": {
-        "Atk": 5
-    }
-}
-
 player_equipment = {
     "Weapon": None,
     "Head": None,
@@ -275,6 +249,14 @@ def reset_game(player, enemy):
             "Potion": {"Quantity": 1, "Heal Amount": 20},
             "Mega Potion": {"Quantity": 0, "Heal Amount": 50},
             "Ultra Potion": {"Quantity": 0, "Heal Amount": 100},
+        },
+        "Equipment": {
+            "Weapon": None,
+            "Head": None,
+            "Body": None,
+            "Legs": None,
+            "Boots": None,
+            "Hands": None
         }
     }
 
@@ -377,10 +359,29 @@ class Combat:
 
         currently_equipped = self.player["Equipment"].get(item_type, None)
 
-        if item_detail["Atk"] > currently_equipped["Atk"]:
-            self.player["Stats"]["Atk"] -= currently_equipped["Atk"]
-            self.player["Stats"]["Atk"] += item_detail["Atk"]
-            self.player["Equipment"][item_type] = item_detail["Atk"]
+        def calculate_stat_change(new_item, old_item=None):
+            """
+            Calculates the stat change between the newly found item
+            and the old equipped one if any is equipped
+            """
+            change = {}
+            for stat, value in new_item.items():
+                if stat != "Type":
+                    if old_item:
+                        change[stat] = value - old_item.get(stat, 0)
+                    else:
+                        change[stat] = value
+
+            return change
+
+        if currently_equipped:
+            stat_change = calculate_stat_change(
+                item_detail, currently_equipped)
+
+            if sum(stat_change.values()) > 0:
+                self.player["Equipment"][item_type] = item_detail
+                for stat, change in stat_change.items():
+                    self.player["Stats"][stat] += change
 
     def display_combat_info(self):
         """
@@ -549,11 +550,46 @@ def print_player_info_menu(player):
         print_horizontal_line()
 
 
+def first_scene():
+    """
+    This is going to be the first scene
+    """
+    print("\nThis is the first scene")
+    while True:
+        print("\n1. Go towards the screams\n"
+              "2. Player Info")
+
+        choice = get_choice(2)
+        if choice == 1:
+            battle = Combat(player, enemy["Goblin"])
+            battle.combat_loop()
+            break
+        else:
+            print_player_info_menu(player)
+
+
+def second_scene():
+    """
+    This is going to be the second scene
+    """
+    print("\nThs is the second scene")
+    while True:
+        print("(1)"
+              "2")
+        choice = get_choice(2)
+        if choice == 1:
+            print("You chose 1")
+        elif choice == 2:
+            print("You chose 2")
+
+
 def main():
     """
     Starts the game
     """
     intro()
+    first_scene()
+    second_scene()
 
 
 main()
