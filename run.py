@@ -536,18 +536,33 @@ def print_player_info_menu(player):
     """
     This is used to avoid repeating the same code
     """
+    print("===== STATS =====")
+    print(f"Name: {player['Stats']['Name']}")
+    print(f"HP: {player['Stats']['Max HP']}")
+    print(f"Attack: {player['Stats']['Atk']}")
+    print(f"Defence: {player['Stats']['Def']}")
+    print(f"Crit: {player['Stats']['Crit']}")
+    print(f"Gold: {player['Stats']['Gold']}")
     print_horizontal_line()
-    for main_key, main_value in player.items():
-        print(main_key + ":\n")
-        for key, value in main_value.items():
-            if isinstance(value, dict):  # If the value is another dictionary
-                print(f"{key}:")
-                for sub_key, sub_value in value.items():
-                    print(f"{sub_key} : {sub_value}")
-                print()  # Prints an empty line for separation
-            else:
-                print(f"{key} : {value}")
-        print_horizontal_line()
+    print("===== POTIONS =====")
+    print(
+          f"Potion: {player['Potions']['Potion']['Quantity']}"
+          f"\t Heal Amount: {player['Potions']['Potion']['Heal Amount']}")
+    print(
+          f"Mega Potion: {player['Potions']['Mega Potion']['Quantity']}"
+          f"\t Heal Amount: {player['Potions']['Mega Potion']['Heal Amount']}")
+    print(
+          f"Ultra Potion: {player['Potions']['Ultra Potion']['Quantity']}"
+          f"\t Heal Amount:"
+          f" {player['Potions']['Ultra Potion']['Heal Amount']}")
+    print_horizontal_line()
+    print("===== EQUIPMENT =====")
+    print(f"Weapon: {player['Equipment']['Weapon']}")
+    print(f"Head: {player['Equipment']['Head']}")
+    print(f"Body: {player['Equipment']['Body']}")
+    print(f"Legs: {player['Equipment']['Legs']}")
+    print(f"Boots: {player['Equipment']['Boots']}")
+    print(f"Hands: {player['Equipment']['Hands']}")
 
 
 def first_scene():
