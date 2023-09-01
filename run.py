@@ -70,7 +70,7 @@ def player_name_choice():
 
     The function will continue to prompt the player until they provide a
     valid name, adhering to the following conditions:
-    - The name must be between 1 and 10 characters in length.
+    - The name must be between 1 and 15 characters in length.
     - The name should not consist solely of whitespace.
 
     If the player enters only whitespace, the name will default to 'Hero'.
@@ -478,7 +478,7 @@ def player_defeat():
           "\n2. No..I give up..")
     choice = get_choice(2)
     if choice == 1:
-        intro()
+        main()
     elif choice == 2:
         print("Not everyone is suited to be a Hero \U0001F44E Goodbye!")
         exit()
