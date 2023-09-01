@@ -5,6 +5,22 @@ This module contains the main game
 import random
 
 
+def fight_pause_and_continue():
+    """
+    Pauses the game and waits for the player's confirmation to continue.
+    """
+    while True:
+        print(" You are about to fight, are you READY?")
+        print("\n 1. Bring it on!")
+        print("\n 2. No, i want my mommy!")
+        choice = get_choice(2)
+        if choice == 1:
+            break
+        elif choice == 2:
+            print("\n Too bad, it is time to wear the big boy pants\n")
+            break
+
+
 def get_choice(max_choice):
     """
     Prompts the player to make a valid choice withing a given range.
@@ -65,7 +81,8 @@ def player_name_choice():
     print()  # Prints an empty line for separation
     while True:
         # strip() ensures there are no accidental or intentional whitespaces
-        player_name = input("What is the name of this hero's story?\n").strip()
+        player_name = input(" What is the name of "
+                            "this hero's story?\n").strip()
         # Checks if name is empty and assigns "Hero"
         if not player_name:
             player["Stats"]["Name"] = "Hero"
@@ -87,7 +104,7 @@ def print_player_potions():
         quantity = details["Quantity"]
         heal_amount = details["Heal Amount"]
         print(f"{idx}. {potion} ({quantity}): Heals {heal_amount}HP")
-    print("4. Back to the Combat Menu!")
+    print(" 4. Back to the Combat Menu!")
 
 
 def handle_overheal():
@@ -121,14 +138,14 @@ def use_potion():
             player["Stats"]["Current HP"] += heal_amount
             player["Potions"][selected_potion]["Quantity"] -= 1
             print()  # Prints an empty line for separation
-            print(f"You used a {selected_potion} and"
+            print(f" You used a {selected_potion} and"
                   f" healed for {heal_amount}HP!")
             handle_overheal()
             return True  # Potion was used
 
         else:
             print()  # Prints an empty line for separation
-            print(f"You don't have any {selected_potion} left!")
+            print(f" You don't have any {selected_potion} left!")
 
 
 enemy = {
@@ -441,7 +458,7 @@ class Combat:
                     if dmg_to_player > 0:
                         self.player["Stats"]["Current HP"] -= dmg_to_player
                         print(f" The {self.enemy['Name']}"
-                              " dealt {dmg_to_player}"
+                              f" dealt {dmg_to_player}"
                               " damage to you!")
                     else:
                         print(f" The {self.enemy['Name']} did no damage."
@@ -631,6 +648,7 @@ def first_scene():
     """
     This is going to be the first scene
     """
+    print_horizontal_line()
     print(" Blinking awake, you find yourself by a serene lake."
           " How did you end up here? Your memory's a blur."
           "\n As you're piecing things together, a distant"
@@ -645,6 +663,7 @@ def first_scene():
 
         choice = get_choice(3)
         if choice == 1:
+            fight_pause_and_continue()
             battle = Combat(player, enemy["Goblin"])
             battle.combat_loop()
             break
