@@ -278,6 +278,24 @@ def dmg_roll():
     return multiplier
 
 
+def critical_hit(character):
+    """
+    Determines if the critical is True of False
+
+    Parameter:
+    - Either the player or enemy dictionary
+
+    Returns:
+    - A boolean with True or False value
+    """
+    if "Stats" in character:
+        crit_chance = character["Stats"]["Crit"]
+    else:
+        crit_chance = character["Crit"]
+
+    return random.random() < crit_chance / 100
+
+
 class Combat:
     """
     Handles the Combat
@@ -376,6 +394,26 @@ class Combat:
         """
         print(f" The {self.enemy['Name']} hit you with a killing blow!")
         player_defeat()
+
+    def enemy_attack(self):
+        """
+        Handles the enemy's attack on the player.
+        """
+        dmg_to_player = round(
+                        (self.enemy["Atk"] - self.player
+                         ["Stats"]["Def"]) * dmg_roll()
+                        )
+        if dmg_to_player > 0:
+            self.player["Stats"]["Current HP"] -= dmg_to_player
+            print(f" The {self.enemy['Name']}"
+                  " dealt {dmg_to_player}"
+                  " damage to you!")
+        else:
+            print(f" The {self.enemy['Name']} did no damage."
+                  " Your defense is too high!")
+
+        if self.player['Stats']['Current HP'] <= 0:
+            self.player_combat_defeat()
 
     def combat_loop(self):
         """
