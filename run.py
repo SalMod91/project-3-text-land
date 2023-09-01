@@ -448,37 +448,11 @@ class Combat:
                           " The enemy's defense is too high!")
 
                 if self.enemy['Current HP'] > 0:
-                    dmg_to_player = round(
-                        (self.enemy["Atk"] - self.player
-                         ["Stats"]["Def"]) * dmg_roll()
-                        )
-                    if dmg_to_player > 0:
-                        self.player["Stats"]["Current HP"] -= dmg_to_player
-                        print(f" The {self.enemy['Name']}"
-                              " dealt {dmg_to_player}"
-                              " damage to you!")
-                    else:
-                        print(f" The {self.enemy['Name']} did no damage."
-                              " Your defense is too high!")
-
-                    if self.player['Stats']['Current HP'] <= 0:
-                        self.player_combat_defeat()
+                    self.enemy_attack()
 
             elif choice == 2:
                 if use_potion():
-                    dmg_to_player = round((self.enemy["Atk"] - self.player
-                                          ["Stats"]["Def"]) * dmg_roll())
-                    if dmg_to_player > 0:
-                        self.player["Stats"]["Current HP"] -= dmg_to_player
-                        print(f" The {self.enemy['Name']}"
-                              " dealt {dmg_to_player}"
-                              " damage to you!")
-                    else:
-                        print(f" The {self.enemy['Name']} did no damage."
-                              " Your defense is too high!")
-
-                    if self.player['Stats']['Current HP'] <= 0:
-                        self.player_combat_defeat()
+                    self.enemy_attack()
 
             elif choice == 3:
                 self.display_combat_info()
@@ -491,19 +465,7 @@ class Combat:
                 else:
                     print(f" The {self.enemy['Name']} blocked your way."
                           " You couldn't escape.")
-                    dmg_to_player = round((self.enemy["Atk"] - self.player
-                                          ["Stats"]["Def"]) * dmg_roll())
-                    if dmg_to_player > 0:
-                        self.player["Stats"]["Current HP"] -= dmg_to_player
-                        print(f" The {self.enemy['Name']}"
-                              f" dealt {dmg_to_player}"
-                              " damage to you!")
-                    else:
-                        print(f" The {self.enemy['Name']} did no damage."
-                              " Your defense is too high!")
-
-                    if self.player['Stats']['Current HP'] <= 0:
-                        self.player_combat_defeat()
+                    self.enemy_attack()
 
 
 def player_defeat():
