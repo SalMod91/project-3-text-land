@@ -202,6 +202,7 @@ enemy = {
 
         "Loot": {
             "Gold": 5,
+            "Items": ["Goblin Dagger"]
         }
     }
 }
@@ -220,14 +221,22 @@ player = {
         "Potion": {"Quantity": 1, "Heal Amount": 20},
         "Mega Potion": {"Quantity": 0, "Heal Amount": 50},
         "Ultra Potion": {"Quantity": 0, "Heal Amount": 100},
+    },
+    "Equipment": {
+        "Weapon": None,
+        "Head": None,
+        "Body": None,
+        "Legs": None,
+        "Boots": None,
+        "Hands": None
     }
 }
 
 
-loot_table = {
-    "Goblin": {
-        "Weapon": ["Goblin Dagger"],
-        "Gold": 5
+item_database = {
+    "Goblin Dagger": {
+        "Type": "Weapon",
+        "Atk": 5
     }
 }
 
@@ -290,6 +299,7 @@ def reset_game(player, enemy):
 
             "Loot": {
                 "Gold": 5,
+                "Items": ["Goblin Dagger"]
             }
         }
     }
@@ -352,7 +362,25 @@ class Combat:
         Handles loot
         """
         self.player["Stats"]["Gold"] += self.enemy["Loot"]["Gold"]
-        print("You got 5 gold")
+        print(f"You got {self.enemy['Loot']['Gold']} Gold!")
+
+        for loot_name in self.enemy["Loot"]["Items"]:
+            item_detail = item_database.get(loot_name)
+            if item_detail:
+                self.equip_item(item_detail)
+
+    def equip_item(self, item_detail):
+        """
+        Equips automatically better equipment
+        """
+        item_type = item_detail["Type"]
+
+        currently_equipped = self.player["Equipment"].get(item_type, None)
+
+        if item_detail["Atk"] > currently_equipped["Atk"]:
+            self.player["Stats"]["Atk"] -= currently_equipped["Atk"]
+            self.player["Stats"]["Atk"] += item_detail["Atk"]
+            self.player["Equipment"][item_type] = item_detail["Atk"]
 
     def display_combat_info(self):
         """
