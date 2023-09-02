@@ -191,6 +191,32 @@ player = {
 }
 
 
+player_critical_messages = [
+    " YOU DEALT A POWERFUL CRITICAL BLOW!",
+    " YOU DEALT A DEVASTATING CRITICAL BLOW!",
+    " YOU DEALT AN IMPRESSIVE CRITICAL BLOW!",
+    " YOU DEALT A CRITICAL HIT!",
+    "THE ECHOES OF YOUR POWERFUL CRITICAL HIT RESOUND!",
+    "THE AIR CRACKLES WITH ENERGY FROM YOUR CRITICAL HIT!"
+]
+
+
+enemy_critical_messages = [
+    " THE ENEMY CLARIFIES YOUR MORTALITY WITH A SINGLE"
+    "  CRITICAL STRIKE!",
+    " THE ENEMY DEALT TO YOU A CRITICAL INJURY!",
+    " THE ENEMY STRIKES WITH UNBRIDLED FURY!",
+    " A CHILLING CRITICAL BLOW FROM THE ENEMY!",
+    " THE ENEMY LANDS A VICIOUS CRITICAL HIT!",
+    " THE ENEMY UNLEASHES A SURGE OF POWER,"
+    " CRITICALLY STRIKING YOU!",
+    " THE AIR TENSES AS THE ENEMY'S"
+    " CRITICAL ATTACK LANDS!",
+    " YOU REEL FROM THE OVERWHELMING FORCE OF THE ENEMY'S"
+    " CRITICAL BLOW!"
+]
+
+
 item_database = {
     "Goblin Dagger": {
         "Name": "Goblin Dagger",
@@ -211,7 +237,7 @@ def reset_game(player, enemy):
             "Current HP": 100,
             "Atk": 15,
             "Def": 15,
-            "Crit": 5,
+            "Crit": 100,
             "Gold": 0
         },
         "Potions": {
@@ -403,10 +429,13 @@ class Combat:
                         (self.enemy["Atk"] - self.player
                          ["Stats"]["Def"]) * dmg_roll()
                         )
+        if critical_hit(self.enemy):
+            dmg_to_player = round(dmg_to_player * 1.5)
+            print(random.choice(enemy_critical_messages))
         if dmg_to_player > 0:
             self.player["Stats"]["Current HP"] -= dmg_to_player
             print(f" The {self.enemy['Name']}"
-                  " dealt {dmg_to_player}"
+                  f" dealt {dmg_to_player}"
                   " damage to you!")
         else:
             print(f" The {self.enemy['Name']} did no damage."
@@ -423,20 +452,33 @@ class Combat:
         while (self.player['Stats']['Current HP'] > 0 and
                self.enemy['Current HP'] > 0):
             print("\n ENEMY IMAGE")
+            current_player_hp = int(self.player['Stats']['Current HP'])
+            player_maxhp = int(self.player['Stats']['Max HP'])
+            current_enemy_hp = int(self.enemy['Current HP'])
+            enemy_maxhp = int(self.enemy['Max HP'])
             print(f"\n{self.player['Stats']['Name']} HP:"
-                  f" {self.player['Stats']['Current HP']}"
-                  f"/{self.player['Stats']['Max HP']} |"
+                  f" {current_player_hp}"
+                  f"/{player_maxhp} |"
                   f" {self.enemy['Name']} HP:"
-                  f" {self.enemy['Current HP']}"
-                  f"/{self.enemy['Max HP']}")
+                  f" {current_enemy_hp}"
+                  f"/{enemy_maxhp}")
             print("\n 1. Attack"
                   "\n 2. Item"
                   "\n 3. Info"
                   "\n 4. Run")
             choice = get_choice(4)
             if choice == 1:
-                dmg_to_enemy = round((self.player['Stats']["Atk"] -
-                                      self.enemy["Def"]) * dmg_roll())
+                if critical_hit(self.player):
+                    dmg_to_enemy = round(
+                        (self.player['Stats']["Atk"] - (self.enemy["Def"] *
+                         2/3)) * dmg_roll())
+                    dmg_to_enemy = round(dmg_to_enemy * 1.5)
+                    print(random.choice(player_critical_messages))
+                else:
+                    dmg_to_enemy = round(
+                        (self.player['Stats']["Atk"] - self.enemy["Def"])
+                        * dmg_roll())
+
                 if dmg_to_enemy > 0:
                     self.enemy['Current HP'] -= dmg_to_enemy
                     print(f" You dealt {dmg_to_enemy} damage to the"
