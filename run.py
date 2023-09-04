@@ -571,7 +571,7 @@ def print_horizontal_line():
     separates content
     """
     print()  # Prints an empty line for separation
-    print("-" * 40)
+    print(" " + "-" * 39)
 
 
 def print_player_info_menu(player):
@@ -716,7 +716,8 @@ def intro():
 
 def first_scene():
     """
-    This is going to be the first scene
+    This is going to be the first scene and
+    serves as an introduction to the choice system
     """
     print_horizontal_line()
     print("\n Blinking awake, you find yourself by a serene lake."
@@ -759,8 +760,11 @@ def first_scene_game_over():
 
 def second_scene():
     """
-    This is going to be the second scene
+    This is going to be the second scene wich serves
+    as an introduction to the combat mechanic.
+    The fight is intended to be easy to win.
     """
+    print_horizontal_line()
     print("\n Rushing towards the scream, you discover a goblin threatening"
           " a merchant beside his cart dragged by a horse."
           '\n Goblin: "Hand over your gold, human!"'
