@@ -27,10 +27,10 @@ def get_choice(max_choice):
                 return choice
             else:
                 print()  # Prints an empty line for separation
-                print(f" Please enter a number between 1 and {max_choice}.")
+                print(f" 🚫 Please enter a number between 1 and {max_choice}.")
         except ValueError:
             print()  # Prints an empty line for separation
-            print(" Invalid input! Please enter a number.")
+            print(" 🚫 Invalid input! Please enter a number.")
 
 
 def rules():
@@ -38,9 +38,9 @@ def rules():
     Prints the rules of the game and then redirects the user either
     back to the intro or to the start of the game.
     """
-    print("These are the rules, will be add later",
-          "\n1. 🛡️  I am ready to start my adventure!",
-          "\n2. 📜 Bring me back to the Menu.")
+    print(" These are the rules, will be add later",
+          "\n\n 1. 🛡️  I am ready to start my adventure!",
+          "\n\n 2. 📜 Bring me back to the Menu.")
     choice = get_choice(2)
     if choice == 1:
         player_name_choice()
@@ -274,13 +274,13 @@ def fight_pause_and_continue():
     while True:
         print_horizontal_line()
         print("\n You are about to fight, are you READY?")
-        print("\n 1. Bring it on!")
-        print("\n 2. No, i want my mommy!")
+        print("\n 👊 1. Bring it on!")
+        print("\n 😭 2. No, i want my mommy!")
         choice = get_choice(2)
         if choice == 1:
             break
         elif choice == 2:
-            print("\n Too bad, it is time to wear the big boy pants\n")
+            print("\n Too bad, it is time to wear the big boy pants!\n")
             break
 
 
@@ -309,7 +309,7 @@ class Combat:
         Handles loot
         """
         self.player["Stats"]["Gold"] += self.enemy["Loot"]["Gold"]
-        print(f" You got {self.enemy['Loot']['Gold']} Gold!")
+        print(f" You got {self.enemy['Loot']['Gold']} Gold 💰!")
 
         for loot_name in self.enemy["Loot"]["Items"]:
             item_detail = item_database.get(loot_name)
@@ -348,7 +348,7 @@ class Combat:
                 self.player["Equipment"][item_type] = item_detail
                 for stat, change in stat_change.items():
                     self.player["Stats"][stat] += change
-                print(f"You found and equipped {item_name}")
+                print(f"🎉 You found and equipped {item_name} 🎉")
             else:
                 print(f" Found {item_name}({item_detail['Type']}), but current"
                       " equipment is better!")
@@ -357,8 +357,8 @@ class Combat:
             for stat, value in item_detail.items():
                 if stat != "Type" and stat != "Name":
                     self.player["Stats"][stat] += value
-            print(f" You found and equipped {item_name}"
-                  f"({item_detail['Type']})!")
+            print(f" 🎉 You found and equipped {item_name}"
+                  f"({item_detail['Type']})! 🎉")
 
     def print_player_potions(self):
         """
@@ -369,8 +369,8 @@ class Combat:
                 self.player["Potions"].items(), 1):
             quantity = details["Quantity"]
             heal_amount = details["Heal Amount"]
-            print(f" {idx}. {potion} ({quantity}): Heals {heal_amount}HP")
-        print(" 4. Back to the Combat Menu!")
+            print(f" 🧪 {idx}. {potion} ({quantity}): Heals {heal_amount}HP")
+        print(" 🔄 4. Back to the Combat Menu!")
 
     def handle_overheal(self):
         """
@@ -406,12 +406,12 @@ class Combat:
                 print()  # Prints an empty line for separation
                 print(f" You used a {selected_potion} and"
                       f" healed for {heal_amount}HP"
-                      f" back to {self.player['Stats']['Current HP']}!")
+                      f" back to {self.player['Stats']['Current HP']} ❤️!")
                 return True  # Potion was used
 
             else:
                 print()  # Prints an empty line for separation
-                print(f" You don't have any {selected_potion} left!")
+                print(f" 🚫 You don't have any {selected_potion} left!")
 
     def display_combat_info(self):
         """
@@ -451,12 +451,12 @@ class Combat:
             print(random.choice(enemy_critical_messages))
         if dmg_to_player > 0:
             self.player["Stats"]["Current HP"] -= dmg_to_player
-            print(f" The {self.enemy['Name']}"
+            print(f" 🛡️  The {self.enemy['Name']}"
                   f" dealt {dmg_to_player}"
                   " damage to you!")
         else:
             print(f" The {self.enemy['Name']} did no damage."
-                  " Your defense is too high!")
+                  " 🛡️🛡️🛡️ Your defense is too high!")
 
         if self.player['Stats']['Current HP'] <= 0:
             self.player_combat_defeat()
@@ -489,10 +489,10 @@ class Combat:
                   f" {self.enemy['Name']} HP:"
                   f" {current_enemy_hp}"
                   f"/{enemy_maxhp}")
-            print("\n 1. Attack"
-                  "\n 2. Item"
-                  "\n 3. Info"
-                  "\n 4. Run")
+            print("\n 🗡️  1. Attack"
+                  "\n 🧪 2. Item"
+                  "\n 📜 3. Info"
+                  "\n 💨 4. Run")
             choice = get_choice(4)
             if choice == 1:
                 if critical_hit(self.player):
@@ -508,12 +508,12 @@ class Combat:
 
                 if dmg_to_enemy > 0:
                     self.enemy['Current HP'] -= dmg_to_enemy
-                    print(f" You dealt {dmg_to_enemy} damage to the"
+                    print(f" 🗡️  You dealt {dmg_to_enemy} damage to the"
                           f" {self.enemy['Name']}!")
                     if self.enemy['Current HP'] <= 0:
                         self.player_combat_victory()
                 else:
-                    print(" You did no damage."
+                    print(" 🚫 You did no damage."
                           " The enemy's defense is too high!")
 
                 if self.enemy['Current HP'] > 0:
@@ -528,11 +528,11 @@ class Combat:
 
             else:
                 if player_run_away(self.enemy['Run']):
-                    print(" You successfully ran away!")
+                    print(" 💨 You successfully ran away!")
                     return  # Exits the combat loop
 
                 else:
-                    print(f" The {self.enemy['Name']} blocked your way."
+                    print(f" 🚫 The {self.enemy['Name']} blocked your way."
                           " You couldn't escape.")
                     self.enemy_attack()
 
@@ -541,10 +541,10 @@ def player_defeat():
     """
     Displays the dead message and asks the player if they'd like to retry
     """
-    print("\n YOU DIED")
+    print("\n 💀 YOU DIED 💀")
     print("\n Continue?"
-          "\n1. Yes!"
-          "\n2. No..I give up..")
+          "\n 👍 1. Yes!"
+          "\n 👎 2. No..I give up..")
     choice = get_choice(2)
     if choice == 1:
         main()
@@ -686,8 +686,8 @@ def intro():
           "\n In a realm where words wield power and choices shape destinies,"
           " you find yourself at the crossroads of fate."
           "\n A mysterious world filled with unknown dangers,"
-          " captivating stories, and hidden treasures beckons you."
-          "\n As you embark on this epic journey, remember:"
+          " captivating stories, and hidden treasures beckons you.")
+    print(" As you embark on this epic journey, remember:"
           " every choice matters!"
           "\n Your decisions will carve out your path, lead you to treasures, "
           "pit you against formidable foes, and present riddles that challenge"
@@ -698,9 +698,9 @@ def intro():
           " decipher the"
           " mysteries, and emerge as the hero of Text-Land?"
           "\n Or will you be its Doom?"
-          "\n 1. 🛡️  Enter your name and begin your adventure."
-          "\n 2. 📘 Read about the rules of Text-Land."
-          "\n 3. 🚪 Exit to the real world.")
+          "\n\n 1. 🛡️  Enter your name and begin your adventure."
+          "\n\n 2. 📘 Read about the rules of Text-Land."
+          "\n\n 3. 🚪 Exit to the real world.")
 
     choice = get_choice(3)
     if choice == 1:
@@ -727,10 +727,10 @@ def first_scene():
           "\n Something's not right!"
           "\n What will you do?")
     while True:
-        print("\n 1. Investigate the source of the scream."
-              "\n 2. The screams dont concern you."
+        print("\n 👣 1. Investigate the source of the scream."
+              "\n\n 💤 2. The screams dont concern you."
               " You rather go back to sleep."
-              "\n 3. Player Info")
+              "\n\n 📖 3. Player Info")
 
         choice = get_choice(3)
         if choice == 1:
@@ -764,7 +764,6 @@ def second_scene():
     as an introduction to the combat mechanic.
     The fight is intended to be easy to win.
     """
-    print_horizontal_line()
     print("\n Rushing towards the scream, you discover a goblin threatening"
           " a merchant beside his cart dragged by a horse."
           '\n Goblin: "Hand over your gold, human!"'
@@ -775,10 +774,10 @@ def second_scene():
     print("\n Goblin: \"Mind your own business,\" he snarls,"
           " \"or you're next!\"")
     while True:
-        print("\n 1. Charge the goblin head on!"
-              "\n 2. The goblin is right, this is not your problem."
-              "\n 3. Player Info")
-        choice = get_choice(2)
+        print("\n ⚔️  1. Charge the goblin head on!"
+              "\n\n 🤷 2. The goblin is right, this is not your problem."
+              "\n\n 📖 3. Player Info")
+        choice = get_choice(3)
 
         if choice == 1:
             print("\n The merchant's eyes widen in hope as you take a stance "
@@ -813,11 +812,69 @@ def third_scene():
     This is going to be the third scene after defeating the goblin
     """
     print_horizontal_line()
-    print('\n Merchant: "Thank you for saving me kind stranger!"')
+    print("\n Catching his breath, the merchant straightens up and beams at "
+          'you.\n "Thank you, kind stranger. Without your intervention, '
+          'I fear what that goblin would have done to me."'
+          """\n He extends a hand in gratitude, "The name's Elidor"""
+          " Silversmile, but folk around these parts call me"
+          '\n Elidor Coinstride, on account of my dealings and wares."')
+    print()  # Prints an empty line for separation
+    print("\n Taking a moment to observe Elidor, it's clear that"
+          " he has Halfling origins. Standing shorter than most."
+          "\n His stature is a bit rotund, giving him a cherubic "
+          "appearance.\n Pointy ears peek out from beneath a cascade of white "
+          "hair, accentuated by prominent sideburns that frame his face."
+          "\n Beside him stands a magnificent white horse, its gray mane"
+          " flowing gracefully. \n The contrast between the majestic steed and"
+          " the diminutive merchant creates a heartwarming scene."
+          """\n "A beautiful creature, isn't she?" Elidor remarks, noticing"""
+          """ your admiration. \n "She's been """
+          'my loyal companion for years, traveling through thick and thin."')
     while True:
+        print_horizontal_line()
+        print()  # Prints an empty line for separation
+        print(' 🐴 1. "She is indeed beautiful, how are you faring?'
+              '\n\n 🤲 2. "I\'m glad you\'re safe, but a reward for my troubles'
+              ' would be appreciated."')
+        choice = get_choice(3)
+        if choice == 1:
+            print("\n Elidor looks at you gratefully and says, "
+                  '"Thank you for asking, kind traveler.'
+                  "\n It\'s not every day you find someone so considerate. "
+                  "We are both well, thanks to you.\n The road has been hard,"
+                  " but having Medea, my horse, by my side makes it easier."
+                  '\n Please, take this as a token of my gratitude.'
+                  "\n He hands you a small pouch of coins.")
+            player["Stats"]["Gold"] += 50
+            print("\n You obtained 50 Gold 💰!"
+                  " You can carry gold in your pouch from now on.")
+            print()  # Prints an empty line for separation
+            break
+        elif choice == 2:
+            print("\n The halfling seems a bit taken aback by your forwardness"
+                  '.\n After a moment of hesitation, he says, '
+                  '"Well, I suppose it\'s fair to ask for compensation after '
+                  'such a deed.\n He reluctantly "'
+                  " hands you a slightly large pouch of coins.")
+            player["Stats"]["Gold"] += 75
+            print("\n You obtained (basically extorted..) 75 Gold 💰!"
+                  " You can carry gold in your pouch from now on.")
+            print()  # Prints an empty line for separation
+            break
+        elif choice == 3:
+            print_player_info_menu(player)
+
+
+def fourth_scene():
+    """
+    This is the fourth scene in wich the merchant will join
+    """
+    while True:
+        print("\n 1. Do this")
+        print(" 2. Player Info")
         choice = get_choice(2)
         if choice == 1:
-            break
+            print("HI")
         elif choice == 2:
             print_player_info_menu(player)
 
@@ -830,6 +887,7 @@ def main():
     first_scene()
     second_scene()
     third_scene()
+    fourth_scene()
 
 
 main()
