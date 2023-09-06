@@ -123,27 +123,27 @@ player = {
 
 
 player_critical_messages = [
-    " YOU DEALT A POWERFUL CRITICAL BLOW!",
-    " YOU DEALT A DEVASTATING CRITICAL BLOW!",
-    " YOU DEALT AN IMPRESSIVE CRITICAL BLOW!",
-    " YOU DEALT A CRITICAL HIT!",
-    "THE ECHOES OF YOUR POWERFUL CRITICAL HIT RESOUND!",
-    "THE AIR CRACKLES WITH ENERGY FROM YOUR CRITICAL HIT!"
+    " 💥 YOU DEALT A POWERFUL CRITICAL BLOW!",
+    " 💥 YOU DEALT A DEVASTATING CRITICAL BLOW!",
+    " 💥 YOU DEALT AN IMPRESSIVE CRITICAL BLOW!",
+    " 💥 YOU DEALT A CRITICAL HIT!",
+    " 💥 THE ECHOES OF YOUR POWERFUL CRITICAL HIT RESOUND!",
+    " 💥 THE AIR CRACKLES WITH ENERGY FROM YOUR CRITICAL HIT!"
 ]
 
 
 enemy_critical_messages = [
-    " THE ENEMY CLARIFIES YOUR MORTALITY WITH A SINGLE"
+    " 💥 THE ENEMY CLARIFIES YOUR MORTALITY WITH A SINGLE"
     "  CRITICAL STRIKE!",
-    " THE ENEMY DEALT TO YOU A CRITICAL INJURY!",
-    " THE ENEMY STRIKES WITH UNBRIDLED FURY!",
-    " A CHILLING CRITICAL BLOW FROM THE ENEMY!",
-    " THE ENEMY LANDS A VICIOUS CRITICAL HIT!",
-    " THE ENEMY UNLEASHES A SURGE OF POWER,"
+    " 💥 THE ENEMY DEALT TO YOU A CRITICAL INJURY!",
+    " 💥 THE ENEMY STRIKES WITH UNBRIDLED FURY!",
+    " 💥 A CHILLING CRITICAL BLOW FROM THE ENEMY!",
+    " 💥 THE ENEMY LANDS A VICIOUS CRITICAL HIT!",
+    " 💥 THE ENEMY UNLEASHES A SURGE OF POWER,"
     " CRITICALLY STRIKING YOU!",
-    " THE AIR TENSES AS THE ENEMY'S"
+    " 💥 THE AIR TENSES AS THE ENEMY'S"
     " CRITICAL ATTACK LANDS!",
-    " YOU REEL FROM THE OVERWHELMING FORCE OF THE ENEMY'S"
+    " 💥 YOU REEL FROM THE OVERWHELMING FORCE OF THE ENEMY'S"
     " CRITICAL BLOW!"
 ]
 
@@ -485,10 +485,10 @@ class Combat:
             enemy_maxhp = int(self.enemy['Max HP'])
             print(f"\n{self.player['Stats']['Name']} HP:"
                   f" {current_player_hp}"
-                  f"/{player_maxhp} |"
+                  f"/{player_maxhp} ❤️  |"
                   f" {self.enemy['Name']} HP:"
                   f" {current_enemy_hp}"
-                  f"/{enemy_maxhp}")
+                  f"/{enemy_maxhp} 🖤")
             print("\n 🗡️  1. Attack"
                   "\n 🧪 2. Item"
                   "\n 📜 3. Info"
@@ -836,7 +836,7 @@ def third_scene():
         print(' 🐴 1. "She is indeed beautiful, how are you faring?'
               '\n\n 🤲 2. "I\'m glad you\'re safe, but a reward for my troubles'
               ' would be appreciated."')
-        choice = get_choice(3)
+        choice = get_choice(2)
         if choice == 1:
             print("\n Elidor looks at you gratefully and says, "
                   '"Thank you for asking, kind traveler.'
@@ -861,21 +861,102 @@ def third_scene():
                   " You can carry gold in your pouch from now on.")
             print()  # Prints an empty line for separation
             break
-        elif choice == 3:
-            print_player_info_menu(player)
 
 
 def fourth_scene():
     """
-    This is the fourth scene in wich the merchant will join
+    This is the fourth scene in wich the merchant will join,
+    this will start the branches of the story and serves as
+    an end to the "tutorial" like face.
     """
+    print_horizontal_line()
+    print("\n As you continue to converse, Elidor starts packing up his cart. "
+          "The clinking of vials and the rustling of cloth can be heard.")
+    print('\n \"You know, I\'m headed to the city of Veradia. '
+          "It's a big, bustling place and I've some important business there.")
+    print("\n Delivering a certain... package, so to speak. It's a long "
+          "journey and, after the goblin incident, I realize I could use "
+          "some protection.")
+    print("\n Given how adeptly you handled that goblin,"
+          " would you be interested in "
+          "accompanying me?\n I'm willing to pay for your services and, "
+          "of course, my shop's at your disposal for resupply.\"")
+    print()  # Prints an empty line for separation
+    print("\n You ponder on his request. You really don't have any idea where"
+          " you are or where you're headed.\n Would it be such a bad idea to"
+          " accompany him?")
+
     while True:
-        print("\n 1. Do this")
-        print(" 2. Player Info")
+        print("\n\n 👍 1. \"Certainly, Elidor. It'll be my pleasure to"
+              " accompany you.\"")
+        print("\n\n 👎 2. \"Thanks for the offer, but I must go my own way.\"")
         choice = get_choice(2)
+
         if choice == 1:
-            print("HI")
+            print("\n Elidor grins, looking visibly relieved. \"Excellent!"
+                  " With your combat skills "
+                  "and my... ahem, 'tricks of the trade', I'm sure we'll make"
+                  " it to the city safely.\"")
+            break
         elif choice == 2:
+            print("\n Elidor raises an eyebrow, looking a tad confused."
+                  " \"Well, if you don't want to come with me, "
+                  "\n then it only makes sense that I'll have to go with you!"
+                  " Let's set forth, friend.\""
+                  "\n You try to piece together the logic of what Elidor just"
+                  " said and come up blank."
+                  "Before you can even react, he's already on his way, "
+                  "mounting Medea and waving for you to follow."
+                  "Wasn't he supposed to follow you?")
+            break
+
+    print("\n \"By the way,\" Elidor interjects, \"I usually rely on my "
+          "intuition for travel, but seeing as you're my protector now, "
+          "I'll leave the decisions up to you."
+          "There's a small town on the way; we should aim to reach it next. "
+          "You decide which way we should take"
+          ' to best reach our destination."')
+
+
+def fifth_scene():
+    """
+    Fifth Scene
+    """
+    print_horizontal_line()
+    print("\n As you and Elidor travel together, the path ahead"
+          "forks into three distinct routes.")
+    print("\n To the right, the gentle sound of a river is heard"
+          " and the shimmering water can be seen in the distance.") 
+    print("\n Straight ahead lies the main road, well-trodden and marked with"
+          " milestones indicating the way to the closest town.")
+    print("\n The left path dives deep into a dense, dark forest. Amongst the "
+          "trees, tall grasses sway gently, \n reaching up to a person's"
+          " height, shading the path from the midday sun.")
+
+    while True:
+        print("\n 🌊 1. Head towards the river route.")
+        print("\n\n 🛣️ 2. Stick to the main road.")
+        print("\n\n 🌲 3. Venture into the forest.")
+        print("\n\n 📖 4. Player Info")
+        choice = get_choice(4)
+
+        if choice == 1:
+            print("\n With the river by your side offering a soothing ambiance"
+                  ", you and Elidor start your journey on the river route.")
+            print("\n Elidor seems pleased with the decision, the fresh scent "
+                  "of the river lifting his spirits.")
+            break
+        elif choice == 2:
+            print("\n Deciding to stick to what seems safest, you and Elidor"
+                  " continue on the main road.")
+            break
+        elif choice == 3:
+            print("\n Feeling adventurous, you decide to delve into"
+                  " the woods.")
+            print("Were it not for Medea, Elidor would be completely "
+                  "obscured by the tall grass.")
+            break
+        elif choice == 4:
             print_player_info_menu(player)
 
 
@@ -888,6 +969,7 @@ def main():
     second_scene()
     third_scene()
     fourth_scene()
+    fifth_scene()
 
 
 main()
