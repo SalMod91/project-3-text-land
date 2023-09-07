@@ -120,12 +120,18 @@ item_database = {
     "Goblin Boots": {
         "Name": "Goblin Boots",
         "Type": "Boots",
-        "Def": 5,
-        "Max HP": 5
+        "Def": 1,
+        "Max HP": 2
     },
     "Small Buckler": {
         "Name": "Small Buckler",
         "Type": "Shield",
+        "Def": 2,
+        "Max HP": 3
+    },
+    "Chief Gloves": {
+        "Name": "Chief Gloves",
+        "Type": "Hands",
         "Def": 5,
         "Max HP": 5
     },
@@ -192,6 +198,22 @@ def reset_enemy():
                     "Goblin Boots": 30,
                     "Goblin Dagger": 100,
                     "Small Buckler": 30
+                }
+            }
+        },
+        "Goblin Chief": {
+            "Name": "Goblin Chief",
+            "Max HP": 60,
+            "Current HP": 60,
+            "Atk": 30,
+            "Def": 10,
+            "Crit": 3,
+            "Run": 0,
+
+            "Loot": {
+                "Gold": 15,
+                "Items": {
+                    "Chief Gloves": 100
                 }
             }
         }
@@ -952,6 +974,19 @@ def fourth_scene():
           ' to best reach our destination."')
 
 
+def elidor_shop():
+    """
+    A shop available to the player in most of the scenes
+    """
+    print(" ===== ELIDOR SHOP =====")
+    print('\n Random elidor message')
+    print_horizontal_line()
+    print("\n 1. Potion(Heal 20): 20 Gold")
+    print(" 2. Mega Potion(Heal 50): 40 Gold")
+    print(" 3. Ultra Potion(Heal 150): 100 Gold")
+    print(" 4. Pandora's Box (Random Item): 200 Gold")
+
+
 def fifth_scene():
     """
     Fifth Scene in wich branches into 3 different paths
@@ -971,8 +1006,9 @@ def fifth_scene():
         print("\n 🌊 1. Head towards the river route.")
         print("\n\n 🛣️  2. Stick to the main road.")
         print("\n\n 🌲 3. Venture into the forest.")
-        print("\n\n 📖 4. Player Info")
-        choice = get_choice(4)
+        print("\n\n 💰 4. Elidor Shop")
+        print("\n\n 📖 5. Player Info")
+        choice = get_choice(5)
 
         if choice == 1:
             print("\n With the river by your side offering a soothing ambiance"
@@ -991,6 +1027,9 @@ def fifth_scene():
                   "obscured by the tall grass.")
             break
         elif choice == 4:
+            elidor_shop()
+        
+        elif choice == 5:
             print_player_info_menu()
 
 
