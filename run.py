@@ -79,47 +79,9 @@ def player_name_choice():
             print("Please enter a name between 1 and 10 characters.")
 
 
-enemy = {
-    "Goblin": {
-        "Name": "Goblin",
-        "Max HP": 50,
-        "Current HP": 50,
-        "Atk": 20,
-        "Def": 8,
-        "Crit": 3,
-        "Run": 0,
+enemy = {}
 
-        "Loot": {
-            "Gold": 5,
-            "Items": ["Goblin Dagger"]
-        }
-    }
-}
-
-player = {
-    "Stats": {
-        "Name": "Unknown",
-        "Max HP": 100,
-        "Current HP": 100,
-        "Atk": 15,
-        "Def": 15,
-        "Crit": 5,
-        "Gold": 0
-    },
-    "Potions": {
-        "Potion": {"Quantity": 1, "Heal Amount": 20},
-        "Mega Potion": {"Quantity": 0, "Heal Amount": 50},
-        "Ultra Potion": {"Quantity": 0, "Heal Amount": 100},
-    },
-    "Equipment": {
-        "Weapon": None,
-        "Head": None,
-        "Body": None,
-        "Legs": None,
-        "Boots": None,
-        "Hands": None
-    }
-}
+player = {}
 
 
 player_critical_messages = [
@@ -152,12 +114,31 @@ item_database = {
     "Goblin Dagger": {
         "Name": "Goblin Dagger",
         "Type": "Weapon",
-        "Atk": 5
+        "Atk": 5,
+        "Crit": 10
+    },
+    "Goblin Boots": {
+        "Name": "Goblin Boots",
+        "Type": "Boots",
+        "Def": 5,
+        "Max HP": 5
+    },
+    "Small Buckler": {
+        "Name": "Small Buckler",
+        "Type": "Shield",
+        "Def": 5,
+        "Max HP": 5
+    },
+    "Long Sword": {
+        "Name": "Long Sword",
+        "Type": "Weapon",
+        "Atk": 10,
+        "Crit": 10
     }
 }
 
 
-def reset_game(player, enemy):
+def reset_player():
     """
     Resets the player dictionary and enemy dictionary
     """
@@ -178,6 +159,7 @@ def reset_game(player, enemy):
         },
         "Equipment": {
             "Weapon": None,
+            "Shield": None,
             "Head": None,
             "Body": None,
             "Legs": None,
@@ -186,31 +168,11 @@ def reset_game(player, enemy):
         }
     }
 
-    starting_enemy = {
-        "Goblin": {
-            "Name": "Goblin",
-            "Max HP": 50,
-            "Current HP": 50,
-            "Atk": 20,
-            "Def": 8,
-            "Crit": 3,
-            "Run": 0,
-
-            "Loot": {
-                "Gold": 5,
-                "Items": ["Goblin Dagger"]
-            }
-        }
-    }
-
     player.clear()
     player.update(starting_player)
 
-    enemy.clear()
-    enemy.update(starting_enemy)
 
-
-def reset_enemy(enemy):
+def reset_enemy():
     """
     Resets the enemy dictionary after every fight
     """
@@ -226,7 +188,11 @@ def reset_enemy(enemy):
 
             "Loot": {
                 "Gold": 5,
-                "Items": ["Goblin Dagger"]
+                "Items": {
+                    "Goblin Boots": 30,
+                    "Goblin Dagger": 100,
+                    "Small Buckler": 30
+                }
             }
         }
     }
@@ -302,19 +268,31 @@ class Combat:
         print_horizontal_line()
         print(f" You have defeated the {self.enemy['Name']}!")
         self.handle_loot()
-        reset_enemy(enemy)
+        reset_enemy()
+
+    def check_drop(self):
+        """
+        Checks if players drops loot
+        """
+        dropped_items = []
+        for item, drop_rate in self.enemy["Loot"]["Items"].items():
+            if random.randint(1, 100) <= drop_rate:
+                dropped_items.append(item)
+
+        return dropped_items
 
     def handle_loot(self):
         """
         Handles loot
         """
         self.player["Stats"]["Gold"] += self.enemy["Loot"]["Gold"]
-        print(f" You got {self.enemy['Loot']['Gold']} Gold 💰!")
+        print(f" Elidor gave you {self.enemy['Loot']['Gold']} Gold 💰!")
 
-        for loot_name in self.enemy["Loot"]["Items"]:
-            item_detail = item_database.get(loot_name)
-            if item_detail:
-                self.equip_item(item_detail)
+        dropped_items = self.check_drop()
+
+        for loot_name in dropped_items:
+            item_dropped = item_database.get(loot_name)
+            self.equip_item(item_dropped)
 
     def equip_item(self, item_detail):
         """
@@ -332,7 +310,7 @@ class Combat:
             """
             change = {}
             for stat, value in new_item.items():
-                if stat != "Type" and stat != "Name":
+                if stat != "Type" and stat != "Name" and stat != "Droprate":
                     if old_item:
                         change[stat] = value - old_item.get(stat, 0)
                     else:
@@ -350,12 +328,12 @@ class Combat:
                     self.player["Stats"][stat] += change
                 print(f"🎉 You found and equipped {item_name} 🎉")
             else:
-                print(f" Found {item_name}({item_detail['Type']}), but current"
-                      " equipment is better!")
+                print(f" 🚫 Found {item_name}({item_detail['Type']}), but "
+                      " current equipment is better!")
         else:
             self.player["Equipment"][item_type] = item_detail
             for stat, value in item_detail.items():
-                if stat != "Type" and stat != "Name":
+                if stat != "Type" and stat != "Name" and stat != "Droprate":
                     self.player["Stats"][stat] += value
             print(f" 🎉 You found and equipped {item_name}"
                   f"({item_detail['Type']})! 🎉")
@@ -553,18 +531,6 @@ def player_defeat():
         exit()
 
 
-def start_battle(player, enemy_name):
-    """
-    Checks if the enemy name exists in the enemies dictionary
-    """
-    if enemy_name in enemy:
-        battle = Combat(player, enemy[enemy_name])
-        battle.combat_loop()
-    else:
-        print("There was an error starting the battle,"
-              " you got lucky this time!")
-
-
 def print_horizontal_line():
     """
     Prints 40 dashes on the screen effectively creating a visual line that
@@ -574,50 +540,83 @@ def print_horizontal_line():
     print(" " + "-" * 39)
 
 
-def print_player_info_menu(player):
+def print_player_info_menu():
     """
     This is used to avoid repeating the same code
     """
-    print("===== STATS =====")
-    print(f"Name: {player['Stats']['Name']}")
-    print(f"HP: {player['Stats']['Max HP']}")
-    print(f"Attack: {player['Stats']['Atk']}")
-    print(f"Defence: {player['Stats']['Def']}")
-    print(f"Crit: {player['Stats']['Crit']}")
-    print(f"Gold: {player['Stats']['Gold']}")
+    print(" ===== STATS =====")
+    print(f" Name: {player['Stats']['Name']}")
+    print(f" HP: {player['Stats']['Max HP']}")
+    print(f" Attack: {player['Stats']['Atk']}")
+    print(f" Defence: {player['Stats']['Def']}")
+    print(f" Crit: {player['Stats']['Crit']}")
+    print(f" Gold: {player['Stats']['Gold']}")
     print_horizontal_line()
-    print("===== POTIONS =====")
+    print(" ===== POTIONS =====")
     print(
-          f"Potion: {player['Potions']['Potion']['Quantity']}"
+          f" Potion: {player['Potions']['Potion']['Quantity']}"
           f"\t Heal Amount: {player['Potions']['Potion']['Heal Amount']}")
     print(
-          f"Mega Potion: {player['Potions']['Mega Potion']['Quantity']}"
+          f" Mega Potion: {player['Potions']['Mega Potion']['Quantity']}"
           f"\t Heal Amount: {player['Potions']['Mega Potion']['Heal Amount']}")
     print(
-          f"Ultra Potion: {player['Potions']['Ultra Potion']['Quantity']}"
+          f" Ultra Potion: {player['Potions']['Ultra Potion']['Quantity']}"
           f"\t Heal Amount:"
           f" {player['Potions']['Ultra Potion']['Heal Amount']}")
     print_horizontal_line()
-    print("===== EQUIPMENT =====")
+    print(" ===== EQUIPMENT =====")
+    print()  # Prints an empty line for separation
 
     weapon_name = (
         player['Equipment']['Weapon']['Name']
         if player['Equipment']['Weapon']
-        else 'None'
+        else 'No Equipment'
     )
-    weapon_stat = (
+
+    weapon_atk_stat = (
         player['Equipment']['Weapon']['Atk']
         if player['Equipment']['Weapon']
+        else '0'
+    )
+
+    weapon_crit_stat = (
+        player['Equipment']['Weapon']['Crit']
+        if player['Equipment']['Weapon']
+        else '0'
+    )
+
+    shield_name = (
+        player['Equipment']['Shield']['Name']
+        if player['Equipment']['Shield']
+        else 'No Equipment'
+    )
+
+    shield_def_stat = (
+        player['Equipment']['Shield']['Def']
+        if player['Equipment']['Shield']
+        else '0'
+    )
+
+    shield_hp_stat = (
+        player['Equipment']['Shield']['Max HP']
+        if player['Equipment']['Shield']
         else '0'
     )
 
     helmet_name = (
         player['Equipment']['Head']['Name']
         if player['Equipment']['Head']
-        else 'None'
+        else 'No Equipment'
     )
-    helmet_stat = (
+
+    helmet_def_stat = (
         player['Equipment']['Head']['Def']
+        if player['Equipment']['Head']
+        else '0'
+    )
+
+    helmet_hp_stat = (
+        player['Equipment']['Head']['Max HP']
         if player['Equipment']['Head']
         else '0'
     )
@@ -625,10 +624,17 @@ def print_player_info_menu(player):
     body_name = (
         player['Equipment']['Body']['Name']
         if player['Equipment']['Body']
-        else 'None'
+        else 'No Equipment'
     )
-    body_stat = (
+
+    body_def_stat = (
         player['Equipment']['Body']['Def']
+        if player['Equipment']['Body']
+        else '0'
+    )
+
+    body_hp_stat = (
+        player['Equipment']['Body']['Max HP']
         if player['Equipment']['Body']
         else '0'
     )
@@ -636,10 +642,17 @@ def print_player_info_menu(player):
     legs_name = (
         player['Equipment']['Legs']['Name']
         if player['Equipment']['Legs']
-        else 'None'
+        else 'No Equipment'
     )
-    legs_stat = (
+
+    legs_def_stat = (
         player['Equipment']['Legs']['Def']
+        if player['Equipment']['Legs']
+        else '0'
+    )
+
+    legs_hp_stat = (
+        player['Equipment']['Legs']['Max HP']
         if player['Equipment']['Legs']
         else '0'
     )
@@ -647,10 +660,16 @@ def print_player_info_menu(player):
     boots_name = (
         player['Equipment']['Boots']['Name']
         if player['Equipment']['Boots']
-        else 'None'
+        else 'No Equipment'
     )
-    boots_stat = (
+    boots_def_stat = (
         player['Equipment']['Boots']['Def']
+        if player['Equipment']['Boots']
+        else '0'
+    )
+
+    boots_hp_stat = (
+        player['Equipment']['Boots']['Max HP']
         if player['Equipment']['Boots']
         else '0'
     )
@@ -658,20 +677,35 @@ def print_player_info_menu(player):
     hands_name = (
         player['Equipment']['Hands']['Name']
         if player['Equipment']['Hands']
-        else 'None'
+        else 'No Equipment'
     )
-    hands_stat = (
+
+    hands_def_stat = (
         player['Equipment']['Hands']['Def']
         if player['Equipment']['Hands']
         else '0'
     )
 
-    print(f"Weapon: {weapon_name}\t Attack: +{weapon_stat}")
-    print(f"Head: {helmet_name}\t Defence: +{helmet_stat}")
-    print(f"Body: {body_name}\t Defence: +{body_stat}")
-    print(f"Legs: {legs_name}\t Defence: +{legs_stat}")
-    print(f"Boots: {boots_name}\t Defence: +{boots_stat}")
-    print(f"Hands: {hands_name}\t Defence: +{hands_stat}")
+    hands_hp_stat = (
+        player['Equipment']['Hands']['Max HP']
+        if player['Equipment']['Hands']
+        else '0'
+    )
+
+    print(f" Weapon: {weapon_name}\t\t Attack: +{weapon_atk_stat}")
+    print(f"\t\t\t\t Crit: +{weapon_crit_stat}")
+    print(f"\n Shield: {shield_name}\t\t Defence: +{shield_def_stat}")
+    print(f"\t\t\t\t Max HP: +{shield_hp_stat}")
+    print(f"\n Head: {helmet_name}\t\t Defence: +{helmet_def_stat}")
+    print(f"\t\t\t\t Max HP: +{helmet_hp_stat}")
+    print(f"\n Body: {body_name}\t\t Defence: +{body_def_stat}")
+    print(f"\t\t\t\t Max HP: +{body_hp_stat}")
+    print(f"\n Legs: {legs_name}\t\t Defence: +{legs_def_stat}")
+    print(f"\t\t\t\t Max HP: +{legs_hp_stat}")
+    print(f"\n Boots: {boots_name}\t\t Defence: +{boots_def_stat}")
+    print(f"\t\t\t\t Max HP: +{boots_hp_stat}")
+    print(f"\n Hands: {hands_name}\t\t Defence: +{hands_def_stat}")
+    print(f"\t\t\t\t Max HP: +{hands_hp_stat}")
 
 
 def intro():
@@ -681,7 +715,8 @@ def intro():
     Prompts the player with the choice of starting the game,
     reading the rules or exiting the game.
     """
-    reset_game(player, enemy)
+    reset_player()
+    reset_enemy()
     print(" 📜 Welcome to Text-Land!"
           "\n In a realm where words wield power and choices shape destinies,"
           " you find yourself at the crossroads of fate."
@@ -739,7 +774,7 @@ def first_scene():
         elif choice == 2:
             first_scene_game_over()
         elif choice == 3:
-            print_player_info_menu(player)
+            print_player_info_menu()
 
 
 def first_scene_game_over():
@@ -804,7 +839,7 @@ def second_scene():
             battle.combat_loop()
             break
         elif choice == 3:
-            print_player_info_menu(player)
+            print_player_info_menu()
 
 
 def third_scene():
@@ -866,8 +901,7 @@ def third_scene():
 def fourth_scene():
     """
     This is the fourth scene in wich the merchant will join,
-    this will start the branches of the story and serves as
-    an end to the "tutorial" like face.
+    this will serve as an end to the "tutorial" like phase.
     """
     print_horizontal_line()
     print("\n As you continue to converse, Elidor starts packing up his cart. "
@@ -920,13 +954,13 @@ def fourth_scene():
 
 def fifth_scene():
     """
-    Fifth Scene
+    Fifth Scene in wich branches into 3 different paths
     """
     print_horizontal_line()
     print("\n As you and Elidor travel together, the path ahead"
           "forks into three distinct routes.")
     print("\n To the right, the gentle sound of a river is heard"
-          " and the shimmering water can be seen in the distance.") 
+          " and the shimmering water can be seen in the distance.")
     print("\n Straight ahead lies the main road, well-trodden and marked with"
           " milestones indicating the way to the closest town.")
     print("\n The left path dives deep into a dense, dark forest. Amongst the "
@@ -935,7 +969,7 @@ def fifth_scene():
 
     while True:
         print("\n 🌊 1. Head towards the river route.")
-        print("\n\n 🛣️ 2. Stick to the main road.")
+        print("\n\n 🛣️  2. Stick to the main road.")
         print("\n\n 🌲 3. Venture into the forest.")
         print("\n\n 📖 4. Player Info")
         choice = get_choice(4)
@@ -949,7 +983,7 @@ def fifth_scene():
         elif choice == 2:
             print("\n Deciding to stick to what seems safest, you and Elidor"
                   " continue on the main road.")
-            break
+            main_road_path()
         elif choice == 3:
             print("\n Feeling adventurous, you decide to delve into"
                   " the woods.")
@@ -957,7 +991,29 @@ def fifth_scene():
                   "obscured by the tall grass.")
             break
         elif choice == 4:
-            print_player_info_menu(player)
+            print_player_info_menu()
+
+
+def main_road_path():
+    """
+    This will be the main road branch function
+    """
+    print("This is the main road")
+    fight_pause_and_continue()
+    battle = Combat(player, enemy["Goblin"])
+    battle.combat_loop()
+    print("Next Goblin")
+    fight_pause_and_continue()
+    battle = Combat(player, enemy["Goblin"])
+    battle.combat_loop()
+    print("Next goblin")
+    fight_pause_and_continue()
+    battle = Combat(player, enemy["Goblin"])
+    battle.combat_loop()
+    print("Boss Goblin")
+    fight_pause_and_continue()
+    battle = Combat(player, enemy["Goblin Chief"])
+    battle.combat_loop()
 
 
 def main():
