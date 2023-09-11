@@ -420,7 +420,7 @@ class Combat:
                 print()  # Prints an empty line for separation
                 print(f" You used a {selected_potion} and"
                       f" healed for {heal_amount}HP"
-                      f" back to {self.player['Stats']['Current HP']} ❤️!")
+                      f" back to {self.player['Stats']['Current HP']} ❤️  !")
                 return True  # Potion was used
 
             else:
@@ -1121,19 +1121,42 @@ def main_road_path():
     battle = Combat(player, enemy["Goblin"])
     battle.combat_loop()
     print_horizontal_line()
-    print("\n After you've slain one of their comrades,"
+    print(" After you've slain one of their comrades,"
           " another goblin witnessed the scene.")
     print(" He is bent on avenging his comrade and"
           " ignores the caravan raid to charge you.")
+    print(" Amidst the tense battle, Elidor swiftly tosses a potion your way"
+          " and yells,"
+          ' "This one\'s on the house, kiddo!"')
+    player["Potions"]["Mega Potion"]["Quantity"] += 1
+    print("\n 🎉 You obtained 1 Mega Potion! 🎉")
+    print("\n Before you can utter a word of thanks to Elidor, the looming"
+          " goblin is upon you.")
     fight_pause_and_continue()
     battle = Combat(player, enemy["Goblin"])
     battle.combat_loop()
     print_horizontal_line()
-    print("Next goblin")
+    print("With the fallen goblin at your feet, you gasp for breath, "
+          "only to witness another goblin's cruel act.")
+    print("This vile creature has just taken the life of one of the men"
+          " and now menaces a defenseless woman.")
+    print("Without hesitation, you summon your remaining strength "
+          "and charge at the goblin, desperate to reach her in time.")
     fight_pause_and_continue()
     battle = Combat(player, enemy["Goblin"])
     battle.combat_loop()
-    print("Boss Goblin")
+    print(" With the goblin vanquished, your heart sinks as you realize"
+          " he managed to wound the woman before your arrival.")
+    print(" Elidor swiftly tends to her injury, and amidst the tension, "
+          "a commanding shout pierces the air: 'You there,")
+    print(" the assailant of my brethren. I shall end your life!'")
+    print(" You pivot, and there stands a goblin, unlike any you've"
+          "encountered. Taller, adorned in menacing spiky armor,")
+    print(" and wielding a colossal sword matching his formidable stature."
+          " He must be the gang's chief. Defeating him")
+    print("could quell this bloodshed.")
+    print("But there's no time for contemplation; the chief charges you,"
+          " and a battle with this fearsome foe is inevitable.")
     fight_pause_and_continue()
     battle = Combat(player, enemy["Goblin Chief"])
     battle.combat_loop()
