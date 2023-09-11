@@ -144,6 +144,20 @@ item_database = {
 }
 
 
+pandora_items = {
+    1: {"Name": 1, "Status": False},
+    2: {"Name": 2, "Status": False},
+    3: {"Name": 3, "Status": False},
+    4: {"Name": 4, "Status": False},
+    5: {"Name": 5, "Status": False},
+    6: {"Name": 6, "Status": False},
+    7: {"Name": 7, "Status": False},
+    8: {"Name": 8, "Status": False},
+    9: {"Name": 9, "Status": False},
+    10: {"Name": 10, "Status": False}
+}
+
+
 def reset_player():
     """
     Resets the player dictionary and enemy dictionary
@@ -560,6 +574,7 @@ def print_horizontal_line():
     """
     print()  # Prints an empty line for separation
     print(" " + "-" * 39)
+    print()  # Prints an empty line for separation
 
 
 def print_player_info_menu():
@@ -777,7 +792,7 @@ def first_scene():
     serves as an introduction to the choice system
     """
     print_horizontal_line()
-    print("\n Blinking awake, you find yourself by a serene lake."
+    print(" Blinking awake, you find yourself by a serene lake."
           " How did you end up here? Your memory's a blur."
           "\n As you're piecing things together, a distant"
           " scream of help shatters the tranquility."
@@ -821,7 +836,7 @@ def second_scene():
     as an introduction to the combat mechanic.
     The fight is intended to be easy to win.
     """
-    print("\n Rushing towards the scream, you discover a goblin threatening"
+    print(" Rushing towards the scream, you discover a goblin threatening"
           " a merchant beside his cart dragged by a horse."
           '\n Goblin: "Hand over your gold, human!"'
           '\n Merchant (spotting you and with hopeful eyes): "Stranger!'
@@ -869,7 +884,7 @@ def third_scene():
     This is going to be the third scene after defeating the goblin
     """
     print_horizontal_line()
-    print("\n Catching his breath, the merchant straightens up and beams at "
+    print(" Catching his breath, the merchant straightens up and beams at "
           'you.\n "Thank you, kind stranger. Without your intervention, '
           'I fear what that goblin would have done to me."'
           """\n He extends a hand in gratitude, "The name's Elidor"""
@@ -926,7 +941,7 @@ def fourth_scene():
     this will serve as an end to the "tutorial" like phase.
     """
     print_horizontal_line()
-    print("\n As you continue to converse, Elidor starts packing up his cart. "
+    print(" As you continue to converse, Elidor starts packing up his cart. "
           "The clinking of vials and the rustling of cloth can be heard.")
     print('\n \"You know, I\'m headed to the city of Veradia. '
           "It's a big, bustling place and I've some important business there.")
@@ -974,6 +989,25 @@ def fourth_scene():
           ' to best reach our destination."')
 
 
+def pandora_box():
+    """
+    Rolls for an item from the Pandora Box
+    """
+    roll = random.randint(1, 10)
+
+    chosen_pandora_item = pandora_items[roll]
+
+    if chosen_pandora_item["Status"]:
+        print(" The Pandora's Box gives you 2 Ultra Potions!")
+        player["Potions"]["Ultra Potion"]["Quantity"] += 2
+    else:
+        chosen_pandora_item_name = chosen_pandora_item["Name"]
+        print(" 🎉 The Pandora's Box grants you "
+              f"the {chosen_pandora_item_name}! 🎉")
+        print(" 📖 Check the Player's Info to see what it does.")
+        chosen_pandora_item["Status"] = True
+
+
 def elidor_shop():
     """
     A shop available to the player in most of the scenes
@@ -981,10 +1015,44 @@ def elidor_shop():
     print(" ===== ELIDOR SHOP =====")
     print('\n Random elidor message')
     print_horizontal_line()
-    print("\n 1. Potion(Heal 20): 20 Gold")
-    print(" 2. Mega Potion(Heal 50): 40 Gold")
-    print(" 3. Ultra Potion(Heal 150): 100 Gold")
-    print(" 4. Pandora's Box (Random Item): 200 Gold")
+    while True:
+        print(f" Player Gold: {player['Stats']['Gold']} 💰")
+        print("\n 🧪 1. Potion(Heal 20): 20 Gold")
+        print(" 🧪 2. Mega Potion(Heal 50): 40 Gold")
+        print(" 🧪 3. Ultra Potion(Heal 150): 100 Gold")
+        print(" 📦 4. Pandora's Box (Random Item): 200 Gold")
+        print(" 🔙 5. Go back")
+        choice = get_choice(5)
+        if choice == 1:
+            if player["Stats"]["Gold"] >= 20:
+                player["Stats"]["Gold"] -= 20
+                player["Potions"]["Potion"]["Quantity"] += 1
+                print(" You purchased a Potion!")
+            else:
+                print(" ❌ You don't have enough Gold.")
+        elif choice == 2:
+            if player["Stats"]["Gold"] >= 40:
+                player["Stats"]["Gold"] -= 40
+                player["Potions"]["Mega Potion"]["Quantity"] += 1
+                print(" ❌ You purchased a Mega Potion!")
+            else:
+                print(" You don't have enough Gold.")
+        elif choice == 3:
+            if player["Stats"]["Gold"] >= 100:
+                player["Stats"]["Gold"] -= 100
+                player["Potions"]["Potion"]["Quantity"] += 1
+                print(" ❌ You purchased a Ultra Potion!")
+            else:
+                print(" You don't have enough Gold.")
+        elif choice == 4:
+            if player["Stats"]["Gold"] >= 200:
+                player["Stats"]["Gold"] -= 200
+                pandora_box()
+                print(" ❌ You purchased a Potion!")
+            else:
+                print(" ❌ You don't have enough Gold.")
+        elif choice == 5:
+            break
 
 
 def fifth_scene():
@@ -1028,7 +1096,6 @@ def fifth_scene():
             break
         elif choice == 4:
             elidor_shop()
-        
         elif choice == 5:
             print_player_info_menu()
 
@@ -1037,14 +1104,31 @@ def main_road_path():
     """
     This will be the main road branch function
     """
-    print("This is the main road")
+    print(" \n As you travel along the main road, you stumble upon a dramatic"
+          " scene.")
+    print(" A colorful caravan, ambushed by a gang of goblins,"
+          " fights desperately for survival.")
+    print("\n The goblins, noticing you, turn hostile, leaving you "
+          "with no choice but to join the fray.")
+    print(" As you fend off the goblins, a chilling realization "
+          "dawns upon you. One of these goblins,")
+    print(" the very same goblin you encountered before, "
+          "was merely a member of this malevolent gang.")
+    print("\n Now, they are here, part of this brutal assault.")
+    print(" The caravan's fate hangs in the balance as the clash intensifies,")
+    print(" and your actions will determine its outcome.")
     fight_pause_and_continue()
     battle = Combat(player, enemy["Goblin"])
     battle.combat_loop()
-    print("Next Goblin")
+    print_horizontal_line()
+    print("\n After you've slain one of their comrades,"
+          " another goblin witnessed the scene.")
+    print(" He is bent on avenging his comrade and"
+          " ignores the caravan raid to charge you.")
     fight_pause_and_continue()
     battle = Combat(player, enemy["Goblin"])
     battle.combat_loop()
+    print_horizontal_line()
     print("Next goblin")
     fight_pause_and_continue()
     battle = Combat(player, enemy["Goblin"])
