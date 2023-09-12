@@ -276,8 +276,8 @@ def fight_pause_and_continue():
     while True:
         print_horizontal_line()
         print("\n You are about to fight, are you READY?")
-        print("\n 👊 1. Bring it on!")
-        print("\n 😭 2. No, i want my mommy!")
+        print("\n 👊  1. Bring it on!")
+        print("\n 😭  2. No, i want my mommy!")
         choice = get_choice(2)
         if choice == 1:
             break
@@ -756,7 +756,7 @@ def intro():
     """
     reset_player()
     reset_enemy()
-    print(" 📜 Welcome to Text-Land!"
+    print(" 📜  Welcome to Text-Land!"
           "\n In a realm where words wield power and choices shape destinies,"
           "\n you find yourself at the crossroads of fate."
           "\n A mysterious world filled with unknown dangers,"
@@ -844,7 +844,7 @@ def second_scene():
           '\n Merchant (spotting you and with hopeful eyes): "Stranger!'
           ' Please, help me!"'
           "\n The goblin, hearing the merchant's plea, whirls around to"
-          " face you, his eyes narrowed.")
+          " face you,\n his eyes narrowed.")
     print("\n Goblin: \"Mind your own business,\" he snarls,"
           " \"or you're next!\"")
     while True:
@@ -927,12 +927,12 @@ def third_scene():
         elif choice == 2:
             print("\n The halfling seems a bit taken aback by your forwardness"
                   '.\n After a moment of hesitation, he says, '
-                  '"Well, I suppose it\'s fair to ask for compensation after '
-                  'such a deed.\n He reluctantly "'
+                  '"Well, I suppose it\'s fair to ask for\n compensation after'
+                  ' such a deed.\n He reluctantly'
                   " hands you a slightly large pouch of coins.")
             player["Stats"]["Gold"] += 75
             print("\n You obtained (basically extorted..) 75 Gold  💰 !"
-                  " You can carry gold in your pouch from now on.")
+                  "\n You can carry gold in your pouch from now on.")
             print()  # Prints an empty line for separation
             break
 
@@ -954,7 +954,7 @@ def fourth_scene():
     print("\n Given how adeptly you handled that goblin,"
           " would you be interested\n in "
           "accompanying me?\n I'm willing to pay for your services and, "
-          "of course, my shop's at your disposal for resupply.\"")
+          "of course, my shop's at your\n disposal for resupply.\"")
     print()  # Prints an empty line for separation
     print("\n You ponder on his request. You really don't have any idea where"
           " you are\n or where you're headed.\n Would it be such a bad idea to"
@@ -975,11 +975,11 @@ def fourth_scene():
         elif choice == 2:
             print("\n Elidor raises an eyebrow, looking a tad confused."
                   "\n \"Well, if you don't want to come with me, "
-                  "then it only makes sense that I'll have to go with you!"
+                  "then it only makes sense that\n I'll have to go with you!"
                   "\n Let's set forth, friend.\""
                   "\n You try to piece together the logic of what Elidor just"
                   " said and come up blank."
-                  "Before you can even react, he's already on his way, "
+                  " Before you can even react, he's already on his way, "
                   "mounting Medea and waving\n for you to follow."
                   " Wasn't he supposed to follow you?")
             break
@@ -1064,21 +1064,21 @@ def fifth_scene():
     """
     print_horizontal_line()
     print("\n As you and Elidor travel together, the path ahead"
-          "forks into three distinct routes.")
+          "forks into three\n distinct routes.")
     print("\n To the right, the gentle sound of a river is heard"
-          " and the shimmering water can be seen in the distance.")
+          " and the shimmering water\n can be seen in the distance.")
     print("\n Straight ahead lies the main road, well-trodden and marked with"
-          " milestones indicating the way to the closest town.")
+          " milestones\n indicating the way to the closest town.")
     print("\n The left path dives deep into a dense, dark forest. Amongst the "
-          "trees, tall grasses sway gently, \n reaching up to a person's"
-          " height, shading the path from the midday sun.")
+          "trees,\n tall grasses sway gently, reaching up to a person's"
+          " height,\n shading the path from the midday sun.")
 
     while True:
-        print("\n 🌊 1. Head towards the river route.")
+        print("\n 🌊  1. Head towards the river route.")
         print("\n\n 🛣️  2. Stick to the main road.")
-        print("\n\n 🌲 3. Venture into the forest.")
-        print("\n\n 💰 4. Elidor Shop")
-        print("\n\n 📖 5. Player Info")
+        print("\n\n 🌲  3. Venture into the forest.")
+        print("\n\n 💰  4. Elidor Shop")
+        print("\n\n 📖  5. Player Info")
         choice = get_choice(5)
 
         if choice == 1:
@@ -1089,7 +1089,7 @@ def fifth_scene():
             break
         elif choice == 2:
             print("\n Deciding to stick to what seems safest, you and Elidor"
-                  " continue on the main road.")
+                  "\n continue on the main road.")
             main_road_path()
         elif choice == 3:
             print("\n Feeling adventurous, you decide to delve into"
@@ -1110,13 +1110,13 @@ def main_road_path():
     print(" \n As you travel along the main road, you stumble upon a dramatic"
           " scene.")
     print(" A colorful caravan, ambushed by a gang of goblins,"
-          " fights desperately for survival.")
+          "\n fights desperately for survival.")
     print("\n The goblins, noticing you, turn hostile, leaving you "
-          "with no choice but to join the fray.")
+          "with no choice\n but to join the fray.")
     print(" As you fend off the goblins, a chilling realization "
-          "dawns upon you. One of these goblins,")
-    print(" the very same goblin you encountered before, "
-          "was merely a member of this malevolent gang.")
+          "dawns upon you.\n One of these goblins,"
+          " the very same goblin you encountered before, "
+          "\n was merely a member of this malevolent gang.")
     print("\n Now, they are here, part of this brutal assault.")
     print(" The caravan's fate hangs in the balance as the clash intensifies,")
     print(" and your actions will determine its outcome.")
@@ -1129,60 +1129,60 @@ def main_road_path():
     print(" He is bent on avenging his comrade and"
           " ignores the caravan raid to charge you.")
     print(" Amidst the tense battle, Elidor swiftly tosses a potion your way"
-          " and yells,"
+          "\n and yells,"
           ' "This one\'s on the house, kiddo!"')
     player["Potions"]["Mega Potion"]["Quantity"] += 1
     print("\n 🎉 You obtained 1 Mega Potion! 🎉")
-    print("\n Before you can utter a word of thanks to Elidor, the looming"
-          " goblin is upon you.")
+    print("\n Before you can utter a word to Elidor, the looming"
+          " goblin is upon you!")
     fight_pause_and_continue()
     battle = Combat(player, enemy["Goblin"])
     battle.combat_loop()
     print_horizontal_line()
     print(" With the fallen goblin at your feet, you gasp for breath, "
-          "only to witness another goblin's cruel act.")
+          "\n only to witness another goblin's cruel act.")
     print("\n This vile creature has just taken the life of one of the men"
-          " and now menaces a defenseless woman.")
+          "\n and now menaces a defenseless woman.")
     print("\n Without hesitation, you summon your remaining strength "
-          "and charge at the goblin, desperate to reach her in time.")
+          "\n and charge at the goblin, desperate to reach her in time.")
     fight_pause_and_continue()
     battle = Combat(player, enemy["Goblin"])
     battle.combat_loop()
     print_horizontal_line()
     print(" With the goblin vanquished, your heart sinks as you realize"
-          " he managed to wound the woman before your arrival.")
+          "\n he managed to wound the woman before your arrival.")
     print(" Elidor swiftly tends to her injury, and amidst the tension, "
-          "a commanding shout pierces the air!")
+          "\n a commanding shout pierces the air!")
     print('\n "You there, the assailant of my brethren.'
           ' I shall end your life!"')
     print("\n You pivot, and there stands a goblin, unlike any you've"
-          "encountered. Taller, adorned in menacing spiky armor,")
+          "encountered.\n Taller, adorned in menacing spiky armor,")
     print(" and wielding a colossal sword matching his formidable stature."
-          " He must be the gang's chief. Defeating him")
+          "\n He must be the gang's chief. Defeating him")
     print(" could quell this bloodshed.")
     print(" But there's no time for contemplation; the chief charges you,"
-          " and a battle with this fearsome foe is inevitable.")
+          "\n and a battle with this fearsome foe is inevitable.")
     fight_pause_and_continue()
     battle = Combat(player, enemy["Goblin Chief"])
     battle.combat_loop()
     print_horizontal_line()
     print(" The caravan members gather around you, their faces etched"
-          " with gratitude and sorrow.")
+          " with gratitude\n and sorrow.")
     print("\n What seems their leader steps forward and speaks with a heavy "
           'heart,\n "We come from faraway lands,'
           'seeking a better future in the nearby town.'
-          " Our journey was fraught with peril, and we were ambushed")
-    print("by those vile goblins. It was you who saved us, and for that, "
+          "\n Our journey was fraught with peril, and we were ambushed")
+    print("\n by those vile goblins. It was you who saved us,\n and for that, "
           'we are deeply thankful."')
     print(" The leader looks down sadly and continues, 'We had hoped to start"
-          " anew, but we don't have much left.")
+          " anew,\n but we don't have much left.")
     print(" We can't offer you gold or riches, but know that our gratitude"
           " is boundless.'")
     print(" The caravan members share somber glances, and you see tears"
           " in their eyes.")
     print(' The leader concludes, "We\'ll stay behind to mourn our lost '
-          'family members and tend to the wounded."')
-    print(' "We don\'t want to hold you back. May the'
+          'family members\n and tend to the wounded."')
+    print(' "We don\'t want to hold you back.\n May the'
           ' road ahead be kind to you, brave traveler."')
 
 
