@@ -27,10 +27,10 @@ def get_choice(max_choice):
                 return choice
             else:
                 print()  # Prints an empty line for separation
-                print(f" 🚫 Please enter a number between 1 and {max_choice}.")
+                print(f" 🚫  Please enter a number between 1 and {max_choice}.")
         except ValueError:
             print()  # Prints an empty line for separation
-            print(" 🚫 Invalid input! Please enter a number.")
+            print(" 🚫  Invalid input! Please enter a number.")
 
 
 def rules():
@@ -40,7 +40,7 @@ def rules():
     """
     print(" These are the rules, will be add later",
           "\n\n 1. 🛡️  I am ready to start my adventure!",
-          "\n\n 2. 📜 Bring me back to the Menu.")
+          "\n\n 2. 📜  Bring me back to the Menu.")
     choice = get_choice(2)
     if choice == 1:
         player_name_choice()
@@ -76,13 +76,14 @@ def player_name_choice():
             player["Stats"]["Name"] = player_name
             break
         else:
-            print("Please enter a name between 1 and 10 characters.")
+            print(" Please enter a name between 1 and 10 characters.")
 
 
 enemy = {}
 
 player = {}
 
+battle_result = ""
 
 player_critical_messages = [
     " 💥  YOU DEALT A POWERFUL CRITICAL BLOW!",
@@ -230,6 +231,19 @@ def reset_enemy():
                     "Chief Gloves": 100
                 }
             }
+        },
+        "Sparky Tail": {
+            "Name": "Sparky Tail",
+            "Max HP": 30,
+            "Current HP": 30,
+            "Atk": 20,
+            "Def": 10,
+            "Crit": 10,
+            "Run": 100,
+
+            "Loot": {
+                "Gold": 30,
+            }
         }
     }
 
@@ -302,17 +316,25 @@ class Combat:
         """
         Actions to take when the player defeats the enemy in combat
         """
-        print_horizontal_line()
+        global battle_result
+        battle_result = "Victory"
+        print()
+        print("===== VICTORY =====")
+        print()
         print(f" You have defeated the {self.enemy['Name']}!")
         self.handle_loot()
         reset_enemy()
+        return battle_result
 
     def check_drop(self):
         """
         Checks if players drops loot
         """
         dropped_items = []
-        for item, drop_rate in self.enemy["Loot"]["Items"].items():
+
+        items = self.enemy.get("Loot", {}).get("Items", {})
+
+        for item, drop_rate in items.items():
             if random.randint(1, 100) <= drop_rate:
                 dropped_items.append(item)
 
@@ -323,7 +345,7 @@ class Combat:
         Handles loot
         """
         self.player["Stats"]["Gold"] += self.enemy["Loot"]["Gold"]
-        print(f" Elidor gave you {self.enemy['Loot']['Gold']} Gold 💰!")
+        print(f" Elidor gave you {self.enemy['Loot']['Gold']} Gold 💰 !")
 
         dropped_items = self.check_drop()
 
@@ -363,17 +385,20 @@ class Combat:
                 self.player["Equipment"][item_type] = item_detail
                 for stat, change in stat_change.items():
                     self.player["Stats"][stat] += change
-                print(f"🎉 You found and equipped {item_name} 🎉")
+                print()
+                print(f" 🎉  You found and equipped {item_name}  🎉")
             else:
-                print(f" 🚫 Found {item_name}({item_detail['Type']}), but "
+                print()
+                print(f" 🚫  Found {item_name}({item_detail['Type']}), but "
                       " current equipment is better!")
         else:
             self.player["Equipment"][item_type] = item_detail
             for stat, value in item_detail.items():
                 if stat != "Type" and stat != "Name" and stat != "Droprate":
                     self.player["Stats"][stat] += value
-            print(f" 🎉 You found and equipped {item_name}"
-                  f"({item_detail['Type']})! 🎉")
+            print()
+            print(f" 🎉  You found and equipped {item_name}"
+                  f"({item_detail['Type']})!  🎉")
 
     def print_player_potions(self):
         """
@@ -541,10 +566,12 @@ class Combat:
             elif choice == 3:
                 self.display_combat_info()
 
-            else:
+            elif choice == 4:
                 if player_run_away(self.enemy['Run']):
                     print(" 💨  You successfully ran away!")
-                    return  # Exits the combat loop
+                    global battle_result
+                    battle_result = "Run"
+                    return battle_result  # Exits the combat loop
 
                 else:
                     print(f" 🚫  The {self.enemy['Name']} blocked your way."
@@ -584,7 +611,8 @@ def print_player_info_menu():
     """
     print(" ===== STATS =====")
     print(f" Name: {player['Stats']['Name']}")
-    print(f" HP: {player['Stats']['Max HP']}")
+    print(f" Max HP: {player['Stats']['Max HP']}")
+    print(f" Current HP: {player['Stats']['Current HP']}")
     print(f" Attack: {player['Stats']['Atk']}")
     print(f" Defence: {player['Stats']['Def']}")
     print(f" Crit: {player['Stats']['Crit']}")
@@ -760,7 +788,7 @@ def intro():
           "\n In a realm where words wield power and choices shape destinies,"
           "\n you find yourself at the crossroads of fate."
           "\n A mysterious world filled with unknown dangers,"
-          " captivating stories,\n  and hidden treasures beckons you.")
+          " captivating stories,\n and hidden treasures beckons you.")
     print(" As you embark on this epic journey, remember:"
           " every choice matters!"
           "\n Your decisions will carve out your path, lead you to treasures,"
@@ -1096,7 +1124,7 @@ def fifth_scene():
                   " the woods.")
             print(" Were it not for Medea, Elidor would be completely "
                   "obscured by the tall grass.")
-            break
+            forest_path()
         elif choice == 4:
             elidor_shop()
         elif choice == 5:
@@ -1131,8 +1159,8 @@ def main_road_path():
     print(" Amidst the tense battle, Elidor swiftly tosses a potion your way"
           "\n and yells,"
           ' "This one\'s on the house, kiddo!"')
-    player["Potions"]["Mega Potion"]["Quantity"] += 1
-    print("\n 🎉 You obtained 1 Mega Potion! 🎉")
+    player["Potions"]["Mega Potion"]["Quantity"] += 2
+    print("\n 🎉 You obtained 2 Mega Potions! 🎉")
     print("\n Before you can utter a word to Elidor, the looming"
           " goblin is upon you!")
     fight_pause_and_continue()
@@ -1184,6 +1212,116 @@ def main_road_path():
           'family members\n and tend to the wounded."')
     print(' "We don\'t want to hold you back.\n May the'
           ' road ahead be kind to you, brave traveler."')
+    main_road_path_town_scene()
+
+
+def main_road_path_town_scene():
+    """
+    Second scene of main road path branch
+    """
+    print_horizontal_line()
+    print("\n After a few hours of walking along the main road, the outline of"
+          " a town emerges on the horizon.")
+    print("\n A fortified stone wall encircles it, with a large wooden gate"
+          " marking the entrance.")
+    print("\n As you and Elidor approach the town gate, a guard in polished"
+          "\n armor steps forward, halting your progress.")
+    print('\n "Halt! All newcomers must be inspected before entering",'
+          " the guard states firmly.")
+    print("\n While the guard is about to proceed with the inspection, his"
+          " eyes fall on the chief's gauntlet you possess.")
+    print('\n "Wait a minute... Is that the goblin chief\'s gauntlet?'
+          ' Have you encountered the goblin gang?" he asks, curiosity evident'
+          " in his voice.")
+
+    while True:
+        print("\n 1. Confirm that you defeated the goblin chief.")
+        print(" 2. Deny and say you found the gauntlet.")
+        choice = get_choice(2)
+
+        if choice == 1:
+            print("\n You and Elidor explain what happened to the guard.")
+            print("\n The guard's face lights up with a broad smile."
+                  '" Those goblins have been a thorn in our side for too long!'
+                  ' They\'ve been raiding our commercial roads for months."')
+            print("\n In recognition of your deed, the guard hands you a pouch"
+                  " containing 100 gold coins."
+                  '"There was a bounty on the chief\'s head.'
+                  ' This is yours now."')
+            print("\n You obtained 100 Gold  💰  from the guard!")
+            player["Stats"]["Gold"] += 100
+            print(" Furthermore, he hands you a special coupon."
+                  'This is for the town shop. They\'ll give you a good deal'
+                  ' with this."')
+            print()
+            print(" 🎉  You obtained a Shop Coupon!  🎉")
+            print("\n With a warm gesture, the guard welcomes you into the"
+                  " town.")
+            town_scene()
+        elif choice == 2:
+            print("\n'I just found it,' you reply hesitantly.")
+            print("\n The guard looks skeptical but decides not to push the"
+                  "matter further. 'Very well, but we're keeping an eye on"
+                  " you. Enter the town, but cause no trouble.'")
+            town_scene()
+
+
+def forest_path():
+    """
+    This handles the forest scenario
+    """
+    print_horizontal_line()
+    print("\n While traversing the tall grass, the rustling of leaves draws"
+          " your attention.")
+    print("\n Emerging from the bushes is a small, yellow-furred creature with"
+          " rosy cheeks and a lightning-shaped tail.")
+    print("\n It looks startled, eyes wide as it assesses you. You're not"
+          " sure if it's about to attack or bolt away.")
+    print("\n As you cautiously approach the creature, you notice jolts of "
+          "lightning emanating from its rosy cheeks, indicating its distress.")
+    print("\n The fact that this creature can harness what appears to be"
+          " elemental magic is a cause for concern.")
+    while True:
+        print("\n 🏹  1. Preemptively attack the creature."
+              "\n        It is maybe better to be safe than sorry.")
+        print("\n 🚶  2. Try to ignore it and continue on your path.")
+        choice = get_choice(2)
+        if choice == 1:
+            print(" As you unsheath your weapon hesitantly,"
+                  " doubt clouds your mind."
+                  "\n Sensing your aggressive intent, the creature's cheeks"
+                  " spark more intensely,"
+                  "\n emitting a symphony of crackling lightning bolts."
+                  "\n The decision seems to have been made for you."
+                  "\n It's do or die now!!")
+            fight_pause_and_continue()
+            battle = Combat(player, enemy["Sparky Tail"])
+            battle.combat_loop()
+            if battle_result == "Victory":
+                forest_path_second_scene(True)
+            elif battle_result == "Run":
+                forest_path_second_scene(False)
+        elif choice == 2:
+            print("\n You decide it's best to let the creature be. As you move"
+                  " on, you notice it curiously trailing you from a distance.")
+            forest_path_second_scene(False)
+
+
+def forest_path_second_scene(defeated_creature):
+    """
+    Creates a scenario depending on the battle result
+    """
+    if defeated_creature:
+        print("Hey Asshole")
+    elif not defeated_creature:
+        print("Hey Thank you!")
+
+
+def town_scene():
+    """
+    Handles town scene
+    """
+    print("TOWN")
 
 
 def main():
