@@ -1273,9 +1273,7 @@ def river_first_scene():
             while True:
                 print("\n 🔍  1. Examine the hidden spot")
                 print("\n\n 🚫  2. Walk away, it might be risky")
-                print("\n\n 💰  3. Elidor Shop")
-                print("\n\n 📖  4. Player Info")
-                choice = get_choice(4)
+                choice = get_choice(2)
                 if choice == 1:
                     print("\n After a moment of concentration, Elidor chants a"
                           " soft incantation, and the illusion starts to fade,"
@@ -1294,16 +1292,10 @@ def river_first_scene():
                               ' whisper, "We should leave quickly. The one '
                               'responsible for the illusion might return."')
                         print("\n 🚶  1. He is right, we should leave.")
-                        print("\n\n 💰  2. Elidor Shop")
-                        print("\n\n 📖  3. Player Info")
-                        choice = get_choice(3)
+                        choice = get_choice(1)
                         if choice == 1:
                             river_second_scene()
                             break
-                        elif choice == 2:
-                            elidor_shop()
-                        elif choice == 3:
-                            print_player_info_menu()
                     break
                 elif choice == 2:
                     print('\n "There are things in this world best left'
@@ -1321,9 +1313,7 @@ def river_first_scene():
                     while True:
                         print("\nn What to do now?")
                         print("\n 🚶  1. Let us leave this place behind")
-                        print("\n\n 💰  2. Elidor Shop")
-                        print("\n\n 📖  3. Player Info")
-                        choice = get_choice(3)
+                        choice = get_choice(1)
                         if choice == 1:
                             print(" With a nod to Elidor, you decide it's time"
                                   " to move on. The two of you gather your"
@@ -1332,26 +1322,19 @@ def river_first_scene():
                                   " journey.")
                             river_second_scene()
                             break
-                        elif choice == 2:
-                            elidor_shop()
-                        elif choice == 3:
-                            print_player_info_menu()
                     break
-                elif choice == 3:
-                    elidor_shop()
-                elif choice == 4:
-                    print_player_info_menu()
+            break
         elif choice == 2:
             print(" You smile and shake your head, choosing instead to sit and"
                   " relax by the riverside."
                   "\n The journey continues peacefully as you absorb the"
                   " serenity around you.")
+            river_second_scene()
+            break
         elif choice == 3:
             elidor_shop()
         elif choice == 4:
             print_player_info_menu()
-
-        break
 
 
 def river_second_scene():
