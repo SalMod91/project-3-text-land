@@ -144,21 +144,58 @@ item_database = {
         "Type": "Weapon",
         "Atk": 10,
         "Crit": 10
-    }
+    },
+    "Troll Club": {
+        "Name": "Troll Club",
+        "Type": "Weapon",
+        "Atk": 8,
+        "Crit": 10
+    },
+    "Wet Boots": {
+        "Name": "Wet Boots",
+        "Type": "Boots",
+        "Def": 2,
+        "Max HP": 3
+    },
+    "Bandit Cloth": {
+        "Name": "Bandit Cloth",
+        "Type": "Body",
+        "Def": 1,
+        "Max HP": 2
+    },
+    "Bandit Boots": {
+        "Name": "Bandit Boots",
+        "Type": "Boots",
+        "Def": 1,
+        "Max HP": 2
+    },
+    "Bandit Hood": {
+        "Name": "Bandit Hood",
+        "Type": "Head",
+        "Def": 1,
+        "Max HP": 2
+    },
+    "Bandit Pants": {
+        "Name": "Bandit Pants",
+        "Type": "Legs",
+        "Def": 1,
+        "Max HP": 2
+    },
 }
 
 
+# Pandora's items haven't been added yet. It will be a future feature.
 pandora_items = {
-    1: {"Name": 1, "Status": False},
-    2: {"Name": 2, "Status": False},
-    3: {"Name": 3, "Status": False},
-    4: {"Name": 4, "Status": False},
-    5: {"Name": 5, "Status": False},
-    6: {"Name": 6, "Status": False},
-    7: {"Name": 7, "Status": False},
-    8: {"Name": 8, "Status": False},
-    9: {"Name": 9, "Status": False},
-    10: {"Name": 10, "Status": False}
+    1: {"Name": 1, "Status": True},
+    2: {"Name": 2, "Status": True},
+    3: {"Name": 3, "Status": True},
+    4: {"Name": 4, "Status": True},
+    5: {"Name": 5, "Status": True},
+    6: {"Name": 6, "Status": True},
+    7: {"Name": 7, "Status": True},
+    8: {"Name": 8, "Status": True},
+    9: {"Name": 9, "Status": True},
+    10: {"Name": 10, "Status": True}
 }
 
 
@@ -221,8 +258,8 @@ def reset_enemy():
         },
         "Goblin Chief": {
             "Name": "Goblin Chief",
-            "Max HP": 60,
-            "Current HP": 60,
+            "Max HP": 55,
+            "Current HP": 55,
             "Atk": 30,
             "Def": 10,
             "Crit": 3,
@@ -253,13 +290,58 @@ def reset_enemy():
             "Max HP": 70,
             "Current HP": 70,
             "Atk": 25,
-            "Def": 13,
+            "Def": 15,
             "Crit": 5,
             "Run": 0,
 
             "Loot": {
                 "Gold": 50,
             }
+        },
+        "River Troll": {
+            "Name": "River Troll",
+            "Max HP": 70,
+            "Current HP": 70,
+            "Atk": 22,
+            "Def": 13,
+            "Crit": 2,
+            "Run": 30,
+
+            "Loot": {
+                "Gold": 50,
+                "Items": {
+                    "Troll Club": 80,
+                    "Wet Boots": 70
+                }
+            }
+        },
+        "Bandit": {
+            "Name": "Bandit",
+            "Max HP": 45,
+            "Current HP": 45,
+            "Atk": 22,
+            "Def": 15,
+            "Crit": 25,
+            "Run": 0,
+
+            "Loot": {
+                "Gold": 30,
+                "Items": {
+                    "Bandit Cloth": 80,
+                    "Bandit Boots": 70,
+                    "Bandit Hood": 70,
+                    "Bandit Pants": 50
+                }
+            }
+        },
+        "Town Guard": {
+            "Name": "Town Guard",
+            "Max HP": 90,
+            "Current HP": 90,
+            "Atk": 30,
+            "Def": 30,
+            "Crit": 10,
+            "Run": 100,
         }
     }
 
@@ -361,6 +443,7 @@ class Combat:
         Handles loot
         """
         self.player["Stats"]["Gold"] += self.enemy["Loot"]["Gold"]
+        print()
         print(f" Elidor gave you {self.enemy['Loot']['Gold']} Gold 💰 !")
 
         dropped_items = self.check_drop()
@@ -534,7 +617,7 @@ class Combat:
         print(f" ======== COMBAT VS {self.enemy['Name'].upper()} ========")
         while (self.player['Stats']['Current HP'] > 0 and
                self.enemy['Current HP'] > 0):
-            print("\n ENEMY IMAGE")
+            print(f"\n IMAGE OF {self.enemy['Name'].upper()}")
             current_player_hp = int(self.player['Stats']['Current HP'])
             player_maxhp = int(self.player['Stats']['Max HP'])
             current_enemy_hp = int(self.enemy['Current HP'])
@@ -1339,9 +1422,172 @@ def river_first_scene():
 
 def river_second_scene():
     """
-    Second scene of river
+    Handles the second scene in the river
     """
-    print("This is the second scene")
+    print_horizontal_line()
+    print(" Continuing your journey along the river, the scenery starts"
+          " to shift. The once clear "
+          "water now appears murky and you can hear the distant "
+          "roar of a waterfall.")
+    print("\n Birds chirp high in the trees, and the scent of wet"
+          " earth fills the air.")
+    print("\n Elidor slows his pace and remarks, 'This part of the river"
+          " is less familiar to me. We "
+          "need to be cautious.'")
+    while True:
+        print('\n 🌉  1. "I see a bridge in the distance. Let\'s cross there."')
+        print("\n\n 🏞️  2. Let's set up camp and decide tomorrow.")
+        print("\n\n 💰  3. Elidor Shop")
+        print("\n\n 📖  4. Player Info")
+        choice = get_choice(4)
+        if choice == 1:
+            print(" The two of you approach the bridge. It looks ancient,"
+                  " with moss covering its stone sides.")
+            print("\n As you step onto it, you notice the wooden planks"
+                  " creaking under your weight.")
+            print("\n Halfway across, Elidor stops, sensing something."
+                  " Before you can react, the bridge is "
+                  "ambushed by a river troll!")
+            fight_pause_and_continue()
+            reset_enemy()
+            battle = Combat(player, enemy["River Troll"])
+            battle.combat_loop()
+            print_horizontal_line()
+            print(" With the troll defeated, a sigh of relief washes over you."
+                  "\n Their might is unmatched, but cunning always finds a")
+            print(" way.\n As you catch your breath, the distant silhouette of"
+                  "a town emerges just beyond the bridge.")
+            print(" Elidor's face brightens at the sight, and even Medea "
+                  "seems to share a hint of relief. A proper rest awaits.")
+            print(" Without hesitation, you all head towards the promise of"
+                  " comfort that the town offers.")
+            town_guard_scene()
+            break
+        elif choice == 2:
+            print(" You and Elidor decide to set up camp. As night falls,"
+                  " you both share stories around a campfire.")
+            print("\n The gentle sounds of the river soothe you to sleep.")
+            print_horizontal_line()
+            river_rest_scene()
+            break
+        elif choice == 3:
+            elidor_shop()
+        elif choice == 4:
+            print_player_info_menu()
+
+
+def river_rest_scene():
+    """
+    Third river scene
+    """
+    rand_num = random.randint(1, 99)
+    if 1 <= rand_num <= 33:
+        print("\n You slept peacefully through the night and feel refreshed!")
+        recovered_hp = player_rest(1.0)
+        print(f"\n You rested and recovered {recovered_hp} ❤️  HP.")
+        print(" As the sun shines, it reveals the distant silhouette of"
+              "a town that emerges just beyond a bridge.")
+        print(" Elidor's face brightens at the sight, and even Medea "
+              "seems to share a hint of relief.")
+        print('\n Elidor chuckles, "Just a bit further and we could\'ve had'
+              ' proper beds!" But his smile says he cherished the time shared'
+              ' with you and Medea.')
+        print("\n With restored vigor you head towards the town's gate.")
+        town_guard_scene()
+    elif 34 <= rand_num <= 66:
+        print(" Before dawn's first light, Medea's anxious whinnies rouse "
+              "you and Elidor.")
+        print(" Blinking away sleep, you quickly discern the cause: three"
+              " bandits have surrounded your camp.")
+        print(" You're groggy from interrupted rest, not at full strength,"
+              " and now must defend yourselves!")
+        recovered_hp = player_rest(0.5)
+        print("\n Your rest was interrupted and therefore you only"
+              f" recovered {recovered_hp} ❤️  HP.")
+        fight_pause_and_continue()
+        reset_enemy()
+        battle = Combat(player, enemy["Bandit"])
+        battle.combat_loop()
+        print_horizontal_line()
+        print_bandit_fight_1()
+        fight_pause_and_continue()
+        reset_enemy()
+        battle = Combat(player, enemy["Bandit"])
+        battle.combat_loop()
+        print_horizontal_line()
+        print_bandit_fight_2()
+        river_last_scene()
+    elif 67 <= rand_num <= 99:
+        print(" No sooner had you closed your eyes for a night's rest, "
+              "Medea's urgent neighs snap you awake.")
+        print(" In the dim light, you spot three shadowy figures: bandits"
+              " closing in on your camp!")
+        print(" You've barely had a moment to rest, and now you must fend"
+              " off an ambush with limited strength!")
+        recovered_hp = player_rest(0.2)
+        print("\n Your rest was interrupted and therefore you only"
+              f" recovered {recovered_hp} ❤️  HP.")
+        fight_pause_and_continue()
+        reset_enemy()
+        battle = Combat(player, enemy["Bandit"])
+        battle.combat_loop()
+        print_horizontal_line()
+        print_bandit_fight_1()
+        fight_pause_and_continue()
+        reset_enemy()
+        battle = Combat(player, enemy["Bandit"])
+        battle.combat_loop()
+        print_horizontal_line()
+        print_bandit_fight_2()
+        river_last_scene()
+
+
+def river_last_scene():
+    """
+    In case of an ambush this is the last scene
+    of the river path
+    """
+    print(" The weight of the ambush weighs on you, reminding you of the"
+          " ever-present dangers on your journey.")
+    print(" You share a nod with Elidor, signaling a mutual respect and"
+          " understanding, then at the sun's first light you begin packing up"
+          " camp.")
+    print("\n You tenderly caress Medea, thanking her silently. The rising"
+          " sun reveals a town in the distance, just beyond a bridge.")
+    print("\n Physically and mentally drained, the group trudges towards the"
+          " town's gates.")
+    town_guard_scene()
+
+
+def print_bandit_fight_1():
+    """
+    This function enables printing of reused
+    story section for the bandit fight
+    """
+    print(" With one bandit down, you now face the remaining two"
+          " simultaneously.")
+    print("\n Nearby, Medea fiercely protects Elidor. In her frenzy,"
+          " she lands a")
+    print("mighty kick on a bandit, seemingly taking him out of"
+          " the fight.")
+    print("\n The last bandit, though lacking confidence, knows there's"
+          " no way out.")
+    print(" With a defiant yell, he charges, hell-bent on avenging his"
+          " fallen comrade.")
+    print("\n It's clear: if he's going down, he intends to take one"
+          " of you with him."
+          "\n It is up to you now to avoid this!")
+
+
+def print_bandit_fight_2():
+    """
+    This function enables printing of reused
+    story section for the bandit fight
+    """
+    print("After felling the final bandit, you exhale a weary sigh of relief.")
+    print("However, the luxury of rest eludes you now.")
+    print("On high alert, you await the sun's rays, yearning for the safety it"
+          " brings.")
 
 
 def main_road_path():
@@ -1825,7 +2071,7 @@ def forest_end_scene():
     """
     Handles the end of the forest scene
     """
-    print("\n 🌲  As you tread cautiously, the dense canopy of the forest"
+    print("\n As you tread cautiously, the dense canopy of the forest"
           " begins to thin."
           " The muted sounds of wildlife are gradually replaced by "
           "a distant hum of activity."
@@ -1844,6 +2090,7 @@ def forest_end_scene():
         if choice == 1:
             print(" You head towards the town")
             town_guard_scene()
+            break
         elif choice == 2:
             elidor_shop()
         elif choice == 3:
@@ -1861,7 +2108,32 @@ def town_scene():
     """
     Handles town scene
     """
-    print(" TOWN")
+    print("\n You reach the outer perimeter of the town.")
+    print("\n A fortified stone wall encircles it, with a large wooden gate"
+          " marking the entrance.")
+    print("\n As you and Elidor approach the town gate, a guard in polished"
+          "\n armor steps forward, halting your progress.")
+    print('\n "Halt! All newcomers must be inspected before entering",'
+          " the guard states firmly.")
+    while True:
+        print("\n ✋  1. Comply with the guard's request")
+        print("\n\n 🖕  2. Challenge the guard's authority")
+        print("\n\n 💰  3. Elidor Shop")
+        print("\n\n 📖  4. Player Info")
+        choice = get_choice(4)
+        if choice == 1:
+            print(" Welcome in")
+            town_scene()
+        elif choice == 2:
+            print(" You are fucked")
+            fight_pause_and_continue()
+            reset_enemy()
+            battle = Combat(player, enemy["Town Guard"])
+            battle.combat_loop()
+        elif choice == 3:
+            elidor_shop()
+        elif choice == 4:
+            print_player_info_menu()
 
 
 def main():
