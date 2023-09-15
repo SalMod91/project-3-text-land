@@ -1159,6 +1159,7 @@ def fifth_scene():
                   ", you and Elidor start your journey on the river route.")
             print("\n Elidor seems pleased with the decision, the fresh scent "
                   "of the river lifting his spirits.")
+            river_first_scene()
             break
         elif choice == 2:
             print("\n Deciding to stick to what seems safest, you and Elidor"
@@ -1176,6 +1177,188 @@ def fifth_scene():
             elidor_shop()
         elif choice == 5:
             print_player_info_menu()
+
+
+def handle_loot_world(*items_found):
+    """
+    Handles loot found in the world
+    outside of combat
+    """
+    for item_name in items_found:
+        item_detail = item_database.get(item_name)
+        equip_item(item_detail)
+
+
+def equip_item(item_detail):
+    """
+    Equips automatically better equipment
+    """
+    item_type = item_detail["Type"]
+    item_name = item_detail["Name"]
+
+    currently_equipped = player["Equipment"].get(item_type, None)
+
+    def calculate_stat_change(new_item, old_item=None):
+        """
+        Calculates the stat change between the newly found item
+        and the old equipped one if any is equipped
+        """
+        change = {}
+        for stat, value in new_item.items():
+            if stat != "Type" and stat != "Name" and stat != "Droprate":
+                if old_item:
+                    change[stat] = value - old_item.get(stat, 0)
+                else:
+                    change[stat] = value
+
+        return change
+
+    if currently_equipped:
+        stat_change = calculate_stat_change(
+            item_detail, currently_equipped)
+
+        if sum(stat_change.values()) > 0:
+            player["Equipment"][item_type] = item_detail
+            for stat, change in stat_change.items():
+                player["Stats"][stat] += change
+            print()
+            print(f" 🎉  You found and equipped {item_name}  🎉")
+        else:
+            print()
+            print(f" 🚫  Found {item_name}({item_detail['Type']}), but "
+                  " current equipment is better!")
+    else:
+        player["Equipment"][item_type] = item_detail
+        for stat, value in item_detail.items():
+            if stat != "Type" and stat != "Name" and stat != "Droprate":
+                player["Stats"][stat] += value
+        print()
+        print(f" 🎉  You found and equipped {item_name}"
+              f"({item_detail['Type']})!  🎉")
+
+
+def river_first_scene():
+    """
+    Handles the first scene in the river
+    """
+    print_horizontal_line()
+    print(" As you walk alongside the river, the calmness of the water, along"
+          " with the rhythmic sound of the current,"
+          " gives you a sense of peace.")
+    print(" The sun glitters on the water's surface, and the air is filled"
+          " with the sweet scent of blooming flowers.")
+    print("\n Elidor bends down, picks up a smooth, flat stone, and with"
+          " a mischievous glint in his eyes, challenges you.")
+    print('"How about a little contest? Let\'s see who can skip the stone'
+          ' the furthest."')
+    while True:
+        print('\n 💪  1. "Sure, I\'m up for a challenge!"')
+        print('\n\n 🌊 🌳  2. "No thanks, I\'d rather just enjoy the scenery."')
+        print("\n\n 💰  3. Elidor Shop")
+        print("\n\n 📖  4. Player Info")
+        choice = get_choice(4)
+        if choice == 1:
+            print(" With a confident smirk, you take the stone from Elidor."
+                  "\n Positioning yourself, you give it a strong flick of the "
+                  "wrist.\n To your surprise, after the second skip, the stone"
+                  " seems to hit something solid mid-air and drops into the"
+                  " water with a splash.\n Both you and Elidor exchange"
+                  " puzzled glances.")
+            print("\n Approaching the spot, you extend your hand and feel an"
+                  " invisible barrier."
+                  "\n The air around it vibrates with magic. Elidor murmurs,"
+                  '"It\'s an illusion spell... something is being concealed'
+                  ' here."')
+            print('\n "What should we do?"')
+            while True:
+                print("\n 🔍  1. Examine the hidden spot")
+                print("\n\n 🚫  2. Walk away, it might be risky")
+                print("\n\n 💰  3. Elidor Shop")
+                print("\n\n 📖  4. Player Info")
+                choice = get_choice(4)
+                if choice == 1:
+                    print("\n After a moment of concentration, Elidor chants a"
+                          " soft incantation, and the illusion starts to fade,"
+                          " revealing a hidden alcove.\n Inside, you find "
+                          "a mysterious, ancient-looking chest.")
+                    print("\n Inside, you find a bejeweled Long Sword.")
+                    print(" It may not be much but you feel like it could make"
+                          " your life easier")
+                    print(" It might not be a marvelous treasure, but it feels"
+                          " like it could be quite useful.")
+                    print("\n You ponder why someone would go through so much"
+                          " trouble to hide a mere sword.")
+                    handle_loot_world("Long Sword")
+                    while True:
+                        print('\n Elidor glances around warily and leans in to'
+                              ' whisper, "We should leave quickly. The one '
+                              'responsible for the illusion might return."')
+                        print("\n 🚶  1. He is right, we should leave.")
+                        print("\n\n 💰  2. Elidor Shop")
+                        print("\n\n 📖  3. Player Info")
+                        choice = get_choice(3)
+                        if choice == 1:
+                            river_second_scene()
+                            break
+                        elif choice == 2:
+                            elidor_shop()
+                        elif choice == 3:
+                            print_player_info_menu()
+                    break
+                elif choice == 2:
+                    print('\n "There are things in this world best left'
+                          ' undiscovered," Elidor murmurs, his gaze lingering'
+                          " on the concealed spot for a moment longer.")
+                    print("\n You nod, feeling a mixture of relief and"
+                          ' curiosity. "There\'s a reason it was hidden, "'
+                          'you reason aloud, "and we might not want to know'
+                          ' why."')
+                    print("\n With a final glance over your shoulder, you and"
+                          " Elidor continue along the river, the gentle sounds"
+                          " soon drowning out the unease. The path may have"
+                          " presented an unexpected mystery, but sometimes,"
+                          " it's best to choose safety over curiosity.")
+                    while True:
+                        print("\nn What to do now?")
+                        print("\n 🚶  1. Let us leave this place behind")
+                        print("\n\n 💰  2. Elidor Shop")
+                        print("\n\n 📖  3. Player Info")
+                        choice = get_choice(3)
+                        if choice == 1:
+                            print(" With a nod to Elidor, you decide it's time"
+                                  " to move on. The two of you gather your"
+                                  " belongings, leaving the mysteries of the"
+                                  " riverbank behind as you continue your"
+                                  " journey.")
+                            river_second_scene()
+                            break
+                        elif choice == 2:
+                            elidor_shop()
+                        elif choice == 3:
+                            print_player_info_menu()
+                    break
+                elif choice == 3:
+                    elidor_shop()
+                elif choice == 4:
+                    print_player_info_menu()
+        elif choice == 2:
+            print(" You smile and shake your head, choosing instead to sit and"
+                  " relax by the riverside."
+                  "\n The journey continues peacefully as you absorb the"
+                  " serenity around you.")
+        elif choice == 3:
+            elidor_shop()
+        elif choice == 4:
+            print_player_info_menu()
+
+        break
+
+
+def river_second_scene():
+    """
+    Second scene of river
+    """
+    print("This is the second scene")
 
 
 def main_road_path():
@@ -1315,7 +1498,8 @@ def main_road_path_guard_scene():
         elif choice == 2:
             print('\n "I just found it," you reply hesitantly.')
             print("\n The guard looks skeptical but decides not to push the"
-                  'matter further.\n "Very well, but we\'re keeping an eye on"'
+                  ' matter further.\n "Very well, but we\'re keeping an eye'
+                  ' on"'
                   ' you. Enter the town, but cause no trouble."')
             print("\n Although the guard's suspicions linger, you're granted "
                   "entry into the town."
@@ -1669,10 +1853,10 @@ def forest_end_scene():
           " signals the day's end. Relief washes over you; civilization is "
           "finally within reach.")
     while True:
-        print(" 🚶  1. With anticipation in your heart, you decide to journey"
+        print("\n 🚶  1. With anticipation in your heart, you decide to journey"
               " towards the bustling town ahead!")
-        print(" 💰  2. Elidor Shop")
-        print(" 📖  3. Player Info")
+        print("\n\n 💰  2. Elidor Shop")
+        print("\n\n 📖  3. Player Info")
         choice = get_choice(3)
         if choice == 1:
             print(" You head towards the town")
