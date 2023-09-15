@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 """
 This module contains the main game
 """
@@ -83,7 +84,9 @@ enemy = {}
 
 player = {}
 
-battle_result = ""
+battle_result = ""  # pylint: disable=invalid-name
+
+shop_coupon = False  # pylint: disable=invalid-name
 
 player_critical_messages = [
     " 💥  YOU DEALT A POWERFUL CRITICAL BLOW!",
@@ -97,7 +100,7 @@ player_critical_messages = [
 
 enemy_critical_messages = [
     " 💥  THE ENEMY CLARIFIES YOUR MORTALITY WITH A SINGLE"
-    "  CRITICAL STRIKE!",
+    " CRITICAL STRIKE!",
     " 💥  THE ENEMY DEALT TO YOU A CRITICAL INJURY!",
     " 💥  THE ENEMY STRIKES WITH UNBRIDLED FURY!",
     " 💥  A CHILLING CRITICAL BLOW FROM THE ENEMY!",
@@ -238,11 +241,24 @@ def reset_enemy():
             "Current HP": 30,
             "Atk": 20,
             "Def": 10,
-            "Crit": 10,
+            "Crit": 20,
             "Run": 100,
 
             "Loot": {
                 "Gold": 30,
+            }
+        },
+        "Petalback": {
+            "Name": "Petalback",
+            "Max HP": 70,
+            "Current HP": 70,
+            "Atk": 25,
+            "Def": 13,
+            "Crit": 5,
+            "Run": 0,
+
+            "Loot": {
+                "Gold": 50,
             }
         }
     }
@@ -305,7 +321,8 @@ class Combat:
     """
     Handles the Combat
     """
-    def __init__(self, player, enemy):
+
+    def __init__(self, player, enemy):  # pylint: disable=redefined-outer-name
         """
         Something
         """
@@ -316,14 +333,13 @@ class Combat:
         """
         Actions to take when the player defeats the enemy in combat
         """
-        global battle_result
+        global battle_result  # pylint: disable=global-statement
         battle_result = "Victory"
         print()
         print("===== VICTORY =====")
         print()
         print(f" You have defeated the {self.enemy['Name']}!")
         self.handle_loot()
-        reset_enemy()
         return battle_result
 
     def check_drop(self):
@@ -457,7 +473,7 @@ class Combat:
         """
         Compares stats of player and enemy
         """
-        print("PLAYER\t\tENEMY")
+        print("PLAYER\t\t\tENEMY")
         print_horizontal_line()
         print(f" Name: {self.player['Stats']['Name']}\t\tName: "
               f"{self.enemy['Name']}")
@@ -483,9 +499,9 @@ class Combat:
         Handles the enemy's attack on the player.
         """
         dmg_to_player = round(
-                        (self.enemy["Atk"] - self.player
-                         ["Stats"]["Def"]) * self.dmg_roll()
-                        )
+            (self.enemy["Atk"] - self.player
+             ["Stats"]["Def"]) * self.dmg_roll()
+        )
         if critical_hit(self.enemy):
             dmg_to_player = round(dmg_to_player * 1.5)
             print(random.choice(enemy_critical_messages))
@@ -569,7 +585,8 @@ class Combat:
             elif choice == 4:
                 if player_run_away(self.enemy['Run']):
                     print(" 💨  You successfully ran away!")
-                    global battle_result
+                    print_horizontal_line()
+                    global battle_result  # pylint: disable=global-statement
                     battle_result = "Run"
                     return battle_result  # Exits the combat loop
 
@@ -620,16 +637,16 @@ def print_player_info_menu():
     print_horizontal_line()
     print(" ===== POTIONS =====")
     print(
-          f" Potion: {player['Potions']['Potion']['Quantity']}"
-          f"\t\t Heal Amount: {player['Potions']['Potion']['Heal Amount']}")
+        f" Potion: {player['Potions']['Potion']['Quantity']}"
+        f"\t\t Heal Amount: {player['Potions']['Potion']['Heal Amount']}")
     print(
-          f" Mega Potion: {player['Potions']['Mega Potion']['Quantity']}"
-          f"\t\t Heal Amount: "
-          f"{player['Potions']['Mega Potion']['Heal Amount']}")
+        f" Mega Potion: {player['Potions']['Mega Potion']['Quantity']}"
+        f"\t\t Heal Amount: "
+        f"{player['Potions']['Mega Potion']['Heal Amount']}")
     print(
-          f" Ultra Potion: {player['Potions']['Ultra Potion']['Quantity']}"
-          f"\t Heal Amount:"
-          f" {player['Potions']['Ultra Potion']['Heal Amount']}")
+        f" Ultra Potion: {player['Potions']['Ultra Potion']['Quantity']}"
+        f"\t Heal Amount:"
+        f" {player['Potions']['Ultra Potion']['Heal Amount']}")
     print_horizontal_line()
     print(" ===== EQUIPMENT =====")
     print()  # Prints an empty line for separation
@@ -775,6 +792,32 @@ def print_player_info_menu():
     print(f"\t\t\t\t Max HP: +{hands_hp_stat}")
 
 
+def player_rest(percentage_recovery):
+    """
+    When the option to rest is available, this function allows the player
+    to recover a specified percentage of their Max HP without exceeding
+    the Max HP value.
+
+    Parameters:
+    - percentage_recovery: float representing the amount of Max HP healed
+                           For Example: 0.5 = 50% of Max HP healed.
+
+    Returns:
+    - An integer wich represent the amount of HP healed
+    """
+    current_hp = player["Stats"]["Current HP"]
+    max_hp = player["Stats"]["Max HP"]
+    hp_recovery = round(max_hp * percentage_recovery)
+
+    # Ensures that the current HP doesn't exceed max HP
+    new_hp = min(current_hp + hp_recovery, max_hp)
+
+    hp_healed = new_hp - current_hp
+    player["Stats"]["Current HP"] = new_hp
+
+    return hp_healed
+
+
 def intro():
     """
     Provides the initial game introduction to the player.
@@ -887,6 +930,7 @@ def second_scene():
                   "\n With a determined glint in your eyes, you charge towards"
                   " the goblin.")
             fight_pause_and_continue()
+            reset_enemy()
             battle = Combat(player, enemy["Goblin"])
             battle.combat_loop()
             break
@@ -902,6 +946,7 @@ def second_scene():
             print('\n With no other choice, you brace yourself'
                   " to fend off the goblin.")
             fight_pause_and_continue()
+            reset_enemy()
             battle = Combat(player, enemy["Goblin"])
             battle.combat_loop()
             break
@@ -1065,7 +1110,7 @@ def elidor_shop():
             if player["Stats"]["Gold"] >= 40:
                 player["Stats"]["Gold"] -= 40
                 player["Potions"]["Mega Potion"]["Quantity"] += 1
-                print(" You purchased an Mega Potion!")
+                print(" You purchased a Mega Potion!")
             else:
                 print(" ❌ You don't have enough Gold.")
         elif choice == 3:
@@ -1119,12 +1164,14 @@ def fifth_scene():
             print("\n Deciding to stick to what seems safest, you and Elidor"
                   "\n continue on the main road.")
             main_road_path()
+            break
         elif choice == 3:
             print("\n Feeling adventurous, you decide to delve into"
                   " the woods.")
             print(" Were it not for Medea, Elidor would be completely "
                   "obscured by the tall grass.")
             forest_path()
+            break
         elif choice == 4:
             elidor_shop()
         elif choice == 5:
@@ -1149,6 +1196,7 @@ def main_road_path():
     print(" The caravan's fate hangs in the balance as the clash intensifies,")
     print(" and your actions will determine its outcome.")
     fight_pause_and_continue()
+    reset_enemy()
     battle = Combat(player, enemy["Goblin"])
     battle.combat_loop()
     print_horizontal_line()
@@ -1164,6 +1212,7 @@ def main_road_path():
     print("\n Before you can utter a word to Elidor, the looming"
           " goblin is upon you!")
     fight_pause_and_continue()
+    reset_enemy()
     battle = Combat(player, enemy["Goblin"])
     battle.combat_loop()
     print_horizontal_line()
@@ -1174,6 +1223,7 @@ def main_road_path():
     print("\n Without hesitation, you summon your remaining strength "
           "\n and charge at the goblin, desperate to reach her in time.")
     fight_pause_and_continue()
+    reset_enemy()
     battle = Combat(player, enemy["Goblin"])
     battle.combat_loop()
     print_horizontal_line()
@@ -1191,6 +1241,7 @@ def main_road_path():
     print(" But there's no time for contemplation; the chief charges you,"
           "\n and a battle with this fearsome foe is inevitable.")
     fight_pause_and_continue()
+    reset_enemy()
     battle = Combat(player, enemy["Goblin Chief"])
     battle.combat_loop()
     print_horizontal_line()
@@ -1212,10 +1263,10 @@ def main_road_path():
           'family members\n and tend to the wounded."')
     print(' "We don\'t want to hold you back.\n May the'
           ' road ahead be kind to you, brave traveler."')
-    main_road_path_town_scene()
+    main_road_path_guard_scene()
 
 
-def main_road_path_town_scene():
+def main_road_path_guard_scene():
     """
     Second scene of main road path branch
     """
@@ -1235,8 +1286,8 @@ def main_road_path_town_scene():
           " in his voice.")
 
     while True:
-        print("\n 1. Confirm that you defeated the goblin chief.")
-        print(" 2. Deny and say you found the gauntlet.")
+        print("\n\n 👍  1. Confirm that you defeated the goblin chief.")
+        print("\n 👎  2. Deny and say you found the gauntlet.")
         choice = get_choice(2)
 
         if choice == 1:
@@ -1250,20 +1301,28 @@ def main_road_path_town_scene():
                   ' This is yours now."')
             print("\n You obtained 100 Gold  💰  from the guard!")
             player["Stats"]["Gold"] += 100
-            print(" Furthermore, he hands you a special coupon."
+            print("\n Furthermore, he hands you a special coupon."
                   'This is for the town shop. They\'ll give you a good deal'
                   ' with this."')
             print()
             print(" 🎉  You obtained a Shop Coupon!  🎉")
             print("\n With a warm gesture, the guard welcomes you into the"
                   " town.")
+            global shop_coupon  # pylint: disable=global-statement
+            shop_coupon = True
             town_scene()
+            break
         elif choice == 2:
-            print("\n'I just found it,' you reply hesitantly.")
+            print('\n "I just found it," you reply hesitantly.')
             print("\n The guard looks skeptical but decides not to push the"
-                  "matter further. 'Very well, but we're keeping an eye on"
-                  " you. Enter the town, but cause no trouble.'")
+                  'matter further.\n "Very well, but we\'re keeping an eye on"'
+                  ' you. Enter the town, but cause no trouble."')
+            print("\n Although the guard's suspicions linger, you're granted "
+                  "entry into the town."
+                  "\n You step through the gate with a slight unease in your"
+                  " step.")
             town_scene()
+            break
 
 
 def forest_path():
@@ -1295,16 +1354,18 @@ def forest_path():
                   "\n The decision seems to have been made for you."
                   "\n It's do or die now!!")
             fight_pause_and_continue()
+            reset_enemy()
             battle = Combat(player, enemy["Sparky Tail"])
             battle.combat_loop()
             if battle_result == "Victory":
                 forest_path_second_scene(True)
+                break
             elif battle_result == "Run":
                 forest_path_second_scene(False)
+                break
         elif choice == 2:
-            print("\n You decide it's best to let the creature be. As you move"
-                  " on, you notice it curiously trailing you from a distance.")
             forest_path_second_scene(False)
+            break
 
 
 def forest_path_second_scene(defeated_creature):
@@ -1312,16 +1373,328 @@ def forest_path_second_scene(defeated_creature):
     Creates a scenario depending on the battle result
     """
     if defeated_creature:
-        print("Hey Asshole")
+        print("\n The remnants of the battle linger in the air, and Sparky"
+              " Tail's defeated form serves as a"
+              " somber reminder of the confrontation.")
+        print("\n You find yourself surrounded by tall grass, "
+              "the direction you came from is clear."
+              "\n The serenity of the forest contrasts with the adrenaline"
+              " still coursing through your veins.")
+        while True:
+            print_horizontal_line()
+            print("\n 🚶  1. Push onward through the opposite side of the"
+                  "     grassy area,\n hoping to find a way out.")
+            print("\n\n 💰  2. Elidor Shop")
+            print("\n\n 📖  3. Player Info")
+            choice = get_choice(3)
+            if choice == 1:
+                print("\n Determined, you tread carefully, pushing the tall"
+                      " grass aside,\n vigilant"
+                      " for any signs of danger or another encounter.")
+                break
+            elif choice == 2:
+                elidor_shop()
+            elif choice == 3:
+                print_player_info_menu()
+
+        print("\n As you make your way through the forest, you suddenly hear "
+              "a rustling...")
+        print("\n From behind the dense foliage, a peculiar figure emerges."
+              "\n Taller than most humans, with rough, greenish skin, he's"
+              " dressed in a rather unconventional mix of attire."
+              "\n Wearing a too-tight-for-him cap backward, his pointy ears"
+              " poking through,\n and oversized cargo shorts that barely fit"
+              " his bulky troll frame, he looks like someone who raided a"
+              " teenager's closet.")
+        print("\n Around his waist is a belt with numerous tiny cages, each "
+              "containing what appears to be a miniature creature."
+              "\n He holds a red and white orb-like object in one hand, which"
+              " he periodically tosses up and down.")
+        print('\n "Yo! Name\'s Brockmire, the Beast Master!" he declares with'
+              ' a'
+              ' flamboyant pose,\n "And... possibly the world\'s best Beast'
+              ' Trainer! What brings you here in my turf?"')
+        print_horizontal_line()
+        while True:
+            print("\n 🖐️  1. Greet him politely.")
+            print("\n\n 🗡️  2. Boast about your recent kill.")
+            print("\n\n 💰  3. Elidor Shop")
+            print("\n\n 📖  4. Player Info")
+            choice = get_choice(4)
+            if choice == 1:
+                print('\n "Oh, hey Brockmire," you greet cautiously,'
+                      ' "We were just... uh, passing through?"')
+                break
+            elif choice == 2:
+                print_horizontal_line()
+                print('\n With pride swelling in your chest, you announce,'
+                      ' "You may be a beast trainer but I am a beast slayer!'
+                      '\n Just moments ago, I bested a formidable creature!'
+                      '\n It stood no chance against my prowess!"')
+                break
+            elif choice == 3:
+                elidor_shop()
+            elif choice == 4:
+                print_player_info_menu()
+
+        print('\n Brockmire responds, "Hm... Really? Because it seems'
+              ' you\'ve encountered one of my precious critters.'
+              '\n My Sparky Tail..."')
+        print("\n The white orb begins to glow dimly, resonating with the"
+              " residual energy left behind from your confrontation with"
+              " the creature.")
+        print(" A sinking feeling washes over you as you piece together"
+              " that the creature was more than just a wild beast..\n"
+              " It was Brockmire's cherished companion. The air grows heavy"
+              " with tension,\n Brockmire's eyes darkening with a mix of rage"
+              " and sorrow.")
+        print_horizontal_line()
+
+        def display_message():
+            """
+            Test
+            """
+            print("\n Without another word, he reaches for one of the orbs "
+                  "attached to his belt.\n With a deft motion, he releases its"
+                  " contents,"
+                  " which materialize into a perplexing creature.\n It looks"
+                  " like"
+                  " a hulking turtle, but instead of a protective shell,"
+                  "a vibrant,\n  flower-like bloom emerges from its back.")
+
+            print('\n "Meet Petalback," Brockmire murmurs with a sinister'
+                  ' smile,'
+                  '\n "And I assure you, it\'s not as gentle as Sparky Tail'
+                  ' was."')
+
+            print("\n\n With no other choice left, you brace for combat!")
+
+        def fight_with_petalback():
+            """
+            Repeated code
+            """
+            display_message()
+            fight_pause_and_continue()
+            reset_enemy()
+            battle = Combat(player, enemy["Petalback"])
+            battle.combat_loop()
+        while True:
+            print('"\n 🗣  1. It attacked us first! We had to defend'
+                  ' ourselves!"')
+            print("\n 🤐  2. Remain silent, avoiding his intense gaze.")
+            print('\n 🙏  3. "I\'m truly sorry. I didn\'t realize it belonged'
+                  ' to someone. Can we make it up to you?"')
+            print('\n 💪  4. "Your creature should\'ve been stronger if it'
+                  ' didn\'t want to be defeated."')
+            choice = get_choice(4)
+            if choice == 1:
+                print('\n "Defense, huh? In its own home? On its own turf?"'
+                      '\n Brockmire questions, a hint of anger in his voice.')
+                fight_with_petalback()
+                break
+            elif choice == 2:
+                print('\n\n "Silence. Just as well. The forest tells me all I'
+                      ' need to know," Brockmire hisses.')
+                fight_with_petalback()
+                break
+            elif choice == 3:
+                print('\n "Make it up? Heh, you\'ll pay with your life,"'
+                      ' Brockmire smirks, his intentions becoming very clear.')
+                fight_with_petalback()
+                break
+            elif choice == 4:
+                print('\n "Is that so? Well, let\'s test the strength'
+                      ' of my other critters then!"')
+                fight_with_petalback()
+                break
+        print_horizontal_line()
+        print(" As Petalback's lifeless form rests before you,"
+              " you can see Brockmire's anger intensifying."
+              "\n He's not done yet!")
+        print(" Clutching another one of those cages, Brockmire's hand"
+              " trembles with a mix of fury and anticipation.")
+        print(" The last battle took a toll on you, and the thought of facing"
+              " another of Brockmire's creatures sends a shiver"
+              " down your spine.")
+        print(" Making a split-second decision, you dash towards him,"
+              " hoping to catch him off-guard and prevent another battle.")
+        print("\n In the split second it took you to lunge at him,"
+              " Brockmire vanished into the dense underbrush,"
+              "\n leaving only the faintest rustle as evidence of his escape.")
+        print(" You stand amidst the tall grass, your breathing heavy and the"
+              " cool forest air filling your lungs."
+              "\n The immediate silence feels almost deafening after the"
+              " heated confrontation.\n Gazing around, the tranquility of the"
+              " forest seems almost surreal,\n making you question the reality"
+              " of the battles you've just experienced.")
+        print(" A fleeting thought crosses your mind: Could things have been"
+              " handled differently?"
+              "\n But now, there's only the path ahead and the choices yet to"
+              " come.")
+        print_horizontal_line()
+        while True:
+            print("\n 🛌  1. Take a moment to rest.")
+            print("\n 🚶  2. With caution in your steps, continue forward,"
+                  "\n unwilling to tempt fate with another unexpected"
+                  " encounter.")
+            print("\n 💰  3. Elidor Shop ")
+            print("\n 📖  4. Player Info")
+            choice = get_choice(4)
+            if choice == 1:
+                print("\n You find a quiet spot amidst the undergrowth,"
+                      " a patch of soft moss beckoning you.")
+                print(" Sitting down, you let the serene environment envelop"
+                      " you, "
+                      "momentarily shutting out the memories"
+                      " of recent events.")
+                print("\n After a few moments of tranquility, Elidor's voice"
+                      " breaks the silence.")
+                print('"You know, we\'ve been through quite a lot in such a'
+                      ' short time," he muses.'
+                      '\n "It\'s unfortunate how certain events unfolded, but'
+                      ' please know that I don\'t blame you.'
+                      ' Truth be told, had I been in your shoes, I might have'
+                      ' reacted the same way."')
+                print("\n His words bring a semblance of comfort,"
+                      " reaffirming the bond the two of you share.")
+                recovered_hp = player_rest(0.5)
+                print(f"\n You rested and recovered {recovered_hp} ❤️  HP.")
+                forest_end_scene()
+                break
+            elif choice == 2:
+                forest_end_scene()
+                break
+            elif choice == 3:
+                elidor_shop()
+            elif choice == 4:
+                print_player_info_menu()
     elif not defeated_creature:
-        print("Hey Thank you!")
+        print("\n You decide it's best to let the creature be.")
+        print("\n As you move on, you notice it curiously trailing you"
+              " from a distance.")
+        while True:
+            print_horizontal_line()
+            print("\n 🚶  1. Push onward through the opposite side of the"
+                  " grassy area,\n     hoping to find a way out.")
+            print("\n\n 💰  2. Elidor Shop")
+            print("\n\n 📖  3. Player Info")
+            choice = get_choice(3)
+            if choice == 1:
+                print("\n Determined, you tread carefully, pushing the tall"
+                      " grass aside,\n vigilant"
+                      " for any signs of danger or another encounter.")
+                break
+        print("\n As you make your way through the forest, you suddenly hear "
+              "a rustling...")
+        print("\n From behind the dense foliage, a peculiar figure emerges."
+              "\n Taller than most humans, with rough, greenish skin, he's"
+              " dressed in a rather unconventional mix of attire."
+              "\n Wearing a too-tight-for-him cap backward, his pointy ears"
+              " poking through,\n and oversized cargo shorts that barely fit"
+              " his bulky troll frame, he looks like someone who raided a"
+              " teenager's closet.")
+        print("\n Around his waist is a belt with numerous tiny cages, each "
+              "containing what appears to be a miniature creature."
+              "\n He holds a red and white orb-like object in one hand, which"
+              " he periodically tosses up and down.")
+        print('\n "Yo! Name\'s Brockmire, the BeastMaster!" he declares with a'
+              ' flamboyant pose,\n "And... possibly the world\'s best Beast'
+              ' Trainer! What brings you here in my turf?"')
+        print_horizontal_line()
+        while True:
+            print("\n 💬  1. I came from..")
+            print("\n\n 💬  2. I just want..")
+            print("\n\n 💬  3. What..?!?")
+            print("\n\n 💰  4. Elidor Shop")
+            print("\n\n 📖  5. Player Info")
+            choice = get_choice(5)
+            if choice == 1 or choice == 2 or choice == 3:
+                print("\n Before you can utter any more words, Brockmire's"
+                      " eyes widen, and his excitement is palpable.")
+                print(' "YOU BROUGHT SPARKY TAIL BACK TO ME?!?" he exclaims.')
+                print('\n With genuine gratitude in his eyes, he continues,'
+                      '\n "I lost him a while back. I can\'t thank you '
+                      'enough."')
+                print("\n Brockmire hands you a pouch containing 100 Gold")
+                player["Stats"]["Gold"] += 100
+                print("\n You obtained 100 Gold 💰  !")
+                print('\n Brokmire: "Consider this a token of my'
+                      ' appreciation," he'
+                      " adds, with a hint of a smile.")
+                break
+            elif choice == 4:
+                elidor_shop()
+            elif choice == 5:
+                print_player_info_menu()
+
+        while True:
+            print_horizontal_line()
+            print('\n 🌲  1. "Thanks! Any idea where I should head next?"')
+            print('\n\n 🌲  2. "Thanks! Is there a nearby town or'
+                  ' settlement?"')
+            print('\n\n 🌲  3. "Thanks! I\'m kind of lost. Which way'
+                  ' should I go?"')
+            choice = get_choice(3)
+
+            if choice == 1 or choice == 2 or choice == 3:
+                print("\n Brockmire points towards a well-trodden path"
+                      " that's "
+                      "faintly visible through the trees."
+                      '\n "That\'s the way to the nearest town.'
+                      ' Just keep following that path,'
+                      '\n and you\'ll be there in no time."')
+                print('\n \"Take care on your journey, and thanks again'
+                      ' for'
+                      ' bringing back Sparky Tail. Farewell!"'
+                      "\n He waves, turning his attention back to the"
+                      " critter"
+                      " with a look of deep affection on his face.")
+                break
+
+        forest_end_scene()
+
+
+def forest_end_scene():
+    """
+    Handles the end of the forest scene
+    """
+    print("\n 🌲  As you tread cautiously, the dense canopy of the forest"
+          " begins to thin."
+          " The muted sounds of wildlife are gradually replaced by "
+          "a distant hum of activity."
+          " A few more steps and the forest edge reveals itself, presenting a"
+          " breathtaking vista: a quaint town, its rooftops bathed in the "
+          "soft glow of the setting sun."
+          " People can be seen moving about, and the distant chime of a bell"
+          " signals the day's end. Relief washes over you; civilization is "
+          "finally within reach.")
+    while True:
+        print(" 🚶  1. With anticipation in your heart, you decide to journey"
+              " towards the bustling town ahead!")
+        print(" 💰  2. Elidor Shop")
+        print(" 📖  3. Player Info")
+        choice = get_choice(3)
+        if choice == 1:
+            print(" You head towards the town")
+            town_guard_scene()
+        elif choice == 2:
+            elidor_shop()
+        elif choice == 3:
+            print_player_info_menu()
+
+
+def town_guard_scene():
+    """
+    Handles scenario if coming from lake or forest
+    """
+    print("HALT YOU DUMBASS")
 
 
 def town_scene():
     """
     Handles town scene
     """
-    print("TOWN")
+    print(" TOWN")
 
 
 def main():
