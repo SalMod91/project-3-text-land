@@ -1845,17 +1845,18 @@ def forest_path():
     print_horizontal_line()
     print("\n While traversing the tall grass, the rustling of leaves draws"
           " your attention.")
-    print("\n Emerging from the bushes is a small, yellow-furred creature with"
-          " rosy cheeks and a lightning-shaped tail.")
-    print("\n It looks startled, eyes wide as it assesses you. You're not"
+    print("\n Emerging from the bushes is a small, yellow-furred creature"
+          "\n with rosy cheeks and a lightning-shaped tail.")
+    print("\n It looks startled, eyes wide as it assesses you.\n You're not"
           " sure if it's about to attack or bolt away.")
     print("\n As you cautiously approach the creature, you notice jolts of "
-          "lightning emanating from its rosy cheeks, indicating its distress.")
+          "lightning\n emanating from its rosy cheeks,"
+          " indicating its distress.")
     print("\n The fact that this creature can harness what appears to be"
-          " elemental magic is a cause for concern.")
+          "\n elemental magic is a cause for concern.")
     while True:
         print("\n 🏹  1. Preemptively attack the creature."
-              "\n        It is maybe better to be safe than sorry.")
+              "\n      It is maybe better to be safe than sorry.")
         print("\n 🚶  2. Try to ignore it and continue on your path.")
         choice = get_choice(2)
         if choice == 1:
@@ -1891,12 +1892,12 @@ def forest_path_second_scene(defeated_creature):
     """
     if defeated_creature:
         print("\n The remnants of the battle linger in the air, and Sparky"
-              " Tail's defeated form serves as a"
+              " Tail's\n defeated form serves as a"
               " somber reminder of the confrontation.")
         print("\n You find yourself surrounded by tall grass, "
-              "the direction you came from is clear."
+              "\n the direction you came from is clear."
               "\n The serenity of the forest contrasts with the adrenaline"
-              " still coursing through your veins.")
+              "\n still coursing through your veins.")
         while True:
             print_horizontal_line()
             print("\n 🚶  1. Push onward through the opposite side of the"
@@ -1917,20 +1918,20 @@ def forest_path_second_scene(defeated_creature):
         print("\n As you make your way through the forest, you suddenly hear "
               "a rustling...")
         print("\n From behind the dense foliage, a peculiar figure emerges."
-              "\n Taller than most humans, with rough, greenish skin, he's"
+              "\n Taller than most humans, with rough, greenish skin,\n he's"
               " dressed in a rather unconventional mix of attire."
               "\n Wearing a too-tight-for-him cap backward, his pointy ears"
               " poking through,\n and oversized cargo shorts that barely fit"
-              " his bulky troll frame, he looks like someone who raided a"
+              " his bulky troll frame,\n he looks like someone who raided a"
               " teenager's closet.")
-        print("\n Around his waist is a belt with numerous tiny cages, each "
+        print("\n Around his waist is a belt with numerous tiny cages,\n each "
               "containing what appears to be a miniature creature."
-              "\n He holds a red and white orb-like object in one hand, which"
-              " he periodically tosses up and down.")
+              "\n He holds a red and white orb-like object in one hand,\n"
+              " which he periodically tosses up and down.")
         print('\n "Yo! Name\'s Brockmire, the Beast Master!" he declares with'
               ' a'
               ' flamboyant pose,\n "And... possibly the world\'s best Beast'
-              ' Trainer! What brings you here in my turf?"')
+              ' Trainer!\n1 What brings you here in my turf?"')
         print_horizontal_line()
         while True:
             print("\n 🖐️  1. Greet him politely.")
@@ -1939,13 +1940,13 @@ def forest_path_second_scene(defeated_creature):
             print("\n\n 📖  4. Player Info")
             choice = get_choice(4)
             if choice == 1:
-                print('\n "Oh, hey Brockmire," you greet cautiously,'
+                print('\n "Oh, hey Brockmire," you greet cautiously,\n'
                       ' "We were just... uh, passing through?"')
                 break
             elif choice == 2:
                 print_horizontal_line()
                 print('\n With pride swelling in your chest, you announce,'
-                      ' "You may be a beast trainer but I am a beast slayer!'
+                      '\n "You may be a beast trainer but I am a beast slayer!'
                       '\n Just moments ago, I bested a formidable creature!'
                       '\n It stood no chance against my prowess!"')
                 break
@@ -1954,14 +1955,14 @@ def forest_path_second_scene(defeated_creature):
             elif choice == 4:
                 print_player_info_menu()
 
-        print('\n Brockmire responds, "Hm... Really? Because it seems'
+        print('\n Brockmire responds, "Hm... Really?\n Because it seems'
               ' you\'ve encountered one of my precious critters.'
               '\n My Sparky Tail..."')
         print("\n The white orb begins to glow dimly, resonating with the"
-              " residual energy left behind from your confrontation with"
+              " residual energy\n left behind from your confrontation with"
               " the creature.")
         print(" A sinking feeling washes over you as you piece together"
-              " that the creature was more than just a wild beast..\n"
+              "\n that the creature was more than just a wild beast..\n"
               " It was Brockmire's cherished companion. The air grows heavy"
               " with tension,\n Brockmire's eyes darkening with a mix of rage"
               " and sorrow.")
@@ -1974,7 +1975,7 @@ def forest_path_second_scene(defeated_creature):
             print("\n Without another word, he reaches for one of the orbs "
                   "attached to his belt.\n With a deft motion, he releases its"
                   " contents,"
-                  " which materialize into a perplexing creature.\n It looks"
+                  "\n which materialize into a perplexing creature.\n It looks"
                   " like"
                   " a hulking turtle, but instead of a protective shell,"
                   "a vibrant,\n  flower-like bloom emerges from its back.")
@@ -2026,54 +2027,54 @@ def forest_path_second_scene(defeated_creature):
                 break
         print_horizontal_line()
         print(" As Petalback's lifeless form rests before you,"
-              " you can see Brockmire's anger intensifying."
+              "\n you can see Brockmire's anger intensifying."
               "\n He's not done yet!")
-        print(" Clutching another one of those cages, Brockmire's hand"
+        print(" Clutching another one of those cages,\n Brockmire's hand"
               " trembles with a mix of fury and anticipation.")
         print(" The last battle took a toll on you, and the thought of facing"
               " another of Brockmire's creatures sends a shiver"
               " down your spine.")
         print(" Making a split-second decision, you dash towards him,"
-              " hoping to catch him off-guard and prevent another battle.")
+              "\n hoping to catch him off-guard and prevent another battle.")
         print("\n In the split second it took you to lunge at him,"
-              " Brockmire vanished into the dense underbrush,"
+              "\n Brockmire vanished into the dense underbrush,"
               "\n leaving only the faintest rustle as evidence of his escape.")
-        print(" You stand amidst the tall grass, your breathing heavy and the"
-              " cool forest air filling your lungs."
+        print(" You stand amidst the tall grass, your breathing heavy\n and"
+              " the cool forest air filling your lungs."
               "\n The immediate silence feels almost deafening after the"
               " heated confrontation.\n Gazing around, the tranquility of the"
               " forest seems almost surreal,\n making you question the reality"
               " of the battles you've just experienced.")
-        print(" A fleeting thought crosses your mind: Could things have been"
-              " handled differently?"
+        print(" A fleeting thought crosses your mind:\n Could things"
+              " have been handled differently?"
               "\n But now, there's only the path ahead and the choices yet to"
               " come.")
         print_horizontal_line()
         while True:
             print("\n 🛌  1. Take a moment to rest.")
             print("\n 🚶  2. With caution in your steps, continue forward,"
-                  "\n unwilling to tempt fate with another unexpected"
+                  "\n     unwilling to tempt fate with another unexpected"
                   " encounter.")
             print("\n 💰  3. Elidor Shop ")
             print("\n 📖  4. Player Info")
             choice = get_choice(4)
             if choice == 1:
                 print("\n You find a quiet spot amidst the undergrowth,"
-                      " a patch of soft moss beckoning you.")
+                      "\n a patch of soft moss beckoning you.")
                 print(" Sitting down, you let the serene environment envelop"
-                      " you, "
+                      " you,\n "
                       "momentarily shutting out the memories"
                       " of recent events.")
                 print("\n After a few moments of tranquility, Elidor's voice"
                       " breaks the silence.")
                 print('"You know, we\'ve been through quite a lot in such a'
                       ' short time," he muses.'
-                      '\n "It\'s unfortunate how certain events unfolded, but'
-                      ' please know that I don\'t blame you.'
-                      ' Truth be told, had I been in your shoes, I might have'
-                      ' reacted the same way."')
+                      '\n "It\'s unfortunate how certain events unfolded,\n'
+                      ' but please know that I don\'t blame you.'
+                      '\n Truth be told, had I been in your shoes, I might'
+                      ' have reacted the same way."')
                 print("\n His words bring a semblance of comfort,"
-                      " reaffirming the bond the two of you share.")
+                      "\n reaffirming the bond the two of you share.")
                 recovered_hp = player_rest(0.5)
                 print(f"\n You rested and recovered {recovered_hp} ❤️  HP.")
                 forest_end_scene()
@@ -2175,19 +2176,20 @@ def forest_end_scene():
     """
     This function represents the end scene of the forest path branch.
     """
+    print_horizontal_line()
     print("\n As you tread cautiously, the dense canopy of the forest"
           " begins to thin."
-          " The muted sounds of wildlife are gradually replaced by "
+          "\n The muted sounds of wildlife are gradually replaced\n by "
           "a distant hum of activity."
-          " A few more steps and the forest edge reveals itself, presenting a"
-          " breathtaking vista: a quaint town, its rooftops bathed in the "
-          "soft glow of the setting sun."
-          " People can be seen moving about, and the distant chime of a bell"
-          " signals the day's end. Relief washes over you; civilization is "
+          "\n A few more steps and the forest edge reveals itself,\n"
+          " presenting a breathtaking vista:\n a quaint town, its"
+          " rooftops bathed in the soft glow of the setting sun."
+          "\n People can be seen moving about, and the distant chime of a bell"
+          " signals the day's end.\n Relief washes over you; civilization is "
           "finally within reach.")
     while True:
-        print("\n 🚶  1. With anticipation in your heart, you decide to journey"
-              " towards the bustling town ahead!")
+        print("\n 🚶  1. With anticipation in your heart,\n you decide to"
+              " journey towards the bustling town ahead!")
         print("\n\n 💰  2. Elidor Shop")
         print("\n\n 📖  3. Player Info")
         choice = get_choice(3)
