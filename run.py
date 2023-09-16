@@ -1474,25 +1474,26 @@ def river_first_scene():
                     break
                 elif choice == 2:
                     print('\n "There are things in this world best left'
-                          ' undiscovered," Elidor murmurs, his gaze lingering'
-                          " on the concealed spot for a moment longer.")
+                          ' undiscovered," Elidor murmurs,\n his gaze '
+                          " lingering on the concealed spot for a moment"
+                          "longer.")
                     print("\n You nod, feeling a mixture of relief and"
-                          ' curiosity. "There\'s a reason it was hidden, "'
-                          'you reason aloud, "and we might not want to know'
+                          ' curiosity.\n "There\'s a reason it was hidden, "'
+                          'you reason aloud,\n "and we might not want to know'
                           ' why."')
                     print("\n With a final glance over your shoulder, you and"
-                          " Elidor continue along the river, the gentle sounds"
-                          " soon drowning out the unease. The path may have"
-                          " presented an unexpected mystery, but sometimes,"
+                          " Elidor continue,\n the gentle sounds of the river"
+                          " soon drowning out the unease.\n The path may have"
+                          " presented an unexpected mystery, but sometimes,\n"
                           " it's best to choose safety over curiosity.")
                     while True:
-                        print("\nn What to do now?")
+                        print("\n What to do now?")
                         print("\n 🚶  1. Let us leave this place behind")
                         choice = get_choice(1)
                         if choice == 1:
                             print(" With a nod to Elidor, you decide it's time"
-                                  " to move on. The two of you gather your"
-                                  " belongings, leaving the mysteries of the"
+                                  " to move on.\n The two of you gather your"
+                                  " belongings,\n leaving the mysteries of the"
                                   " riverbank behind as you continue your"
                                   " journey.")
                             river_second_scene()
@@ -1501,7 +1502,7 @@ def river_first_scene():
             break
         elif choice == 2:
             print(" You smile and shake your head, choosing instead to sit and"
-                  " relax by the riverside."
+                  " relax\n by the riverside."
                   "\n The journey continues peacefully as you absorb the"
                   " serenity around you.")
             river_second_scene()
@@ -1519,14 +1520,13 @@ def river_second_scene():
     """
     print_horizontal_line()
     print(" Continuing your journey along the river, the scenery starts"
-          " to shift. The once clear "
-          "water now appears murky and you can hear the distant "
-          "roar of a waterfall.")
+          " to shift.\n The once clear "
+          "water now appears murky.")
     print("\n Birds chirp high in the trees, and the scent of wet"
           " earth fills the air.")
-    print("\n Elidor slows his pace and remarks, 'This part of the river"
+    print('\n Elidor slows his pace and remarks,\n "This part of the river'
           " is less familiar to me. We "
-          "need to be cautious.'")
+          'need to be cautious."')
     while True:
         print('\n 🌉  1. "I see a bridge in the distance. Let\'s cross there."')
         print("\n\n 🏞️  2. Let's set up camp and decide tomorrow.")
