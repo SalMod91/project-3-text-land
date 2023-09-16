@@ -1,6 +1,11 @@
 # pylint: disable=too-many-lines
 """
-This module contains the main game
+This is the main module for the text adventure game.
+It contains all game functionalities, classes, and methods
+required for the game's operation.
+
+Everything from player creation, combat mechanics, to game
+scenes are housed within this module.
 """
 
 import random
@@ -138,6 +143,12 @@ enemy_critical_messages = [
     " CRITICAL BLOW!"
 ]
 
+random_elidor_messages = [
+    " Ah, ready to give me back my gold?",
+    " Looking for supplies? Check these out!",
+    " Stock up for the journey ahead!",
+    " Ready to spend some gold?"
+]
 
 item_database = {
     "Goblin Dagger": {
@@ -226,7 +237,7 @@ pandora_items = {
 
 def reset_player():
     """
-    Resets the player dictionary and enemy dictionary
+    Resets the player dictionary
     """
     starting_player = {
         "Stats": {
@@ -260,7 +271,7 @@ def reset_player():
 
 def reset_enemy():
     """
-    Resets the enemy dictionary after every fight
+    Resets the enemy dictionary for the next combat encounter.
     """
     starting_enemy = {
         "Goblin": {
@@ -408,7 +419,8 @@ def critical_hit(character):
 
 def fight_pause_and_continue():
     """
-    Pauses the game and waits for the player's confirmation to continue.
+    Pauses the game during combat scenarios, allowing the player
+    to read the story text and continue when ready.
     """
     while True:
         print_horizontal_line()
@@ -426,19 +438,29 @@ def fight_pause_and_continue():
 
 class Combat:
     """
-    Handles the Combat
+    This class manages the intricacies of combat logic, including
+    calculating damage, loot, critical hits and more.
     """
 
     def __init__(self, player, enemy):  # pylint: disable=redefined-outer-name
         """
-        Something
+        Initializes the class with the provided player and enemy.
+
+        Parameter:
+        - Player: The player dictionary, used to gather the stats
+        - Enemy: The enemy dictionary, used to gather the stats and loot
         """
         self.player = player
         self.enemy = enemy
 
     def player_combat_victory(self):
         """
-        Actions to take when the player defeats the enemy in combat
+        This function sets the global battle result to "Victory",
+        displays a victory message to the player, processes the
+        loot obtained from the victory.
+
+        Returns:
+        - A string "Victory" assigned to battle_result
         """
         global battle_result  # pylint: disable=global-statement
         battle_result = "Victory"
@@ -451,7 +473,12 @@ class Combat:
 
     def check_drop(self):
         """
-        Checks if players drops loot
+        Iterates through the loot of enemy and
+        if the drop rate is successful it
+        appends the item to an empty list.
+
+        Returns:
+        - A list of items dropped by the enemy
         """
         dropped_items = []
 
@@ -465,7 +492,10 @@ class Combat:
 
     def handle_loot(self):
         """
-        Handles loot
+        Adds the gold from the defeated enemy to the player's
+        gold count and display a message about it.
+        It checks for any items dropped by the enemy
+        and calls the equip_item using it as an argument
         """
         self.player["Stats"]["Gold"] += self.enemy["Loot"]["Gold"]
         print()
@@ -479,7 +509,12 @@ class Combat:
 
     def equip_item(self, item_detail):
         """
-        Equips automatically better equipment
+        Automatically equips a better piece of equipment
+        if the equipment item is superior to the currently
+        equipped item of the same type
+
+        Uses as argument the iterated items from
+        handle_loot
         """
         item_type = item_detail["Type"]
         item_name = item_detail["Name"]
@@ -526,7 +561,10 @@ class Combat:
 
     def print_player_potions(self):
         """
-        Prints the player's available potions in the combat menu
+        Displays a list of potions available to the player during combat.
+
+        Iterates through the player's potion inventory and presents each
+        potion with its healing amount and remaining quantity.
         """
         print()  # Prints an empty line for separation
         for idx, (potion, details) in enumerate(
@@ -538,8 +576,7 @@ class Combat:
 
     def handle_overheal(self):
         """
-        If player heals over the Max HP, sets the current HP
-        to the Max HP value
+        Ensures player's current HP doesn't exceed the Max HP after healing.
         """
         if self.player["Stats"]["Current HP"] > self.player["Stats"]["Max HP"]:
             self.player["Stats"]["Current HP"] = self.player["Stats"]["Max HP"]
@@ -579,7 +616,8 @@ class Combat:
 
     def display_combat_info(self):
         """
-        Compares stats of player and enemy
+        Displays a side-by-side comparison of the player's and enemy's combat
+        stats.
         """
         print("PLAYER\t\t\tENEMY")
         print_horizontal_line()
@@ -597,14 +635,17 @@ class Combat:
 
     def player_combat_defeat(self):
         """
-        Actions to take when the player is defeated in combat
+        Handles the sequence of events when the player is defeated in combat.
         """
         print(f" The {self.enemy['Name']} hit you with a killing blow!")
         player_defeat()
 
     def enemy_attack(self):
         """
-        Handles the enemy's attack on the player.
+        Calculates and applies the damage the enemy deals to the player
+        during combat.
+        If player's health drops to zero or below, the player defeat sequence
+        is initiated.
         """
         dmg_to_player = round(
             (self.enemy["Atk"] - self.player
@@ -637,7 +678,9 @@ class Combat:
 
     def combat_loop(self):
         """
-        Handles combat
+        Manages the combat loop sequence
+        The loop continues until the player, or the enemy's health drops to 0,
+        or the player successfully escapes.
         """
         print(f" ======== COMBAT VS {self.enemy['Name'].upper()} ========")
         while (self.player['Stats']['Current HP'] > 0 and
@@ -706,7 +749,8 @@ class Combat:
 
 def player_defeat():
     """
-    Displays the dead message and asks the player if they'd like to retry
+    Handles the scenario when the player is defeated in the game.
+    Provides the option to restart the game or exit.
     """
     print("\n 💀 YOU DIED 💀")
     print("\n Continue?"
@@ -732,7 +776,8 @@ def print_horizontal_line():
 
 def print_player_info_menu():
     """
-    This is used to avoid repeating the same code
+    Prints a detailed overview of the player's stats, available potions,
+    and equipped items.
     """
     print(" ===== STATS =====")
     print(f" Name: {player['Stats']['Name']}")
@@ -969,8 +1014,8 @@ def intro():
 
 def first_scene():
     """
-    This is going to be the first scene and
-    serves as an introduction to the choice system
+    Sets the scene for the game by introducing the player to their environment
+    and immediate choices.
     """
     print_horizontal_line()
     print(" Blinking awake, you find yourself by a serene lake."
@@ -997,8 +1042,11 @@ def first_scene():
 
 def first_scene_game_over():
     """
-    Calls the game over screen if the player chooses
-    the second option of the first scene
+    This function serves as an early game-over scenario if the player
+    chooses to ignore the external world and get back to sleep.
+
+    Serves as an introduction to the possibility of a game over
+    outside of combat.
     """
     print(" You ignored the screams of help and went back to sleep..."
           "\n Zzz...Zzz..Zz AAGH!"
@@ -1013,8 +1061,7 @@ def first_scene_game_over():
 
 def second_scene():
     """
-    This is going to be the second scene wich serves
-    as an introduction to the combat mechanic.
+    This function introduces the player to the combat mechanics of the game.
     The fight is intended to be easy to win.
     """
     print(" Rushing towards the scream, you discover a goblin threatening"
@@ -1064,7 +1111,8 @@ def second_scene():
 
 def third_scene():
     """
-    This is going to be the third scene after defeating the goblin
+    Serves to establish the aftermath of the confrontation with the goblin
+    and as an introduction to Elidor, a core part of the narrative.
     """
     print_horizontal_line()
     print(" Catching his breath, the merchant straightens up and beams at "
@@ -1120,8 +1168,9 @@ def third_scene():
 
 def fourth_scene():
     """
-    This is the fourth scene in wich the merchant will join,
-    this will serve as an end to the "tutorial" like phase.
+     Presents the fourth scene in the game's narrative progression.
+    Elidor the merchant will join and this will serve as an end to the
+    "tutorial" like phase.
     """
     print_horizontal_line()
     print(" As you continue to converse, Elidor starts packing up his cart. "
@@ -1175,7 +1224,18 @@ def fourth_scene():
 
 def pandora_box():
     """
-    Rolls for an item from the Pandora Box
+    Implements the mechanics for the Pandora Box item roll in the game.
+    It generates a random roll to determine the item received
+
+    If the player already own the rolled item they will receive 2 Ultra
+    potions.
+
+    If the player doesn't own the item it is added to its inventory.
+
+    Note:
+    This function sets the foundation for a more comprehensive loot box system,
+    which could be expanded in future game versions to include a wider variety
+    of items or effects.
     """
     roll = random.randint(1, 10)
 
@@ -1194,10 +1254,12 @@ def pandora_box():
 
 def elidor_shop():
     """
-    A shop available to the player in most of the scenes
+    A shop mechanic where the player can purchase various items.
+    It is available in most scenes throughout the game.
     """
     print(" ===== ELIDOR SHOP =====")
-    print('\n Random elidor message')
+    print()
+    print(f" Elidor: {random.choice(random_elidor_messages)}")
     print_horizontal_line()
     while True:
         print(f" Player Gold: {player['Stats']['Gold']} 💰")
@@ -1241,7 +1303,9 @@ def elidor_shop():
 
 def fifth_scene():
     """
-    Fifth Scene in wich branches into 3 different paths
+    Implements the fifth scene and introduction to branching paths.
+    It serves as an end to the main function sequences, each branch
+    becomes independent and will influence some outcomes.
     """
     print_horizontal_line()
     print("\n As you and Elidor travel together, the path ahead"
@@ -1289,8 +1353,13 @@ def fifth_scene():
 
 def handle_loot_world(*items_found):
     """
-    Handles loot found in the world
-    outside of combat
+    Processes the loot items found by the player outside of combat scenarios.
+
+    Parameters:
+    - *items_found: tuple of str
+
+    If multiple items are used as arguments, the function iterates through
+    them and calls an equip function for each of them.
     """
     for item_name in items_found:
         item_detail = item_database.get(item_name)
@@ -1347,7 +1416,7 @@ def equip_item(item_detail):
 
 def river_first_scene():
     """
-    Handles the first scene in the river
+    Handles the first scene of the river route.
     """
     print_horizontal_line()
     print(" As you walk alongside the river, the calmness of the water, along"
@@ -1447,7 +1516,8 @@ def river_first_scene():
 
 def river_second_scene():
     """
-    Handles the second scene in the river
+    Handles the second scene alongside the river during the player's journey.
+    The choices made here can lead to combat or exploration.
     """
     print_horizontal_line()
     print(" Continuing your journey along the river, the scenery starts"
@@ -1503,7 +1573,11 @@ def river_second_scene():
 
 def river_rest_scene():
     """
-    Third river scene
+    Handles the third river scene where the player attempts to rest.
+    There are 3 outcomes with each a chance of 33% to happen.
+    Outcome 1: player heals 100% of Max HP.
+    Outcome 2: player heals 50% of Max HP and gets ambushed.
+    Outcome 3: player heals 20% of Max HP and gets ambushed.
     """
     rand_num = random.randint(1, 99)
     if 1 <= rand_num <= 33:
@@ -1569,8 +1643,7 @@ def river_rest_scene():
 
 def river_last_scene():
     """
-    In case of an ambush this is the last scene
-    of the river path
+    Handles the aftermath of the bandit ambush at the river.
     """
     print(" The weight of the ambush weighs on you, reminding you of the"
           " ever-present dangers on your journey.")
@@ -1586,8 +1659,7 @@ def river_last_scene():
 
 def print_bandit_fight_1():
     """
-    This function enables printing of reused
-    story section for the bandit fight
+    Narrates the unfolding events of the first phase of the bandit fight.
     """
     print(" With one bandit down, you now face the remaining two"
           " simultaneously.")
@@ -1606,8 +1678,7 @@ def print_bandit_fight_1():
 
 def print_bandit_fight_2():
     """
-    This function enables printing of reused
-    story section for the bandit fight
+    Narrates the unfolding events of the second phase of the bandit fight.
     """
     print("After felling the final bandit, you exhale a weary sigh of relief.")
     print("However, the luxury of rest eludes you now.")
@@ -1617,7 +1688,7 @@ def print_bandit_fight_2():
 
 def main_road_path():
     """
-    This will be the main road branch function
+    This function represents the main storyline along the main road.
     """
     print(" \n As you travel along the main road, you stumble upon a dramatic"
           " scene.")
@@ -1705,7 +1776,7 @@ def main_road_path():
 
 def main_road_path_guard_scene():
     """
-    Second scene of main road path branch
+    This function represents the second scene along the main road path branch.
     """
     print_horizontal_line()
     print("\n After a few hours of walking along the main road, the outline of"
@@ -1765,7 +1836,12 @@ def main_road_path_guard_scene():
 
 def forest_path():
     """
-    This handles the forest scenario
+    This function handles the forest scenario where you encounter a MYSTERIOUS
+    creature.
+    The player has the option to either attack the creature or continue on the
+    path, with consequences based on the choice.
+    If the battle is started it is still possible to flee in order to progress
+    the "pacifist" path.
     """
     print_horizontal_line()
     print("\n While traversing the tall grass, the rustling of leaves draws"
@@ -1808,7 +1884,11 @@ def forest_path():
 
 def forest_path_second_scene(defeated_creature):
     """
-    Creates a scenario depending on the battle result
+    This function handles the second scene of the forest path and creates
+    a scenario based on whether the player defeated the mysterious creature.
+
+    Param:
+    - defeated_creature: A boolean indicating whether the creature was slain.
     """
     if defeated_creature:
         print("\n The remnants of the battle linger in the air, and Sparky"
@@ -2094,7 +2174,7 @@ def forest_path_second_scene(defeated_creature):
 
 def forest_end_scene():
     """
-    Handles the end of the forest scene
+    This function represents the end scene of the forest path branch.
     """
     print("\n As you tread cautiously, the dense canopy of the forest"
           " begins to thin."
@@ -2124,7 +2204,11 @@ def forest_end_scene():
 
 def town_guard_scene():
     """
-    Handles scenario if coming from lake or forest
+    This function handles the scenario when the player arrives at the town's
+    outer perimeter.
+    It involves interactions with a town guard.
+    If the player does comply the temporarily final scene will play.
+    If the player does not comply then an alternative scene will play.
     """
     print("\n You reach the outer perimeter of the town.")
     print("\n A fortified stone wall encircles it, with a large wooden gate"
@@ -2185,7 +2269,8 @@ def town_guard_scene():
 
 def town_scene():
     """
-    Handles town scene
+    This function represents the arrival to the town.
+    It is temporarily the end of the game.
     """
     print_horizontal_line()
     print("\n HELLOOOOOO, dear Assessor!")
@@ -2207,7 +2292,12 @@ def town_scene():
 
 def town_scene_defiance(guard_battle):
     """
-    Depending on the outcome of the battle
+    Handles the outcome of the battle with the town guard, depending on whether
+    the player wins, loses or runs from the battle.
+
+    Parameter:
+    - guard_battle: A boolean indicating whether the player won or ran.
+
     """
     if guard_battle is False:
         print(" Well, you didn't get far...")
