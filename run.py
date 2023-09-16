@@ -49,7 +49,7 @@ def rules():
     print(" 1. Input choices by selecting the corresponding number.")
     print(" 2. Confirm your choice by pressing 'ENTER'.")
     print("\n 🚫  But, tread carefully! Every decision can tip the balance."
-          " Take a")
+          "\n Take a")
     print(" wrong step and you might be drawn into combat.")
     print("\n 🛡️  Combat Basics:")
     print(" - Attack: The damage you inflict.")
@@ -60,15 +60,15 @@ def rules():
     print(" - Crit: % chance to deal a critical strike. A successful crit"
           " deals")
     print("   1.5x damage and bypasses 1/3 of the opponent's defense.")
-    print("\n 🚨 Keep in mind! Enemies can critically hit too. Yet, they only"
-          " deal")
-    print(" 1.5x damage. You're special, after all!")
+    print("\n 🚨 Keep in mind! Enemies can critically hit too.\n Yet, they only"
+          " deal 1.5x damage. You're special, after all!")
     print(" - Run: % chance to flee a battle.")
     print("\n 🌟 Pro Tip: Sometimes, retreat is the best strategy."
-          " Not every battle")
-    print(" is meant to be won.")
+          "\n Not every battle is meant to be won.")
     print(" Maybe someone will also appreciate it if you do..")
-    print("\n Did i forget something? It's not oversight. It's a FEATURE! 😉")
+    print("\n Did i forget something?")
+    print(" If i did it is not oversight. It's a FEATURE! 😉")
+    print(" Like adding a little layer of mistery.")
     print("\n Embark, dear adventurer. Good luck and enjoy the ride!")
 
     choice = get_choice(2)
@@ -1741,11 +1741,11 @@ def main_road_path():
     print('\n "You there, the assailant of my brethren.'
           ' I shall end your life!"')
     print("\n You pivot, and there stands a goblin, unlike any you've"
-          "encountered.\n Taller, adorned in menacing spiky armor,")
+          " encountered.\n Taller, adorned in menacing spiky armor,")
     print(" and wielding a colossal sword matching his formidable stature."
-          "\n He must be the gang's chief. Defeating him")
-    print(" could quell this bloodshed.")
-    print(" But there's no time for contemplation; the chief charges you,"
+          "\n He must be the gang's chief. Defeating him"
+          " could quell this bloodshed.")
+    print("\n But there's no time for contemplation; the chief charges you,"
           "\n and a battle with this fearsome foe is inevitable.")
     fight_pause_and_continue()
     reset_enemy()
@@ -1778,39 +1778,39 @@ def main_road_path_guard_scene():
     This function represents the second scene along the main road path branch.
     """
     print_horizontal_line()
-    print("\n After a few hours of walking along the main road, the outline of"
-          " a town emerges on the horizon.")
-    print("\n A fortified stone wall encircles it, with a large wooden gate"
+    print("\n After a few hours of walking along the main road,\n the outline"
+          " of a town emerges on the horizon.")
+    print("\n A fortified stone wall encircles it,\n with a large wooden gate"
           " marking the entrance.")
     print("\n As you and Elidor approach the town gate, a guard in polished"
           "\n armor steps forward, halting your progress.")
     print('\n "Halt! All newcomers must be inspected before entering",'
-          " the guard states firmly.")
-    print("\n While the guard is about to proceed with the inspection, his"
+          "\n the guard states firmly.")
+    print("\n While the guard is about to proceed with the inspection,\n his"
           " eyes fall on the chief's gauntlet you possess.")
     print('\n "Wait a minute... Is that the goblin chief\'s gauntlet?'
-          ' Have you encountered the goblin gang?" he asks, curiosity evident'
-          " in his voice.")
+          ' Have you encountered\n the goblin gang?" he asks, curiosity'
+          " evident in his voice.")
 
     while True:
-        print("\n\n 👍  1. Confirm that you defeated the goblin chief.")
-        print("\n 👎  2. Deny and say you found the gauntlet.")
+        print("\n\n 👍  1. Tell him that you defeated the goblin chief.")
+        print("\n 👎  2. Lie and tell him that you found the gauntlet.")
         choice = get_choice(2)
 
         if choice == 1:
             print("\n You and Elidor explain what happened to the guard.")
             print("\n The guard's face lights up with a broad smile."
-                  '" Those goblins have been a thorn in our side for too long!'
-                  ' They\'ve been raiding our commercial roads for months."')
-            print("\n In recognition of your deed, the guard hands you a pouch"
-                  " containing 100 gold coins."
-                  '"There was a bounty on the chief\'s head.'
+                  '\n "Those goblins have been a thorn in our side for too'
+                  ' long!\n They\'ve been raiding our commercial roads for'
+                  ' months."')
+            print("\n In recognition of your deed, the guard hands you a "
+                  'pouch.\n "There was a bounty on the chief\'s head.'
                   ' This is yours now."')
             print("\n You obtained 100 Gold  💰  from the guard!")
             player["Stats"]["Gold"] += 100
             print("\n Furthermore, he hands you a special coupon."
-                  'This is for the town shop. They\'ll give you a good deal'
-                  ' with this."')
+                  '\n "This is for the town shop. They\'ll give you a good'
+                  ' deal with this."')
             print()
             print(" 🎉  You obtained a Shop Coupon!  🎉")
             print("\n With a warm gesture, the guard welcomes you into the"
@@ -1824,7 +1824,7 @@ def main_road_path_guard_scene():
             print("\n The guard looks skeptical but decides not to push the"
                   ' matter further.\n "Very well, but we\'re keeping an eye'
                   ' on"'
-                  ' you. Enter the town, but cause no trouble."')
+                  ' you.\n Enter the town, but cause no trouble."')
             print("\n Although the guard's suspicions linger, you're granted "
                   "entry into the town."
                   "\n You step through the gate with a slight unease in your"
@@ -2212,8 +2212,8 @@ def town_guard_scene():
     print_horizontal_line()
     print("\n You reach the outer perimeter of the town.")
     print("\n A fortified stone wall encircles it, with a large wooden gate"
-          "\n marking the entrance.")
-    print("\n As you and Elidor approach the town gate, a guard in polished"
+          " marking the entrance.")
+    print("\n As you and Elidor approach the town gate,\n a guard in polished"
           " armor steps forward,\n halting your progress.")
     print('\n "Halt! All newcomers must be inspected before entering",'
           "\n the guard states firmly.")
@@ -2245,7 +2245,8 @@ def town_guard_scene():
             print('\n "I was hoping you\'d say something like that," he smirks'
                   ' ,\n unsheathing his weapon.\n "It\'s been a rough week,'
                   ' and I could'
-                  ' really use an excuse to blow off some steam... legally."')
+                  ' really use an excuse to blow off\n some steam...'
+                  ' legally."')
             print(' "You, good sir, are under ARREST!"')
             print("\n At the sight of his gleaming blade, regret fills you."
                   "\n The thought of battle seems bleak now.")
@@ -2286,7 +2287,7 @@ def town_scene():
     print(" Once I expand on it, I'd love for you to revisit. Exciting"
           " features await! :D")
     print("\n\n\n PS: In case you chose the main road:"
-          "\n         Sorry that i didn't let you use the Coupon =D")
+          "\n     Sorry that i didn't let you use the Coupon =D")
     quit()
 
 
@@ -2318,7 +2319,7 @@ def town_scene_defiance(guard_battle):
                 if player["Stats"]["Gold"] >= 50:
                     player["Stats"]["Gold"] -= 50
                     print(' "This better be all of it," the guard grumbles,'
-                          " counting the coins before stepping aside.")
+                          "\n counting the coins before stepping aside.")
                     print(" You enter the town, lighter in gold but relieved"
                           " to avoid further trouble.")
                     town_scene()
@@ -2347,11 +2348,11 @@ def town_scene_defiance(guard_battle):
     elif guard_battle is True:
         print("\n Wait... WHAT?! How did you...?!")
         print("\n Ah, I see you there, dear User. It's me, THE DEVELOPER!")
-        print("Either you've mastered the fine art of cheating, or Lady"
+        print(" Either you've mastered the fine art of cheating, or Lady"
               " Luck truly favored you with some insane crits.")
-        print("Well, I'll admit it. I bit off more than I could chew and the"
+        print(" Well, I'll admit it. I bit off more than I could chew and the"
               " deadline is breathing down my neck.")
-        print("So, alas, this journey ends here. Thanks for playing my game,"
+        print(" So, alas, this journey ends here. Thanks for playing my game,"
               " you crafty CHEATER!")
         print("\n After I'll submit this, there's so much more in store!"
               "  We're talking a LOOOOOOOOT more plot and features like"
