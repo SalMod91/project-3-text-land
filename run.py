@@ -9,7 +9,6 @@ scenes are housed within this module.
 """
 
 import random
-import time
 
 
 def get_choice(max_choice):
@@ -690,7 +689,7 @@ class Combat:
             player_maxhp = int(self.player['Stats']['Max HP'])
             current_enemy_hp = int(self.enemy['Current HP'])
             enemy_maxhp = int(self.enemy['Max HP'])
-            print(f"\n{self.player['Stats']['Name']} HP:"
+            print(f"\n {self.player['Stats']['Name']} HP:"
                   f" {current_player_hp}"
                   f"/{player_maxhp} ❤️  |"
                   f" {self.enemy['Name']} HP:"
@@ -752,7 +751,7 @@ def player_defeat():
     Handles the scenario when the player is defeated in the game.
     Provides the option to restart the game or exit.
     """
-    print("\n 💀 YOU DIED 💀")
+    print("\n 💀  YOU DIED 💀")
     print("\n Continue?"
           "\n 👍 1. Yes!"
           "\n 👎 2. No..I give up..")
@@ -1534,12 +1533,12 @@ def river_second_scene():
         print("\n\n 📖  4. Player Info")
         choice = get_choice(4)
         if choice == 1:
-            print(" The two of you approach the bridge. It looks ancient,"
+            print(" The two of you approach the bridge.\n It looks ancient,"
                   " with moss covering its stone sides.")
             print("\n As you step onto it, you notice the wooden planks"
                   " creaking under your weight.")
             print("\n Halfway across, Elidor stops, sensing something."
-                  " Before you can react, the bridge is "
+                  "\n Before you can react, the bridge is "
                   "ambushed by a river troll!")
             fight_pause_and_continue()
             reset_enemy()
@@ -1547,13 +1546,13 @@ def river_second_scene():
             battle.combat_loop()
             print_horizontal_line()
             print(" With the troll defeated, a sigh of relief washes over you."
-                  "\n Their might is unmatched, but cunning always finds a")
-            print(" way.\n As you catch your breath, the distant silhouette of"
-                  "a town emerges just beyond the bridge.")
+                  "\n Their might is unmatched, but cunning always finds a"
+                  " way.\n As you catch your breath, the distant silhouette of"
+                  " a town emerges\n just beyond the bridge.")
             print(" Elidor's face brightens at the sight, and even Medea "
-                  "seems to share a hint of relief. A proper rest awaits.")
+                  "seems to share\n a hint of relief. A proper rest awaits.")
             print(" Without hesitation, you all head towards the promise of"
-                  " comfort that the town offers.")
+                  " comfort\n that the town offers.")
             town_guard_scene()
             break
         elif choice == 2:
@@ -1583,21 +1582,21 @@ def river_rest_scene():
         recovered_hp = player_rest(1.0)
         print(f"\n You rested and recovered {recovered_hp} ❤️  HP.")
         print(" As the sun shines, it reveals the distant silhouette of"
-              "a town that emerges just beyond a bridge.")
+              " a town\n that emerges just beyond a bridge.")
         print(" Elidor's face brightens at the sight, and even Medea "
-              "seems to share a hint of relief.")
+              "seems to share\n a hint of relief.")
         print('\n Elidor chuckles, "Just a bit further and we could\'ve had'
-              ' proper beds!" But his smile says he cherished the time shared'
-              ' with you and Medea.')
+              ' proper beds!"\n But his smile says he cherished the time'
+              ' shared with you and Medea.')
         print("\n With restored vigor you head towards the town's gate.")
         town_guard_scene()
     elif 34 <= rand_num <= 66:
         print(" Before dawn's first light, Medea's anxious whinnies rouse "
               "you and Elidor.")
-        print(" Blinking away sleep, you quickly discern the cause: three"
+        print(" Blinking away sleep, you quickly discern the cause:\n three"
               " bandits have surrounded your camp.")
         print(" You're groggy from interrupted rest, not at full strength,"
-              " and now must defend yourselves!")
+              "\n and now must defend yourselves!")
         recovered_hp = player_rest(0.5)
         print("\n Your rest was interrupted and therefore you only"
               f" recovered {recovered_hp} ❤️  HP.")
@@ -1615,12 +1614,12 @@ def river_rest_scene():
         print_bandit_fight_2()
         river_last_scene()
     elif 67 <= rand_num <= 99:
-        print(" No sooner had you closed your eyes for a night's rest, "
+        print(" No sooner had you closed your eyes for a night's rest,\n "
               "Medea's urgent neighs snap you awake.")
-        print(" In the dim light, you spot three shadowy figures: bandits"
+        print(" In the dim light, you spot three shadowy figures:\n bandits"
               " closing in on your camp!")
         print(" You've barely had a moment to rest, and now you must fend"
-              " off an ambush with limited strength!")
+              " off an ambush\n with limited strength!")
         recovered_hp = player_rest(0.2)
         print("\n Your rest was interrupted and therefore you only"
               f" recovered {recovered_hp} ❤️  HP.")
@@ -1643,13 +1642,14 @@ def river_last_scene():
     """
     Handles the aftermath of the bandit ambush at the river.
     """
-    print(" The weight of the ambush weighs on you, reminding you of the"
+    print_horizontal_line()
+    print(" The weight of the ambush weighs on you,\n reminding you of the"
           " ever-present dangers on your journey.")
     print(" You share a nod with Elidor, signaling a mutual respect and"
-          " understanding, then at the sun's first light you begin packing up"
-          " camp.")
+          " understanding,\n then at the sun's first light you begin "
+          "packing up camp.")
     print("\n You tenderly caress Medea, thanking her silently. The rising"
-          " sun reveals a town in the distance, just beyond a bridge.")
+          " sun reveals\n a town in the distance, just beyond a bridge.")
     print("\n Physically and mentally drained, the group trudges towards the"
           " town's gates.")
     town_guard_scene()
@@ -1663,7 +1663,7 @@ def print_bandit_fight_1():
           " simultaneously.")
     print("\n Nearby, Medea fiercely protects Elidor. In her frenzy,"
           " she lands a")
-    print("mighty kick on a bandit, seemingly taking him out of"
+    print(" mighty kick on a bandit, seemingly taking him out of"
           " the fight.")
     print("\n The last bandit, though lacking confidence, knows there's"
           " no way out.")
@@ -1678,10 +1678,11 @@ def print_bandit_fight_2():
     """
     Narrates the unfolding events of the second phase of the bandit fight.
     """
-    print("After felling the final bandit, you exhale a weary sigh of relief.")
-    print("However, the luxury of rest eludes you now.")
-    print("On high alert, you await the sun's rays, yearning for the safety it"
-          " brings.")
+    print(" After felling the final bandit, you exhale a weary sigh"
+          " of relief.")
+    print(" However, the luxury of rest eludes you now.")
+    print(" On high alert, you await the sun's rays, yearning for the safety"
+          " it brings.")
 
 
 def main_road_path():
@@ -2208,13 +2209,14 @@ def town_guard_scene():
     If the player does comply the temporarily final scene will play.
     If the player does not comply then an alternative scene will play.
     """
+    print_horizontal_line()
     print("\n You reach the outer perimeter of the town.")
     print("\n A fortified stone wall encircles it, with a large wooden gate"
-          " marking the entrance.")
+          "\n marking the entrance.")
     print("\n As you and Elidor approach the town gate, a guard in polished"
-          "\n armor steps forward, halting your progress.")
+          " armor steps forward,\n halting your progress.")
     print('\n "Halt! All newcomers must be inspected before entering",'
-          " the guard states firmly.")
+          "\n the guard states firmly.")
     while True:
         print("\n ✋  1. Comply with the guard's request")
         print("\n\n 🖕  2. Challenge the guard's authority")
@@ -2222,33 +2224,33 @@ def town_guard_scene():
         print("\n\n 📖  4. Player Info")
         choice = get_choice(4)
         if choice == 1:
-            print('\n "We\'re merely passing through," you explain, "We have a'
-                  ' delivery for the city of Veradia."')
+            print('\n "We\'re merely passing through," you explain,\n'
+                  ' "We have a delivery for the city of Veradia."')
             print("\n\n Elidor nods in agreement.")
             print("\n\n The guard looks skeptically at both of you before"
                   " inspecting Elidor's cart.")
-            time.sleep(1)
             print("\n After a thorough check, he finds nothing amiss.")
             print('\n "Everything seems to be in order," he says with a nod,'
                   ' "Proceed into the town."')
             print("\n With a sense of relief, you and Elidor enter the town,"
-                  " ready to explore and rest.")
+                  "\n ready to explore and rest.")
             town_scene()
         elif choice == 2:
             print('\n "What\'s the matter, tin head? Too scared to let a'
-                  'couple of travelers through without flexing your muscles?"'
+                  'couple of travelers through\n without'
+                  'flexing your muscles?"'
                   "  you taunt, defiance evident in your voice.")
             print("\n Elidor shoots you a wary glance, but the guard seems"
                   " unexpectedly pleased.")
             print('\n "I was hoping you\'d say something like that," he smirks'
-                  ' , unsheathing his weapon. "It\'s been a rough week, and I'
-                  ' could'
+                  ' ,\n unsheathing his weapon.\n "It\'s been a rough week,'
+                  ' and I could'
                   ' really use an excuse to blow off some steam... legally."')
             print(' "You, good sir, are under ARREST!"')
             print("\n At the sight of his gleaming blade, regret fills you."
-                  " The thought of battle seems bleak now.")
+                  "\n The thought of battle seems bleak now.")
             print(" You contemplate fleeing, but his smug expression suggests"
-                  " he won't let you escape that easily.")
+                  " he won't\n let you escape that easily.")
             fight_pause_and_continue()
             reset_enemy()
             battle = Combat(player, enemy["Town Guard"])
@@ -2277,14 +2279,14 @@ def town_scene():
     print(" Anyways, thanks for diving into my game!")
     print(" I hope you had a sliver of the fun playing it as I did"
           " creating it.")
-    print(" I ambitiously envisioned a vast plot. Everything up to the town"
+    print(" I ambitiously envisioned a vast plot.\n Everything up to the town"
           " was just the tutorial!")
     print(" However, time wasn't my ally, so I had to use the town"
           "\n to conclude my project early.")
     print(" Once I expand on it, I'd love for you to revisit. Exciting"
           " features await! :D")
     print("\n\n\n PS: In case you chose the main road:"
-          "\n   Sorry that i didn't let you use the Coupon =D")
+          "\n         Sorry that i didn't let you use the Coupon =D")
     quit()
 
 
@@ -2307,7 +2309,7 @@ def town_scene_defiance(guard_battle):
               " unmoved.")
         print(' "It\'s a 50 gold fine for resisting the king\'s authority," he'
               ' sneers,'
-              " 'Or it's the dungeon for you.'")
+              "\n 'Or it's the dungeon for you.'")
         while True:
             print("\n 💵  1. Reluctantly hand over the gold.")
             print("\n\n 🖕  2. Insult him even more")
@@ -2335,7 +2337,7 @@ def town_scene_defiance(guard_battle):
             elif choice == 2:
                 print(' "You really have a death wish, don\'t you?" the guard'
                       ' sneers.')
-                print(" Without another word, he and a few other guards grab"
+                print("\n Without another word, he and a few other guards grab"
                       " you.")
                 print(" They drag you into the dungeon, where you meet your"
                       " grim fate.")
