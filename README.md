@@ -27,6 +27,7 @@ Play it here: 🎮 [TEXT-LAND](https://text-land-6fba33f8e155.herokuapp.com/)
   - [Current User Goals](#current-user-goals)
   - [New User Goals](#new-user-goals)
 - [Features](#features)
+  - [Choices](#choices)
   - [Rules](#rules)
   - [Future Features](#future-features)
 - [Testing](#testing)
@@ -66,12 +67,26 @@ Given the branching nature of the story, users hope to revisit the game multiple
 Each journey through Text-Land offers a fresh experience. The paths taken and monsters encountered vary in the items they present, ensuring that every adventure feels new and unpredictable.
 
 ### New user Goals:
-- Understand the Game Quickly: New users should be able to grasp the game's premise, mechanics, and objectives within minutes of starting.
-- Engage with the Story: The narrative should captivate and pull new users into the world of Text-Land, motivating them to delve deeper into the adventure.
-- Discover and Explore: Encourage a sense of curiosity. Users should want to explore different paths and outcomes, realizing that every choice can lead to a distinct adventure.
-- Return for More: Design the initial experience to be intriguing enough that new users want to come back, explore different storylines, or improve their outcomes.
+- New users will be able to grasp the game's premise, mechanics, and objectives within minutes of starting.
+- The narrative will captivate and pull new users into the world of Text-Land, motivating them to delve deeper into the adventure.
+- Encourages a sense of curiosity. Users will want to explore different paths and outcomes, realizing that every choice can lead to a distinct adventure.
+- The initial experience has been designed to be intriguing enough that new users want to come back, explore different storylines, or improve their outcomes.
 
-## Features 
+## Features
+
+### Choices:
+
+Accompanied by illustrative emojis, the gameplay mechanics revolve around making choices that will steer the course of the adventure.
+
+- Intuitive Interface: 
+Designed for simplicity and clarity, the game interface makes it apparent how the choice system functions.
+- Foolproof Input System:
+For numbers outside the choice range: Users receive a prompt warning, indicating the need to input a value within the available decision range.
+For non-numerical inputs: A warning message instructs players to provide a numeric value, clarifying which specific number corresponds to each choice option.
+
+- Emoji-Backed Decisions: Enhancing the visual comprehension, every choice is symbolized with an emoji, providing an additional layer to understand the consequences or themes of each decision. This ensures a more engaging and intuitive user experience.
+
+![Choices](/assets/images/choices.PNG)
 
 ### Rules:
 

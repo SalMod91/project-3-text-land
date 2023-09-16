@@ -49,8 +49,7 @@ def rules():
     print(" 1. Input choices by selecting the corresponding number.")
     print(" 2. Confirm your choice by pressing 'ENTER'.")
     print("\n 🚫  But, tread carefully! Every decision can tip the balance."
-          "\n Take a")
-    print(" wrong step and you might be drawn into combat.")
+          "\n Take a wrong step and you might be drawn into combat.")
     print("\n 🛡️  Combat Basics:")
     print(" - Attack: The damage you inflict.")
     print(" - Defense: The damage you mitigate.")
