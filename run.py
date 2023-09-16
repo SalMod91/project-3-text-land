@@ -4,11 +4,12 @@ This module contains the main game
 """
 
 import random
+import time
 
 
 def get_choice(max_choice):
     """
-    Prompts the player to make a valid choice withing a given range.
+    Prompts the player to make a valid choice within a given range.
 
     Parameters:
     - max_choice: Maximum valid choice number.
@@ -39,9 +40,33 @@ def rules():
     Prints the rules of the game and then redirects the user either
     back to the intro or to the start of the game.
     """
-    print(" These are the rules, will be add later",
-          "\n\n 1. 🛡️  I am ready to start my adventure!",
-          "\n\n 2. 📜  Bring me back to the Menu.")
+    print("\n Welcome to this text-adventure game!")
+    print("\n 🖊️  How to Play:")
+    print(" 1. Input choices by selecting the corresponding number.")
+    print(" 2. Confirm your choice by pressing 'ENTER'.")
+    print("\n 🚫  But, tread carefully! Every decision can tip the balance."
+          " Take a")
+    print(" wrong step and you might be drawn into combat.")
+    print("\n 🛡️  Combat Basics:")
+    print(" - Attack: The damage you inflict.")
+    print(" - Defense: The damage you mitigate.")
+    print(" - MAX HP: Your total health points.")
+    print(" - Current HP: Your current health. Reach 0, and...well, you'll"
+          " see.")
+    print(" - Crit: % chance to deal a critical strike. A successful crit"
+          " deals")
+    print("   1.5x damage and bypasses 1/3 of the opponent's defense.")
+    print("\n 🚨 Keep in mind! Enemies can critically hit too. Yet, they only"
+          " deal")
+    print(" 1.5x damage. You're special, after all!")
+    print(" - Run: % chance to flee a battle.")
+    print("\n 🌟 Pro Tip: Sometimes, retreat is the best strategy."
+          " Not every battle")
+    print(" is meant to be won.")
+    print(" Maybe someone will also appreciate it if you do..")
+    print("\n Did i forget something? It's not oversight. It's a FEATURE! 😉")
+    print("\n Embark, dear adventurer. Good luck and enjoy the ride!")
+
     choice = get_choice(2)
     if choice == 1:
         player_name_choice()
@@ -339,8 +364,8 @@ def reset_enemy():
             "Max HP": 90,
             "Current HP": 90,
             "Atk": 30,
-            "Def": 30,
-            "Crit": 10,
+            "Def": 45,
+            "Crit": 25,
             "Run": 100,
         }
     }
@@ -2101,13 +2126,6 @@ def town_guard_scene():
     """
     Handles scenario if coming from lake or forest
     """
-    print("HALT YOU DUMBASS")
-
-
-def town_scene():
-    """
-    Handles town scene
-    """
     print("\n You reach the outer perimeter of the town.")
     print("\n A fortified stone wall encircles it, with a large wooden gate"
           " marking the entrance.")
@@ -2122,18 +2140,135 @@ def town_scene():
         print("\n\n 📖  4. Player Info")
         choice = get_choice(4)
         if choice == 1:
-            print(" Welcome in")
+            print('\n "We\'re merely passing through," you explain, "We have a'
+                  ' delivery for the city of Veradia."')
+            print("\n\n Elidor nods in agreement.")
+            print("\n\n The guard looks skeptically at both of you before"
+                  " inspecting Elidor's cart.")
+            time.sleep(1)
+            print("\n After a thorough check, he finds nothing amiss.")
+            print('\n "Everything seems to be in order," he says with a nod,'
+                  ' "Proceed into the town."')
+            print("\n With a sense of relief, you and Elidor enter the town,"
+                  " ready to explore and rest.")
             town_scene()
         elif choice == 2:
-            print(" You are fucked")
+            print('\n "What\'s the matter, tin head? Too scared to let a'
+                  'couple of travelers through without flexing your muscles?"'
+                  "  you taunt, defiance evident in your voice.")
+            print("\n Elidor shoots you a wary glance, but the guard seems"
+                  " unexpectedly pleased.")
+            print('\n "I was hoping you\'d say something like that," he smirks'
+                  ' , unsheathing his weapon. "It\'s been a rough week, and I'
+                  ' could'
+                  ' really use an excuse to blow off some steam... legally."')
+            print(' "You, good sir, are under ARREST!"')
+            print("\n At the sight of his gleaming blade, regret fills you."
+                  " The thought of battle seems bleak now.")
+            print(" You contemplate fleeing, but his smug expression suggests"
+                  " he won't let you escape that easily.")
             fight_pause_and_continue()
             reset_enemy()
             battle = Combat(player, enemy["Town Guard"])
             battle.combat_loop()
+            if battle_result == "Victory":
+                town_scene_defiance(True)
+                break
+            elif battle_result == "Run":
+                town_scene_defiance(False)
+                break
         elif choice == 3:
             elidor_shop()
         elif choice == 4:
             print_player_info_menu()
+
+
+def town_scene():
+    """
+    Handles town scene
+    """
+    print_horizontal_line()
+    print("\n HELLOOOOOO, dear Assessor!")
+    print(" Yes, it's me, THE DEVELOPER!")
+    print(" Bold to name myself Developer already, am i right?!?")
+    print(" Anyways, thanks for diving into my game!")
+    print(" I hope you had a sliver of the fun playing it as I did"
+          " creating it.")
+    print(" I ambitiously envisioned a vast plot. Everything up to the town"
+          " was just the tutorial!")
+    print(" However, time wasn't my ally, so I had to use the town"
+          "\n to conclude my project early.")
+    print(" Once I expand on it, I'd love for you to revisit. Exciting"
+          " features await! :D")
+    print("\n\n\n PS: In case you chose the main road:"
+          "\n   Sorry that i didn't let you use the Coupon =D")
+    quit()
+
+
+def town_scene_defiance(guard_battle):
+    """
+    Depending on the outcome of the battle
+    """
+    if guard_battle is False:
+        print(" Well, you didn't get far...")
+        print(" You've been captured, but at least you're still breathing.")
+        print(' "Lost your voice, have you?" the guard taunts, gripping you'
+              ' with one'
+              " hand while his sword points at your neck with the other.")
+        print(" Elidor urgently pleads for leniency, but the guard remains"
+              " unmoved.")
+        print(' "It\'s a 50 gold fine for resisting the king\'s authority," he'
+              ' sneers,'
+              " 'Or it's the dungeon for you.'")
+        while True:
+            print("\n 💵  1. Reluctantly hand over the gold.")
+            print("\n\n 🖕  2. Insult him even more")
+            choice = get_choice(2)
+            if choice == 1:
+                if player["Stats"]["Gold"] >= 50:
+                    player["Stats"]["Gold"] -= 50
+                    print(' "This better be all of it," the guard grumbles,'
+                          " counting the coins before stepping aside.")
+                    print(" You enter the town, lighter in gold but relieved"
+                          " to avoid further trouble.")
+                    town_scene()
+                    break
+                else:
+                    taken_gold = player["Stats"]["Gold"]
+                    player["Stats"]["Gold"] = 0
+                    print(f' "Only {taken_gold} gold? Pathetic," the guard'
+                          " sneers, snatching the coins from your hand.")
+                    print(' "I suppose it will have to do. Consider yourself'
+                          ' lucky I\'m in a generous mood today."')
+                    print(" You're allowed into the town, but now you're"
+                          " completely broke.")
+                    town_scene()
+                break
+            elif choice == 2:
+                print(' "You really have a death wish, don\'t you?" the guard'
+                      ' sneers.')
+                print(" Without another word, he and a few other guards grab"
+                      " you.")
+                print(" They drag you into the dungeon, where you meet your"
+                      " grim fate.")
+                player_defeat()
+                break
+
+    elif guard_battle is True:
+        print("\n Wait... WHAT?! How did you...?!")
+        print("\n Ah, I see you there, dear User. It's me, THE DEVELOPER!")
+        print("Either you've mastered the fine art of cheating, or Lady"
+              " Luck truly favored you with some insane crits.")
+        print("Well, I'll admit it. I bit off more than I could chew and the"
+              " deadline is breathing down my neck.")
+        print("So, alas, this journey ends here. Thanks for playing my game,"
+              " you crafty CHEATER!")
+        print("\n After I'll submit this, there's so much more in store!"
+              "  We're talking a LOOOOOOOOT more plot and features like"
+              " ✨MAGIC✨.")
+        print("\n So, circle back and give it another whirl when it's ready."
+              " Thanks for playing!\n BYEEEEEEEEE!")
+        player_defeat()
 
 
 def main():
