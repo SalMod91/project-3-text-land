@@ -1856,7 +1856,7 @@ def forest_path():
           "\n elemental magic is a cause for concern.")
     while True:
         print("\n 🏹  1. Preemptively attack the creature."
-              "\n      It is maybe better to be safe than sorry.")
+              "\n       It is maybe better to be safe than sorry.")
         print("\n 🚶  2. Try to ignore it and continue on your path.")
         choice = get_choice(2)
         if choice == 1:
@@ -1882,6 +1882,29 @@ def forest_path():
             break
 
 
+def brokmire_intro():
+    """
+    Intro dialogue with Brokmire
+    """
+    print("\n As you make your way through the forest, you suddenly hear "
+          "a rustling...")
+    print("\n From behind the dense foliage, a peculiar figure emerges."
+          "\n Taller than most humans, with rough, greenish skin,\n he's"
+          " dressed in a rather unconventional mix of attire."
+          "\n Wearing a too-tight-for-him cap backward, his pointy ears"
+          " poking through,\n and oversized cargo shorts that barely fit"
+          " his bulky troll frame,\n he looks like someone who raided a"
+          " teenager's closet.")
+    print("\n Around his waist is a belt with numerous tiny cages,\n each "
+          "containing what appears to be a miniature creature."
+          "\n He holds a red and white orb-like object in one hand,\n"
+          " which he periodically tosses up and down.")
+    print('\n "Yo! Name\'s Brockmire, the Beast Master!" he declares with'
+          ' a'
+          ' flamboyant pose,\n "And... possibly the world\'s best Beast'
+          ' Trainer!\n1 What brings you here in my turf?"')
+
+
 def forest_path_second_scene(defeated_creature):
     """
     This function handles the second scene of the forest path and creates
@@ -1901,7 +1924,7 @@ def forest_path_second_scene(defeated_creature):
         while True:
             print_horizontal_line()
             print("\n 🚶  1. Push onward through the opposite side of the"
-                  "     grassy area,\n hoping to find a way out.")
+                  " grassy area,\n   hoping to find a way out.")
             print("\n\n 💰  2. Elidor Shop")
             print("\n\n 📖  3. Player Info")
             choice = get_choice(3)
@@ -1915,23 +1938,7 @@ def forest_path_second_scene(defeated_creature):
             elif choice == 3:
                 print_player_info_menu()
 
-        print("\n As you make your way through the forest, you suddenly hear "
-              "a rustling...")
-        print("\n From behind the dense foliage, a peculiar figure emerges."
-              "\n Taller than most humans, with rough, greenish skin,\n he's"
-              " dressed in a rather unconventional mix of attire."
-              "\n Wearing a too-tight-for-him cap backward, his pointy ears"
-              " poking through,\n and oversized cargo shorts that barely fit"
-              " his bulky troll frame,\n he looks like someone who raided a"
-              " teenager's closet.")
-        print("\n Around his waist is a belt with numerous tiny cages,\n each "
-              "containing what appears to be a miniature creature."
-              "\n He holds a red and white orb-like object in one hand,\n"
-              " which he periodically tosses up and down.")
-        print('\n "Yo! Name\'s Brockmire, the Beast Master!" he declares with'
-              ' a'
-              ' flamboyant pose,\n "And... possibly the world\'s best Beast'
-              ' Trainer!\n1 What brings you here in my turf?"')
+        brokmire_intro()
         print_horizontal_line()
         while True:
             print("\n 🖐️  1. Greet him politely.")
@@ -2102,22 +2109,7 @@ def forest_path_second_scene(defeated_creature):
                       " grass aside,\n vigilant"
                       " for any signs of danger or another encounter.")
                 break
-        print("\n As you make your way through the forest, you suddenly hear "
-              "a rustling...")
-        print("\n From behind the dense foliage, a peculiar figure emerges."
-              "\n Taller than most humans, with rough, greenish skin, he's"
-              " dressed in a rather unconventional mix of attire."
-              "\n Wearing a too-tight-for-him cap backward, his pointy ears"
-              " poking through,\n and oversized cargo shorts that barely fit"
-              " his bulky troll frame, he looks like someone who raided a"
-              " teenager's closet.")
-        print("\n Around his waist is a belt with numerous tiny cages, each "
-              "containing what appears to be a miniature creature."
-              "\n He holds a red and white orb-like object in one hand, which"
-              " he periodically tosses up and down.")
-        print('\n "Yo! Name\'s Brockmire, the BeastMaster!" he declares with a'
-              ' flamboyant pose,\n "And... possibly the world\'s best Beast'
-              ' Trainer! What brings you here in my turf?"')
+        brokmire_intro()
         print_horizontal_line()
         while True:
             print("\n 💬  1. I came from..")
@@ -2127,7 +2119,7 @@ def forest_path_second_scene(defeated_creature):
             print("\n\n 📖  5. Player Info")
             choice = get_choice(5)
             if choice == 1 or choice == 2 or choice == 3:
-                print("\n Before you can utter any more words, Brockmire's"
+                print("\n Before you can utter any more words,\n Brockmire's"
                       " eyes widen, and his excitement is palpable.")
                 print(' "YOU BROUGHT SPARKY TAIL BACK TO ME?!?" he exclaims.')
                 print('\n With genuine gratitude in his eyes, he continues,'
@@ -2137,7 +2129,7 @@ def forest_path_second_scene(defeated_creature):
                 player["Stats"]["Gold"] += 100
                 print("\n You obtained 100 Gold 💰  !")
                 print('\n Brokmire: "Consider this a token of my'
-                      ' appreciation," he'
+                      ' appreciation,"\n he'
                       " adds, with a hint of a smile.")
                 break
             elif choice == 4:
@@ -2157,16 +2149,16 @@ def forest_path_second_scene(defeated_creature):
             if choice == 1 or choice == 2 or choice == 3:
                 print("\n Brockmire points towards a well-trodden path"
                       " that's "
-                      "faintly visible through the trees."
+                      "faintly visible\n through the trees."
                       '\n "That\'s the way to the nearest town.'
-                      ' Just keep following that path,'
-                      '\n and you\'ll be there in no time."')
+                      '\n Just keep following that path,'
+                      ' and you\'ll be there in no time."')
                 print('\n \"Take care on your journey, and thanks again'
                       ' for'
-                      ' bringing back Sparky Tail. Farewell!"'
+                      ' bringing back Sparky Tail.\n Farewell!"'
                       "\n He waves, turning his attention back to the"
                       " critter"
-                      " with a look of deep affection on his face.")
+                      "\n with a look of deep affection on his face.")
                 break
 
         forest_end_scene()
