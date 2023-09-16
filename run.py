@@ -463,7 +463,7 @@ class Combat:
         global battle_result  # pylint: disable=global-statement
         battle_result = "Victory"
         print()
-        print("===== VICTORY =====")
+        print(" ======== VICTORY ========")
         print()
         print(f" You have defeated the {self.enemy['Name']}!")
         self.handle_loot()
