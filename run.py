@@ -44,7 +44,7 @@ def rules():
     Prints the rules of the game and then redirects the user either
     back to the intro or to the start of the game.
     """
-    print("\n Welcome to this text-adventure game!")
+    print("\n Welcome to Text-Land!")
     print("\n 🖊️  How to Play:")
     print(" 1. Input choices by selecting the corresponding number.")
     print(" 2. Confirm your choice by pressing 'ENTER'.")
