@@ -38,15 +38,13 @@ Play it here: 🎮 [TEXT-LAND](https://text-land-6fba33f8e155.herokuapp.com/)
   - [Validator Testing](#validator-testing)
   - [Unfixed Bugs](#unfixed-bugs)
 - [Thought Of Process](#thought-of-process)
-  - [Regrets](#regrets)
+  - [Reflections](#Reflections)
   - [Wireframes](#wire-frames)
 - [Technologies Used](#technologies-used)
   - [Main Languages Used](#main-languages-used)
   - [Frameworks, Libraries, Programs](#frameworks-libraries-and-programs-used)
 - [Deployment](#deployment)
 - [Credits](#credits)
-  - [Content](#content)
-  - [Media](#media)
 
 ## UX
 
@@ -187,11 +185,15 @@ That being said, rigorous testing has been a staple throughout the development p
 CI Python Linter:
 ![CI Linter](/assets/images/CI-linter.PNG)
 
+More linter have been used, the result being the same.
+
 ### Unfixed Bugs
 
 - One peculiar bug managed to elude resolution during the testing phase. Specifically, when the player defeats Petalback, there are rare occurrences where the enemy revives with a health range of just one attack. Intriguingly, this anomalous behavior is confined solely to this particular enemy. Despite the enemy dictionary resetting and the loop breaking as intended, this unexpected revival takes place. The exact conditions to replicate this bug consistently remain elusive.
 
 Multiple attempts were made to rectify this, including adjusting the reset function and its positioning, but the issue persists. Fortunately, its occurrence is infrequent, and even when it does manifest, it's limited to just a singular revival, thus not critically affecting gameplay. Given its rarity and the non-critical nature, the decision was made to deprioritize its resolution for the time being.
+
+- I received several warnings from the linter regarding the use of 2 global variables and the script surpassing 1,000 lines. I'm aware of these, and intentionally chose to proceed in this manner for this iteration of the project. The whole concept was about constantly updating the player and enemy list through events and combat. To keep the linter feedback streamlined, I've used comments to suppress those specific warnings.
 
 ## Thought Process
 
@@ -219,7 +221,7 @@ New equipment slots like amulets or rings can be smoothly integrated by simply a
 
 In summation, this project became a powerful reminder of the twists and turns of learning. What was once a point of consternation transformed into the linchpin of my project, underscoring the unpredictable beauty of the educational journey.
 
-### Regrets
+### Reflections
 While I am proud of what I've achieved, I acknowledge the potential refinements. A glaring area for optimization lies in the refactoring of the code.
 
 Lore Organization: Print statements, predominantly those narrating the lore, can be organized better. Transferring them to a separate module or file would streamline the main code, enhancing readability and maintenance.
