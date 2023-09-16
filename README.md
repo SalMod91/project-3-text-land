@@ -29,6 +29,8 @@ Play it here: 🎮 [TEXT-LAND](https://text-land-6fba33f8e155.herokuapp.com/)
 - [Features](#features)
   - [Choices](#choices)
   - [Rules](#rules)
+  - [Personalized Naming](#personalized-naming)
+  - [Player Info](#player-info)
   - [Future Features](#future-features)
 - [Testing](#testing)
   - [Testing Table](#testing-table)
@@ -90,6 +92,33 @@ For non-numerical inputs: A warning message instructs players to provide a numer
 
 ### Rules:
 
+- Immediate Access: Right from the start, players can delve into the rules, ensuring they have a firm grasp of the gameplay mechanics before embarking on their adventure.
+
+- Clear Explanation on Choices: The guide elucidates how the choice-driven gameplay operates, ensuring players know what to anticipate from their decisions.
+
+- Combat Insight: It provides an in-depth look into the combat statistics, offering players clarity on how combat scenarios unfold and how different combat-related features impact their journey. This knowledge equips players with the strategic depth required to make informed decisions during confrontations.
+
+![Rules](/assets/images/rules.PNG)
+
+### Personalized Naming:
+- Custom Player Identity: Players are given the opportunity to immerse themselves more deeply into the adventure by personalizing their character with a name of their choice.
+
+- Inclusive Naming: I've even allowed numerical inputs in the naming process. After all, we wouldn't want to discriminate against Elon Musk's son, would we? 😄
+
+- Default Naming: If players choose not to provide a name or accidentally submit an empty value, the game automatically dubs them as "Hero", ensuring a smooth experience and maintaining the narrative flow.
+
+![Name](/assets/images/name.PNG)
+
+### Player Info:
+- Informed Decision Making: Throughout the adventure, players have near-constant access to their character's crucial stats, potions, and equipment. This transparency empowers players, allowing them to make well-informed choices based on their current status.
+
+- Strategic Planning: By having immediate insights into their character's strengths, weaknesses, and available resources, players can effectively strategize for upcoming challenges and encounters. This adds depth to gameplay and encourages thoughtful decision-making.
+
+- Immersive Experience: This continuous access to character information enhances immersion, as players are always aware of their hero's current state, replicating the intuitive awareness one would have of themselves in a real-life adventure.
+
+![Player Info](/assets/images/player-info-option.PNG)
+![Player Stats/Potion](/assets/images/player-info-stat-potion.PNG)
+![Player Equipment](/assets/images/player-info-stat-equip.PNG)
 ### Future Features:
 
 ## Testing 

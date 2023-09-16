@@ -56,7 +56,7 @@ def rules():
     print(" - MAX HP: Your total health points.")
     print(" - Current HP: Your current health. Reach 0, and...well, you'll"
           " see.")
-    print(" - Crit: % chance to deal a critical strike. A successful crit"
+    print(" - Crit: % chance to deal a critical strike.\n A successful crit"
           " deals")
     print("   1.5x damage and bypasses 1/3 of the opponent's defense.")
     print("\n 🚨 Keep in mind! Enemies can critically hit too.\n Yet, they only"
