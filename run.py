@@ -2180,8 +2180,7 @@ def forest_end_scene():
           " signals the day's end.\n Relief washes over you; civilization is "
           "finally within reach.")
     while True:
-        print("\n 🚶  1. With anticipation in your heart,\n you decide to"
-              " journey towards the bustling town ahead!")
+        print("\n 🚶  1. You decide to journey towards the town ahead!")
         print("\n\n 💰  2. Elidor Shop")
         print("\n\n 📖  3. Player Info")
         choice = get_choice(3)
