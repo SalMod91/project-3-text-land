@@ -1419,18 +1419,18 @@ def river_first_scene():
     Handles the first scene of the river route.
     """
     print_horizontal_line()
-    print(" As you walk alongside the river, the calmness of the water, along"
-          " with the rhythmic sound of the current,"
+    print(" As you walk alongside the river, the calmness of the water,\n "
+          " along with the rhythmic sound of the current,"
           " gives you a sense of peace.")
     print(" The sun glitters on the water's surface, and the air is filled"
-          " with the sweet scent of blooming flowers.")
+          " with the sweet\n scent of blooming flowers.")
     print("\n Elidor bends down, picks up a smooth, flat stone, and with"
-          " a mischievous glint in his eyes, challenges you.")
-    print('"How about a little contest? Let\'s see who can skip the stone'
+          " a mischievous glint\n in his eyes, challenges you.")
+    print('\n "How about a little contest? Let\'s see who can skip the stone'
           ' the furthest."')
     while True:
         print('\n 💪  1. "Sure, I\'m up for a challenge!"')
-        print('\n\n 🌊 🌳  2. "No thanks, I\'d rather just enjoy the scenery."')
+        print('\n\n 🌊  2. "No thanks, I\'d rather just enjoy the scenery."')
         print("\n\n 💰  3. Elidor Shop")
         print("\n\n 📖  4. Player Info")
         choice = get_choice(4)
@@ -1438,13 +1438,13 @@ def river_first_scene():
             print(" With a confident smirk, you take the stone from Elidor."
                   "\n Positioning yourself, you give it a strong flick of the "
                   "wrist.\n To your surprise, after the second skip, the stone"
-                  " seems to hit something solid mid-air and drops into the"
+                  " seems to hit something\n solid mid-air and drops into the"
                   " water with a splash.\n Both you and Elidor exchange"
                   " puzzled glances.")
             print("\n Approaching the spot, you extend your hand and feel an"
                   " invisible barrier."
-                  "\n The air around it vibrates with magic. Elidor murmurs,"
-                  '"It\'s an illusion spell... something is being concealed'
+                  "\n The air around it vibrates with magic.\n Elidor murmurs,"
+                  '"It\'s an illusion spell...\n something is being concealed'
                   ' here."')
             print('\n "What should we do?"')
             while True:
@@ -1453,20 +1453,18 @@ def river_first_scene():
                 choice = get_choice(2)
                 if choice == 1:
                     print("\n After a moment of concentration, Elidor chants a"
-                          " soft incantation, and the illusion starts to fade,"
-                          " revealing a hidden alcove.\n Inside, you find "
+                          " soft incantation,\n and the illusion starts to"
+                          " fade, revealing a hidden alcove.\n You find "
                           "a mysterious, ancient-looking chest.")
                     print("\n Inside, you find a bejeweled Long Sword.")
                     print(" It may not be much but you feel like it could make"
                           " your life easier")
-                    print(" It might not be a marvelous treasure, but it feels"
-                          " like it could be quite useful.")
                     print("\n You ponder why someone would go through so much"
                           " trouble to hide a mere sword.")
                     handle_loot_world("Long Sword")
                     while True:
                         print('\n Elidor glances around warily and leans in to'
-                              ' whisper, "We should leave quickly. The one '
+                              ' whisper,\n "We should leave quickly. The one '
                               'responsible for the illusion might return."')
                         print("\n 🚶  1. He is right, we should leave.")
                         choice = get_choice(1)
